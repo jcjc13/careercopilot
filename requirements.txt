@@ -1,0 +1,15 @@
+openai>=1.40          # OpenAI-compatible client: Groq, Ollama, OpenAI, OpenRouter...
+pyyaml>=6.0
+python-dotenv>=1.0
+numpy>=1.26
+pandas>=2.0
+tqdm>=4.66
+scikit-learn>=1.4     # TF-IDF retriever (Topic 1)
+scipy>=1.11           # Wilcoxon test (a fallback is built in)
+datasets>=2.19        # Hugging Face dataset download + Trainer datasets
+sentence-transformers>=3.0   # embeddings, cross-encoder re-ranker, NLI verifier (Topics 2, 8)
+transformers>=4.45    # fine-tuned verifier (Topic 3); Colab already has these
+accelerate>=0.34
+torch>=2.2
+streamlit>=1.36       # demo app
+pytest>=8.0

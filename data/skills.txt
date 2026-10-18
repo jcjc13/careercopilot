@@ -1,0 +1,13 @@
+# Vocabulary used by the rule-based verifier and the scripted tool swaps in E2.
+# One category per line: `category: term, term, ...`. Swaps stay within a category.
+# Extend this with tools that appear in your sampled resumes.
+bi: Power BI, Tableau, Looker, Qlik, Excel, Google Sheets
+languages: Python, R, Java, Scala, C++, C#, JavaScript, TypeScript, Golang, MATLAB
+databases: SQL, MySQL, PostgreSQL, MongoDB, Oracle, Snowflake, BigQuery, Redshift
+cloud: AWS, Azure, GCP
+ml: TensorFlow, PyTorch, scikit-learn, Keras, XGBoost, Spark, Hadoop
+pipelines: Airflow, dbt, Kafka, Databricks
+devops: Docker, Kubernetes, Jenkins, Git, Terraform
+web: React, Angular, Vue, Django, Flask, Node.js, Spring
+crm: Salesforce, SAP, HubSpot, Jira, Confluence
+seniority: senior, lead, principal, head, director, manager, chief, vice president
