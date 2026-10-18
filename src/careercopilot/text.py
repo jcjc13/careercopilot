@@ -33,7 +33,9 @@ _SECTION_HEADINGS = (
 def _separate_headings(text: str) -> str:
     headings = "|".join(re.escape(heading) for heading in
                         sorted(_SECTION_HEADINGS, key=len, reverse=True))
-    return re.sub(rf"(?i)\b({headings})(?=\s*[A-Z])", r"\n\1\n", text)
+    # case-sensitive and only when glued to a capital ("SummaryHighly..."); a case-insensitive match
+    # also deleted ordinary words like "experience" and "skills" from sentences
+    return re.sub(rf"(?<![A-Za-z])({headings})(?=[A-Z])", r"\n\1\n", text)
 
 
 def _limit_chars(text: str, max_chars: int) -> list[str]:
