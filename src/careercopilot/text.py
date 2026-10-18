@@ -19,7 +19,43 @@ def anonymise(text: str) -> str:
 
 
 def _sentences(text: str) -> list[str]:
-    return [s.strip() for s in re.split(r"(?<=[.!?])\s+(?=[A-Z])", text) if s.strip()]
+    return [s.strip() for s in re.split(r"(?<=[.!?])\s*(?=[A-Z])", text) if s.strip()]
+
+
+_SECTION_HEADINGS = (
+    "Career Overview", "Professional Summary", "Work Experience",
+    "Professional Experience", "Employment History", "Technical Skills",
+    "Education", "Certifications", "Projects", "Summary", "Experience",
+    "Skills", "Awards",
+)
+
+
+def _separate_headings(text: str) -> str:
+    headings = "|".join(re.escape(heading) for heading in
+                        sorted(_SECTION_HEADINGS, key=len, reverse=True))
+    return re.sub(rf"(?i)\b({headings})(?=\s*[A-Z])", r"\n\1\n", text)
+
+
+def _limit_chars(text: str, max_chars: int) -> list[str]:
+    """Split oversized text at word boundaries without exceeding max_chars."""
+    words = text.split()
+    chunks, current = [], ""
+    for word in words:
+        if len(word) > max_chars:
+            if current:
+                chunks.append(current)
+                current = ""
+            chunks.extend(word[i:i + max_chars] for i in range(0, len(word), max_chars))
+            continue
+        candidate = f"{current} {word}".strip()
+        if len(candidate) > max_chars and current:
+            chunks.append(current)
+            current = word
+        else:
+            current = candidate
+    if current:
+        chunks.append(current)
+    return chunks
 
 
 _YEAR = re.compile(r"\b(19|20)\d{2}\b")
@@ -40,6 +76,7 @@ def split_with_context(resume: str, min_words: int = 4, max_chars: int = 300) ->
     dashboards' alone loses the job it was done in. Deterministic, so ids are stable.
     """
     pieces, ctx = [], ""
+    resume = _separate_headings(resume)
     for line in re.split(r"[\n\r]+", resume):
         clean = re.sub(r"\s+", " ", line).strip(" \t" + _BULLET_CHARS)
         if _is_header(clean):
@@ -50,8 +87,8 @@ def split_with_context(resume: str, min_words: int = 4, max_chars: int = 300) ->
             part = (part or "").strip(" \t" + _BULLET_CHARS)
             if not part:
                 continue
-            for s in (_sentences(part) if len(part) > max_chars else [part]):
-                pieces.append((s, ctx))
+            for sentence in _sentences(part):
+                pieces.extend((chunk, ctx) for chunk in _limit_chars(sentence, max_chars))
     bullets, contexts, seen = [], [], set()
     for p, c in pieces:
         p = re.sub(r"\s+", " ", p).strip()

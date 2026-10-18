@@ -23,7 +23,7 @@ from careercopilot.llm import MockLLM, parse_json  # noqa: E402
 from careercopilot.metrics import cohen_kappa, prf, wilcoxon_signed_rank  # noqa: E402
 from careercopilot.pipeline import run_variant  # noqa: E402
 from careercopilot.retrieval import BM25Retriever  # noqa: E402
-from careercopilot.text import anonymise, split_bullets  # noqa: E402
+from careercopilot.text import anonymise, split_bullets, split_with_context  # noqa: E402
 from careercopilot.verifiers import RuleVerifier  # noqa: E402
 
 
@@ -50,6 +50,16 @@ def test_text_and_metrics():
     assert anonymise("mail a.b@x.com or +65 9123 4567") == "mail [EMAIL] or [PHONE]"
     b = split_bullets("SKILLS\n- Built Power BI dashboards for 12 managers\n• Wrote SQL in PostgreSQL daily\nshort")
     assert b == ["Built Power BI dashboards for 12 managers", "Wrote SQL in PostgreSQL daily"]
+    b, _ = split_with_context(
+        "SummaryHighly organized and detail-oriented professional. "
+        "Career OverviewSenior data analyst with experience. "
+        "Work ExperienceManaged supply chain reporting.Automated new dashboards for regional teams. "
+        + "Created monthly reports for stakeholders. " * 12
+    )
+    assert any("Highly organized" in bullet for bullet in b)
+    assert any("Senior data analyst" in bullet for bullet in b)
+    assert any("Automated new dashboards" in bullet for bullet in b)
+    assert all(len(bullet) <= 300 for bullet in b)
     assert parse_json('```json\n["a", "b"]\n```') == ["a", "b"]
     assert prf([True, False, True], [True, True, False])["precision"] == 0.5
     assert abs(cohen_kappa([1, 1, 0, 0], [1, 1, 0, 0]) - 1) < 1e-9
