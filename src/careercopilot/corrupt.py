@@ -35,7 +35,10 @@ def change_number(bullet: str, rng) -> str | None:
         return None
     new = val * rng.choice([3, 5, 10]) if val > 0 else 25
     new_s = str(int(new)) if new == int(new) else f"{new:.1f}"
-    return bullet[:m.start()] + raw.replace(digits, new_s, 1) + bullet[m.end():]
+    # swap the digits inside the matched span; "1,200" has no "1200" substring, so build it by position
+    lead = raw[:len(raw) - len(raw.lstrip("$"))]
+    tail = raw[len(lead) + len(re.match(r"[\d,]*(?:\.\d+)?", raw[len(lead):]).group(0)):]
+    return bullet[:m.start()] + lead + new_s + tail + bullet[m.end():]
 
 
 def add_seniority(bullet: str, rng) -> str | None:
