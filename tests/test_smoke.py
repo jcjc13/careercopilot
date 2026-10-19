@@ -67,7 +67,7 @@ def test_text_and_metrics():
 
 
 def test_contextual_split_and_tfidf():
-    from careercopilot.retrieval import TfidfRetriever
+    from careercopilot.retrieval import BM25Retriever, TfidfRetriever
     from careercopilot.text import split_with_context
     b, c = split_with_context("Data Analyst, Retail Co (2023-2025)\n- Built Power BI dashboards for 12 managers\n"
                               "Intern, Logistics Ltd (2022)\n- Analysed delivery delays in Excel")
@@ -75,6 +75,34 @@ def test_contextual_split_and_tfidf():
     assert c[b.index("Analysed delivery delays in Excel")] == "Intern, Logistics Ltd (2022)"
     top = TfidfRetriever().rank("Excel analysis of delays", b, 1)
     assert b[top[0][0]].startswith("Analysed")
+    unrelated = ["Built a Java service", "Designed database schemas"]
+    assert BM25Retriever().rank("Kubernetes", unrelated, 3) == []
+    assert TfidfRetriever().rank("Kubernetes", unrelated, 3) == []
+
+
+def test_embedding_retriever_caches_resume_embeddings(monkeypatch):
+    import numpy as np
+    import careercopilot.retrieval as retrieval
+
+    class FakeModel:
+        def __init__(self):
+            self.calls = []
+
+        def encode(self, texts, normalize_embeddings):
+            self.calls.append(tuple(texts))
+            if texts == ["alpha", "beta"]:
+                return np.array([[1.0, 0.0], [0.0, 1.0]])
+            return np.array([[1.0, 0.0]])
+
+    model = FakeModel()
+    monkeypatch.setattr(retrieval, "_st_model", lambda _: model)
+    retriever = retrieval.EmbeddingRetriever("test-model")
+
+    first = retriever.rank("alpha", ["alpha", "beta"], 1)
+    second = retriever.rank("alpha", ["alpha", "beta"], 1)
+
+    assert first == second == [(0, 1.0)]
+    assert model.calls == [("alpha",), ("alpha", "beta"), ("alpha",)]
 
 
 def test_rule_verifier():
