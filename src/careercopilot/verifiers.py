@@ -120,6 +120,11 @@ def build_verifier(cfg: dict, llm=None, method: str | None = None):
         return NLIVerifier(v["nli_model"], v["nli_threshold"])
     if method == "finetuned":
         return FinetunedVerifier(resolve(v["finetuned_path"]), v["finetuned_threshold"])
+    if method == "finetuned_nli":   # the NLI checkpoint fine-tuned on our data: base vs fine-tuned, same model
+        fv = FinetunedVerifier(resolve(v.get("finetuned_nli_path", "models/verifier-nli-ft")),
+                               v.get("finetuned_nli_threshold", 0.5))
+        fv.name = "finetuned_nli"
+        return fv
     if method == "llm":
         return LLMVerifier(llm)
     raise ValueError(f"unknown verifier {method!r}")

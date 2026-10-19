@@ -21,41 +21,17 @@ makes the same examples as an uninterrupted one.
 """
 import json
 import random
-import re
 from collections import Counter
 
 from _common import build_llm, load_config, load_pairs_or_exit, parser, resolve, tqdm
 
 from careercopilot import prompts
-from careercopilot.corrupt import add_seniority, change_number, sub_claim, swap_tool
+from careercopilot.corrupt import add_seniority, change_number, clean_llm, is_junk, sub_claim, swap_tool
 from careercopilot.data import sample_other_resumes
 from careercopilot.retrieval import BM25Retriever
 from careercopilot.text import load_vocab, split_bullets
 
 OTHER_RESUME_SHARE = 0.25   # cap on easy "unrelated claim" negatives, as a share of all negatives
-RUN_TOGETHER = re.compile(r"[a-z]{3}[A-Z][a-z]")   # "kitsMaintained": headings/fields glued together
-DATE_FIELD = re.compile(r"\d{2}/\d{4}|\d{4}\s*(?:to|-)\s*(?:\d{2,4}|present)|\bExpected in\b", re.I)
-
-
-def is_junk(bullet: str) -> bool:
-    """Skill lists, education/date lines and run-together fields make meaningless claims."""
-    words = bullet.split()
-    if bullet.count(",") > 0.2 * len(words) and bullet.count(",") >= 4:
-        return True
-    if DATE_FIELD.search(bullet):
-        return True
-    return any(len(w) >= 12 and RUN_TOGETHER.search(w) for w in words)
-
-
-def clean_llm(text: str, premise: str) -> str:
-    """Strip markdown the teacher sometimes adds (a model must not learn '**' means fabricated)
-    and reject outputs that are empty, unchanged, or much longer than the bullet."""
-    text = re.sub(r"[*`]+", "", text or "")
-    text = re.sub(r"^\s*(?:[-•]\s+)", "", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    if not text or text == premise or len(text) > 2 * len(premise) + 50:
-        return ""
-    return text
 
 
 def examples_for(rid, text, bs, all_bullets, bm25, vocab, llm, teacher_frac, per_resume, seed):

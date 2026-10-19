@@ -30,7 +30,7 @@ def best_threshold(scores, fabricated):
     return best[0]
 
 
-def main(config, methods, include_unreviewed=False, mock=False, limit=None):
+def main(config, methods, include_unreviewed=False, mock=False, limit=None, merge=False):
     cfg = load_config(config)
     pairs = {p.pair_id: p for p in load_pairs_or_exit(cfg)}
     path = resolve(cfg["paths"]["labels_dir"]) / "e2_claims.csv"
@@ -54,7 +54,7 @@ def main(config, methods, include_unreviewed=False, mock=False, limit=None):
         except Exception as e:
             print(f"skip {m}: {e!r}")
             continue
-        if m in ("nli", "finetuned"):  # score-based verifiers: tune the threshold on dev only
+        if m in ("nli", "finetuned", "finetuned_nli"):  # score-based verifiers: tune the threshold on dev only
             s = [v.score(r["claim"], pairs[r["pair_id"]].bullets) for r in tqdm(dev, desc=f"{m} dev")]
             v.threshold = best_threshold(s, [r["label"] == "fabricated" for r in dev])
             print(f"{m}: best dev threshold = {v.threshold}  (put it in configs/default.yaml)")
@@ -81,16 +81,26 @@ def main(config, methods, include_unreviewed=False, mock=False, limit=None):
         results[m] = res
 
     out = run_dir(cfg)
+    if merge:  # keep earlier methods from this run (same dev/test split), replace only the ones just rerun
+        old_json, old_csv = out / "e2_results.json", out / "e2_predictions.csv"
+        if old_json.exists():
+            results = {**{k: v for k, v in json.load(open(old_json)).items() if k not in results}, **results}
+        if old_csv.exists():
+            rerun = {p["method"] for p in preds_out}
+            kept = [r for r in csv.DictReader(open(old_csv, encoding="utf-8")) if r["method"] not in rerun]
+            for r in kept:
+                r["flagged"] = r["flagged"] == "True"
+            preds_out = kept + preds_out
     json.dump(results, open(out / "e2_results.json", "w"), indent=2)
     if preds_out:
         with open(out / "e2_predictions.csv", "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=list(preds_out[0]))
             w.writeheader()
             w.writerows(preds_out)
-    print(f"\n{'method':<8}{'P':>7}{'R':>7}{'F1':>7}{'falseflag':>11}{'ms/claim':>10}{'$/claim':>10}  recall by type")
+    print(f"\n{'method':<14}{'P':>7}{'R':>7}{'F1':>7}{'falseflag':>11}{'ms/claim':>10}{'$/claim':>10}  recall by type")
     for m, r in results.items():
         by = ", ".join(f"{k} {v:.2f}" for k, v in r["recall_by_type"].items())
-        print(f"{m:<8}{r['precision']:>7.2f}{r['recall']:>7.2f}{r['f1']:>7.2f}{r['false_flag_rate']:>11.2f}"
+        print(f"{m:<14}{r['precision']:>7.2f}{r['recall']:>7.2f}{r['f1']:>7.2f}{r['false_flag_rate']:>11.2f}"
               f"{r['ms_per_claim']:>10.1f}{r['usd_per_claim']:>10.5f}  {by}")
     print(f"wrote {out / 'e2_results.json'} and e2_predictions.csv")
     return results
@@ -100,5 +110,7 @@ if __name__ == "__main__":
     p = parser(__doc__)
     p.add_argument("--methods", default="rule,nli,finetuned,llm")
     p.add_argument("--include-unreviewed", action="store_true")
+    p.add_argument("--merge", action="store_true",
+                   help="keep the other methods already in this run's results and replace only --methods")
     a = p.parse_args()
-    main(a.config, a.methods.split(","), a.include_unreviewed, a.mock, a.limit)
+    main(a.config, a.methods.split(","), a.include_unreviewed, a.mock, a.limit, a.merge)

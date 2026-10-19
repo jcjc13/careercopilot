@@ -50,6 +50,45 @@ def add_seniority(bullet: str, rng) -> str | None:
     return f"Led a team of {rng.choice([4, 6, 8, 12])} that {m.group(1).lower()} {m.group(2)}"
 
 
+RUN_TOGETHER = re.compile(r"[a-z]{3}[A-Z][a-z]")   # "kitsMaintained": headings/fields glued together
+DATE_FIELD = re.compile(r"\d{2}/\d{4}|\d{4}\s*(?:to|-)\s*(?:\d{2,4}|present)|\bExpected in\b", re.I)
+# a number that is a real quantity (not a year, date or version): %, $, "10+", or a count with a unit
+QUANTITY = re.compile(
+    r"\$\d[\d,]*(?:\.\d+)?\s?(?:k|m|mm|million|billion|bn)?\b|\b\d[\d,]*(?:\.\d+)?\s?%|\b\d[\d,]*\+"
+    r"|\b\d[\d,]*(?:\.\d+)?\s(?:years?|months?|users|customers|clients|employees|people|members|team|teams|"
+    r"projects|applications|servers|records|accounts|reports|stores|locations|branches|countries)\b", re.I)
+
+
+def is_junk(bullet: str) -> bool:
+    """Skill lists, education/date lines and run-together fields make meaningless claims."""
+    words = bullet.split()
+    if bullet.count(",") > 0.2 * len(words) and bullet.count(",") >= 4:
+        return True
+    if DATE_FIELD.search(bullet):
+        return True
+    return any(len(w) >= 12 and RUN_TOGETHER.search(w) for w in words)
+
+
+def clean_llm(text: str, premise: str) -> str:
+    """Strip markdown the teacher sometimes adds (a model must not learn '**' means fabricated)
+    and reject outputs that are empty, unchanged, or much longer than the bullet."""
+    text = re.sub(r"[*`]+", "", text or "")
+    text = re.sub(r"^\s*(?:[-•]\s+)", "", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    if not text or text == premise or len(text) > 2 * len(premise) + 50:
+        return ""
+    return text
+
+
+def change_quantity(bullet: str, rng) -> str | None:
+    """Like change_number, but only on a real quantity (45%, $2M, 10+ users), never a year or date."""
+    m = QUANTITY.search(bullet)
+    if not m:
+        return None
+    new = change_number(m.group(0), rng)
+    return bullet[:m.start()] + new + bullet[m.end():] if new else None
+
+
 def sub_claim(bullet: str) -> str | None:
     """A faithful atomic claim: the first clause of the bullet, if it is a full claim on its own."""
     for sep in [", ", "; ", " and ", " to "]:
