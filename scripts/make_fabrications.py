@@ -4,7 +4,7 @@ duties and title/date changes are drafted by the LLM and MUST be reviewed by a p
 
     python scripts/make_fabrications.py --n 150
   -> data/labels/e2_claims.csv  columns: claim_id, pair_id, source_bullet, claim, label, type,
-                                method, reviewed
+                                method, drafted_by, set, reviewed
 Review every row with method=llm_draft: fix it so it is exactly what its label says
 (faithful = same facts; fabricated = exactly one unsupported change), then set reviewed=yes.
 
@@ -86,8 +86,10 @@ def main(config, n=150, mock=False):
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["claim_id", "pair_id", "source_bullet", "claim", "label", "type", "method", "reviewed"])
-        w.writerows(rows)
+        w.writerow(["claim_id", "pair_id", "source_bullet", "claim", "label", "type", "method", "drafted_by",
+                    "set", "reviewed"])
+        for r in rows:   # drafted_by: the model that wrote an llm_draft row; set: standard (hard = make_hard_claims.py)
+            w.writerow(r[:7] + ["scripted" if r[6] == "scripted" else getattr(llm, "model", "llm"), "standard", r[7]])
     n_draft = sum(r[6] == "llm_draft" for r in rows)
     print(f"wrote {len(rows)} claims to {out}; {n_draft} LLM drafts need review (set reviewed=yes)")
 
