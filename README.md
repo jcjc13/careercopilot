@@ -56,16 +56,22 @@ python scripts/run_e1_retrieval.py --make-template --pairs 12    # then label da
 python scripts/run_e1_retrieval.py                               # tfidf, bm25, embedding, hybrid, +ctx
 
 # E2 verifiers (Member B)
-python scripts/make_fabrications.py --n 150                      # then review data/labels/e2_claims.csv
+python scripts/make_fabrications.py --n 150                      # standard test set; then review data/labels/e2_claims.csv
+python scripts/make_date_fabrications.py                         # +28 date/title rows (set=standard), review and append
+python scripts/make_hard_claims.py --preview                     # hard test set (set=hard); drafted by the `drafter` model
+python scripts/make_hard_claims.py                               #   then review the llm_draft rows, set reviewed=yes
 python scripts/make_verifier_train.py                            # silver training set, other resumes
-python scripts/train_verifier.py                                 # GPU / Colab, a few minutes
-python scripts/run_e2_verifiers.py                               # rule, nli, finetuned, llm
+python scripts/train_verifier.py                                 # GPU / Colab, a few minutes (BERT)
+python scripts/train_verifier.py --base cross-encoder/nli-deberta-v3-small --out models/verifier-nli-ft   # NLI
+python scripts/run_e2_verifiers.py                               # rule, nli, finetuned, finetuned_nli, llm; both sets
+                                                                 # (CPU: ~2 h; run one method at a time with --methods X --merge)
 
 # E3 tailoring (both) -- first set retrieval.method / verifier.method to the E1/E2 winners
 python scripts/run_e3_tailoring.py --variants A,B,C,D
 python scripts/evaluate_e3.py --pairwise                         # then label the two sheets it writes
 python scripts/evaluate_e3.py --human-labels data/labels/e3_human_sample.csv \
                               --human-preference data/labels/e3_preference.csv
+python scripts/agent_metrics.py                                  # per-task success, steps, cost, latency (variants C/D loop)
 
 # Topic 9 probes
 python scripts/run_probes.py --probe injection --variants A,B,C,D
@@ -81,13 +87,15 @@ Upload the repo (or `git clone` it), then in a GPU runtime:
 !pip -q install -r requirements.txt
 !python scripts/train_verifier.py
 ```
-Download `models/verifier/` and keep it next to the repo; `verifier.finetuned_path` points to it.
+Download `models/verifier/` (and `models/verifier-nli-ft/` for the NLI model) and keep them next to the repo;
+`verifier.finetuned_path` and `verifier.finetuned_nli_path` point to them. `models/` is gitignored.
 
 ## Models
 
 Defaults follow the class labs: Groq's `openai/gpt-oss-20b` inside the pipeline and the stronger
 `openai/gpt-oss-120b` as evaluation judge (a different, stronger model, so variant D is not graded
-by its own checker). Any OpenAI-compatible endpoint works: set `base_url`, `api_key_env` and
+by its own checker). The hard E2 test set is drafted by `drafter` (`qwen/qwen3.8-27b` on Groq), a different
+model family from the one that wrote the training data. Any OpenAI-compatible endpoint works: set `base_url`, `api_key_env` and
 `model` per role in `configs/default.yaml` -- e.g. a local `qwen3:4b` through Ollama.
 
 ## Layout
@@ -101,7 +109,7 @@ by its own checker). Any OpenAI-compatible endpoint works: set `base_url`, `api_
 | `src/careercopilot/verifiers.py`, `corrupt.py` | rule, NLI, fine-tuned, LLM verifiers; corruptions | B |
 | `src/careercopilot/metrics.py` | all metrics and tests | B |
 | `scripts/run_e1_*`, `tailor_one`, `run_probes`, `app.py` | E1, probes, demo | A |
-| `scripts/make_fabrications`, `make_verifier_train`, `train_verifier`, `run_e2_*`, `evaluate_e3` | E2, E3 scoring | B |
+| `scripts/make_fabrications`, `make_date_fabrications`, `make_hard_claims`, `make_verifier_train`, `train_verifier`, `run_e2_*`, `evaluate_e3`, `agent_metrics`, `export_session_log` | E2, E3 scoring, process records | B |
 | `configs/default.yaml` | every setting + seed | both |
 | `data/labels/` | your hand labels (commit these) | both |
 
@@ -110,8 +118,13 @@ by its own checker). Any OpenAI-compatible endpoint works: set `base_url`, `api_
 - One config, one seed (`469`). Changing `llm`, `retrieval`, `verifier` or `tailoring` → bump `run_name`.
 - All variants use the same model, temperature 0, the same requirement list per pair, and the same
   "do not invent experience" instruction; only grounding and verification differ.
-- Thresholds (NLI, fine-tuned) are tuned on the E2 dev split only; the fine-tuned verifier never
-  sees a test resume (its training resumes are sampled separately).
+- Thresholds (NLI, fine-tuned BERT, fine-tuned NLI) are tuned on the silver validation set only
+  (`data/verifier/val.jsonl`, resumes not in the training split or in any test pair); every claim of the
+  standard and hard test sets is then scored. `run_e2_verifiers.py --tune dev` is the earlier protocol (a 20%
+  dev split of the standard claims). The fine-tuned verifiers never see a test resume (their training
+  resumes are sampled separately).
+- E2 results are reported per set (standard / hard) with F1 at the tuned threshold and at 0.5, ROC-AUC,
+  false-flag rates and McNemar tests. Run v2 is in `runs/v2/` (console logs and environment in `runs/v2/logs/`).
 - All user text is wrapped in tags and every prompt says it is data, not instructions.
 
 ## Dataset

@@ -9,7 +9,9 @@ scripts/make_verifier_train.py. Run on a GPU (Colab is fine; a few minutes for b
     python scripts/train_verifier.py --base cross-encoder/nli-deberta-v3-small --out models/verifier-nli-ft
   -> models/verifier/ (model + tokenizer + metrics.json); point verifier.finetuned_path at it
 
-Compare in E2: the zero-shot NLI model vs this fine-tuned model = base vs fine-tuned.
+E2 compares four score-based/other verifiers: zero-shot NLI, this BERT model (models/verifier), the NLI
+model fine-tuned the same way (models/verifier-nli-ft: base vs fine-tuned on the same checkpoint), and
+the rule and LLM verifiers.
 """
 import json
 import time

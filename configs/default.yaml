@@ -50,11 +50,14 @@ retrieval:
   reranker_model: cross-encoder/ms-marco-MiniLM-L-6-v2     # used by hybrid; falls back to rank fusion if missing
 
 verifier:
-  method: rule             # rule | nli | finetuned | llm  (set to the E2 winner before E3)
+  method: rule             # rule | nli | finetuned | finetuned_nli | llm  (set to the E2 winner before E3)
   nli_model: cross-encoder/nli-deberta-v3-small
-  nli_threshold: 0.5       # tuned on the E2 dev split; run_e2 prints the best value
-  finetuned_path: models/verifier
-  finetuned_threshold: 0.5
+  # thresholds below: run v2, tuned on the silver validation set (run_e2_verifiers.py, default --tune silver)
+  nli_threshold: 0.2
+  finetuned_path: models/verifier                 # fine-tuned bert-base-cased
+  finetuned_threshold: 0.9
+  finetuned_nli_path: models/verifier-nli-ft      # the NLI model above, fine-tuned on our silver data
+  finetuned_nli_threshold: 0.7
 
 finetune:                  # Topic 3 recipe (HF Trainer), see scripts/train_verifier.py
   base_model: google-bert/bert-base-cased

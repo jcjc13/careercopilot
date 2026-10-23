@@ -4,8 +4,9 @@ returns (supported, score, usage). score is a confidence in [0, 1] that the clai
 - RuleVerifier  every tool/technology, number and seniority word in the claim must appear
                 in the resume. Free and fast; blind to invented duties phrased in new words.
 - NLIVerifier   a zero-shot cross-encoder NLI model; supported if max P(entailment) over the
-                resume's bullets >= threshold (tune the threshold on the E2 dev split).
-- FinetunedVerifier  a BERT-family cross-encoder fine-tuned on our silver data (Topic 3).
+                resume's bullets >= threshold (tuned on the silver validation set in E2).
+- FinetunedVerifier  a BERT-family cross-encoder fine-tuned on our silver data (Topic 3); used for
+                both the fine-tuned BERT ("finetuned") and the fine-tuned NLI model ("finetuned_nli").
 - LLMVerifier   asks an LLM SUPPORTED / UNSUPPORTED.
 This is the Topic 6 ladder in one file: programmatic check -> trained classifier -> LLM judge.
 """

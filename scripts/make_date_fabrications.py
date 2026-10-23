@@ -4,7 +4,8 @@ a bullet; this adds pairs where a calendar year, a duration or a job title is re
     python scripts/make_date_fabrications.py --list        # show the bullets it would use, no LLM calls
     python scripts/make_date_fabrications.py --n 14
   -> data/labels/e2_claims_dates.csv  (same columns as e2_claims.csv; ids continue after the main set)
-Review it like the main set (every row is an llm_draft), then append its rows to e2_claims.csv.
+Review it like the main set (every row is an llm_draft), then append its rows to e2_claims.csv
+(they belong to set=standard; the columns drafted_by and set are filled in here).
 
 Source bullets come from the same test pairs: a hand-picked list (CURATED) of unused bullets that
 state the candidate's own title, year or duration. Software versions ("SQL Server 2005") are tool
@@ -83,14 +84,15 @@ def main(config, n=14, mock=False, list_only=False):
         if not para or not fab or re.search(r"\b(?:Senior|Junior|Principal)\b", fab) and not re.search(r"\b(?:Senior|Junior|Principal)\b", b):
             print(f"skipped (unusable draft): {b[:60]}")
             continue
-        rows.append([f"c{cid}", p.pair_id, b, para, "faithful", "paraphrase", "llm_draft", "no"])
-        rows.append([f"c{cid + 1}", p.pair_id, b, fab, "fabricated", "date_title", "llm_draft", "no"])
+        model = getattr(llm, "model", "llm")
+        rows.append([f"c{cid}", p.pair_id, b, para, "faithful", "paraphrase", "llm_draft", model, "standard", "no"])
+        rows.append([f"c{cid + 1}", p.pair_id, b, fab, "fabricated", "date_title", "llm_draft", model, "standard", "no"])
         cid += 2
 
     out = labels / "e2_claims_dates.csv"
     with open(out, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["claim_id", "pair_id", "source_bullet", "claim", "label", "type", "method", "reviewed"])
+        w.writerow(["claim_id", "pair_id", "source_bullet", "claim", "label", "type", "method", "drafted_by", "set", "reviewed"])
         w.writerows(rows)
     print(f"wrote {len(rows)} claims ({len(rows) // 2} pairs) to {out}; review every row, set reviewed=yes")
 

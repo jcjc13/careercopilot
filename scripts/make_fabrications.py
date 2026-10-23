@@ -5,6 +5,8 @@ duties and title/date changes are drafted by the LLM and MUST be reviewed by a p
     python scripts/make_fabrications.py --n 150
   -> data/labels/e2_claims.csv  columns: claim_id, pair_id, source_bullet, claim, label, type,
                                 method, drafted_by, set, reviewed
+These rows are the STANDARD set (set=standard); make_date_fabrications.py adds 28 date/title rows to it and
+make_hard_claims.py adds the HARD set (set=hard, drafted by a different model family).
 Review every row with method=llm_draft: fix it so it is exactly what its label says
 (faithful = same facts; fabricated = exactly one unsupported change), then set reviewed=yes.
 
