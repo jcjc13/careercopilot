@@ -10,9 +10,13 @@ requirement and returns [(bullet_idx, score), ...] best first.
 from __future__ import annotations
 
 import math
-from collections import Counter
+from collections import Counter, OrderedDict
+from typing import TYPE_CHECKING
 
 from .text import tokenize
+
+if TYPE_CHECKING:
+    import numpy as np
 
 
 class BM25Okapi:
@@ -39,8 +43,9 @@ class BM25Okapi:
         return scores
 
 
-def _top(scores, k):
-    order = sorted(range(len(scores)), key=lambda i: -scores[i])
+def _top(scores, k, positive_only=False):
+    order = sorted((i for i, score in enumerate(scores)
+                    if not positive_only or score > 0), key=lambda i: -scores[i])
     return [(i, float(scores[i])) for i in order[:k]]
 
 
@@ -55,9 +60,9 @@ class TfidfRetriever:
         try:
             X = vec.fit_transform(bullets)
         except ValueError:          # empty vocabulary
-            return [(i, 0.0) for i in range(min(k, len(bullets)))]
+            return []
         scores = cosine_similarity(vec.transform([query]), X)[0]
-        return _top(list(scores), k)
+        return _top(list(scores), k, positive_only=True)
 
 
 class BM25Retriever:
@@ -65,7 +70,7 @@ class BM25Retriever:
 
     def rank(self, query: str, bullets: list[str], k: int):
         bm = BM25Okapi([tokenize(b) for b in bullets])
-        return _top(bm.get_scores(tokenize(query)), k)
+        return _top(bm.get_scores(tokenize(query)), k, positive_only=True)
 
 
 _MODEL_CACHE: dict = {}
@@ -92,12 +97,21 @@ class EmbeddingRetriever:
     def __init__(self, model_name: str = "sentence-transformers/all-MiniLM-L6-v2"):
         self.model = _st_model(model_name)
         self.e5 = "e5" in model_name   # e5 models expect query:/passage: prefixes
+        self._corpus_embeddings: OrderedDict[tuple[str, ...], "np.ndarray"] = OrderedDict()
 
     def rank(self, query: str, bullets: list[str], k: int):
         q = f"query: {query}" if self.e5 else query
         docs = [f"passage: {b}" for b in bullets] if self.e5 else bullets
         qv = self.model.encode([q], normalize_embeddings=True)[0]
-        dv = self.model.encode(docs, normalize_embeddings=True)
+        key = tuple(docs)
+        if key in self._corpus_embeddings:
+            dv = self._corpus_embeddings.pop(key)
+            self._corpus_embeddings[key] = dv
+        else:
+            dv = self.model.encode(docs, normalize_embeddings=True)
+            self._corpus_embeddings[key] = dv
+            if len(self._corpus_embeddings) > 32:
+                self._corpus_embeddings.popitem(last=False)
         return _top(list(dv @ qv), k)
 
 

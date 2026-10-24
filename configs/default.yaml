@@ -34,7 +34,7 @@ eval_judge:                # a STRONGER, different model used only for evaluatio
   price_out: 0.75
 
 retrieval:
-  method: bm25             # tfidf | bm25 | embedding | hybrid  (set to the E1 winner before E3)
+  method: hybrid             # tfidf | bm25 | embedding | hybrid  (set to the E1 winner before E3)
   top_k: 3
   contextual: false        # prepend each bullet's role/company line before indexing (contextual RAG)
   embedding_model: sentence-transformers/all-MiniLM-L6-v2   # the class labs' model; try BAAI/bge-small-en-v1.5
