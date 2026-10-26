@@ -150,8 +150,10 @@ def test_all_scripts_end_to_end():
         _script("make_fabrications").main(cfg, n=10, mock=True)
         _script("make_verifier_train").main(cfg, teacher_frac=1.0, mock=True, sample=True)
         assert (tmp / "verifier/train.jsonl").exists()
+        _script("make_hard_claims").main(cfg, n_fab=1, n_faith=1, mock=True)   # appends set=hard rows
         res2 = _script("run_e2_verifiers").main(cfg, ["rule", "llm"], include_unreviewed=True, mock=True)
-        assert res2["rule"]["recall_by_type"]
+        assert res2["standard"]["rule"]["recall_by_type"] and "mcnemar" in res2
+        assert set(res2) - {"mcnemar"} <= {"standard", "hard"}
 
         _script("run_e3_tailoring").main(cfg, ["A", "B", "C", "D"], mock=True)
         summary = _script("evaluate_e3").main(cfg, mock=True, pairwise=True)
@@ -160,6 +162,8 @@ def test_all_scripts_end_to_end():
         d_all = next(s for s in summary if s["variant"] == "D" and s["fit"] == "all")
         assert a_all["any_introduced"] > d_all["any_introduced"]   # programmatic check sees the planted Tableau
         assert (tmp / "labels/e3_preference.csv").exists()
+        am = _script("agent_metrics").main(cfg, mock=True)
+        assert {"A", "B", "C", "D"} <= set(am) and am["D"]["steps_mean"] >= am["A"]["steps_mean"]
         pr = _script("run_probes")
         pr.main(cfg, "injection", ["A", "D"], n=3, mock=True)
         pr.main(cfg, "bias", ["A"], n=2, mock=True)

@@ -110,3 +110,25 @@ def wilcoxon_signed_rank(x: list[float], y: list[float]) -> dict:
     z = (w_plus - mean) / sd if sd else 0.0
     p = math.erfc(abs(z) / math.sqrt(2))
     return {"n": n, "statistic": w_plus, "p": p}
+
+
+def roc_auc(y_true: list[bool], score: list[float]) -> float:
+    """ROC-AUC of `score` (higher = more likely positive); ties count half. nan if one class is missing."""
+    pos = [s for t, s in zip(y_true, score) if t]
+    neg = [s for t, s in zip(y_true, score) if not t]
+    if not pos or not neg:
+        return float("nan")
+    wins = sum((p > n) + 0.5 * (p == n) for p in pos for n in neg)
+    return wins / (len(pos) * len(neg))
+
+
+def mcnemar_exact(correct_a: list[bool], correct_b: list[bool]) -> dict:
+    """McNemar's test on paired per-claim correctness (exact two-sided binomial on the discordant claims)."""
+    only_a = sum(a and not b for a, b in zip(correct_a, correct_b))
+    only_b = sum(b and not a for a, b in zip(correct_a, correct_b))
+    n = only_a + only_b
+    if n == 0:
+        return {"only_a": 0, "only_b": 0, "p": 1.0}
+    k = min(only_a, only_b)
+    p = min(1.0, 2 * sum(math.comb(n, i) for i in range(k + 1)) / 2 ** n)
+    return {"only_a": only_a, "only_b": only_b, "p": p}
