@@ -1,0 +1,45 @@
+# command: evaluate_e3.py --pairwise (resume after 2h limit)
+# started: Mon Oct 26 19:24:33 +08 2026
+claim judge:   0%|          | 0/144 [00:00<?, ?it/s]claim judge:  98%|█████████▊| 141/144 [01:18<00:01,  1.80it/s]claim judge:  99%|█████████▊| 142/144 [02:21<00:02,  1.18s/it]claim judge:  99%|█████████▉| 143/144 [02:55<00:01,  1.65s/it]claim judge: 100%|██████████| 144/144 [03:34<00:00,  2.39s/it]claim judge: 100%|██████████| 144/144 [03:34<00:00,  1.49s/it]
+
+similarity = embedding:sentence-transformers/all-MiniLM-L6-v2
+var fit         n introd%  unsup%  cover%  simgain removed  calls  $/resume
+A   all        36      78    47.1    26.4    0.013     0.0    1.1    0.0004
+A   good       12      75    57.9    24.0    0.045     0.0    1.1    0.0004
+A   none       12      92    40.9    19.8   -0.001     0.0    1.1    0.0004
+A   potential  12      67    42.5    35.4   -0.004     0.0    1.0    0.0003
+B   all        36      44    26.6    33.0    0.007     0.0    2.1    0.0004
+B   good       12      42    16.3    28.1    0.040     0.0    2.0    0.0004
+B   none       12      50    35.5    22.9   -0.063     0.0    2.2    0.0005
+B   potential  12      42    27.9    47.9    0.046     0.0    2.0    0.0004
+C   all        36      19     6.4    20.5   -0.069     3.1   20.0    0.0049
+C   good       12      25     4.1    16.7   -0.061     2.9   20.9    0.0055
+C   none       12      17     9.9    15.6   -0.082     2.8   18.7    0.0047
+C   potential  12      17     5.3    29.2   -0.063     3.5   20.4    0.0046
+D   all        36       6     4.4    24.7   -0.048     1.5   14.0    0.0031
+D   good       12       8     7.3    24.0   -0.025     1.3   13.1    0.0032
+D   none       12       0     3.2    18.8   -0.046     1.3   12.2    0.0027
+D   potential  12       8     2.7    31.2   -0.074     1.9   16.7    0.0036
+  introd% = resumes with a tool or number not in the original (programmatic check)
+
+paired tests vs A, unsupported_rate (Wilcoxon p):
+  B_vs_A/good            n=12  p=0.000
+  B_vs_A/potential       n=12  p=0.009
+  B_vs_A/none            n=12  p=0.339
+  B_vs_A/all             n=36  p=0.000
+  C_vs_A/good            n=12  p=0.000
+  C_vs_A/potential       n=12  p=0.000
+  C_vs_A/none            n=12  p=0.003
+  C_vs_A/all             n=36  p=0.000
+  D_vs_A/good            n=12  p=0.000
+  D_vs_A/potential       n=12  p=0.000
+  D_vs_A/none            n=12  p=0.000
+  D_vs_A/all             n=36  p=0.000
+pairwise judge:   0%|          | 0/36 [00:00<?, ?it/s]pairwise judge:   3%|▎         | 1/36 [00:09<05:47,  9.92s/it]pairwise judge:   6%|▌         | 2/36 [00:18<05:03,  8.94s/it]pairwise judge:   8%|▊         | 3/36 [00:24<04:22,  7.94s/it]pairwise judge:  11%|█         | 4/36 [00:36<05:02,  9.46s/it]pairwise judge:  14%|█▍        | 5/36 [00:45<04:42,  9.11s/it]pairwise judge:  17%|█▋        | 6/36 [00:54<04:33,  9.10s/it]pairwise judge:  19%|█▉        | 7/36 [01:01<04:06,  8.52s/it]pairwise judge:  22%|██▏       | 8/36 [01:10<04:02,  8.67s/it]pairwise judge:  25%|██▌       | 9/36 [01:19<03:57,  8.80s/it]pairwise judge:  28%|██▊       | 10/36 [01:32<04:19,  9.98s/it]pairwise judge:  31%|███       | 11/36 [01:43<04:21, 10.44s/it]pairwise judge:  33%|███▎      | 12/36 [01:54<04:12, 10.50s/it]pairwise judge:  36%|███▌      | 13/36 [02:07<04:17, 11.21s/it]pairwise judge:  39%|███▉      | 14/36 [02:15<03:44, 10.19s/it]pairwise judge:  42%|████▏     | 15/36 [02:26<03:43, 10.64s/it]pairwise judge:  44%|████▍     | 16/36 [02:54<05:17, 15.88s/it]pairwise judge:  47%|████▋     | 17/36 [03:19<05:49, 18.38s/it]pairwise judge:  50%|█████     | 18/36 [03:29<04:49, 16.08s/it]pairwise judge:  53%|█████▎    | 19/36 [03:37<03:50, 13.56s/it]pairwise judge:  56%|█████▌    | 20/36 [03:45<03:10, 11.93s/it]pairwise judge:  58%|█████▊    | 21/36 [03:53<02:42, 10.82s/it]pairwise judge:  61%|██████    | 22/36 [04:04<02:29, 10.71s/it]pairwise judge:  64%|██████▍   | 23/36 [04:11<02:04,  9.56s/it]pairwise judge:  67%|██████▋   | 24/36 [04:18<01:45,  8.79s/it]pairwise judge:  69%|██████▉   | 25/36 [04:29<01:46,  9.66s/it]pairwise judge:  72%|███████▏  | 26/36 [04:47<02:00, 12.09s/it]pairwise judge:  75%|███████▌  | 27/36 [04:54<01:35, 10.59s/it]pairwise judge:  78%|███████▊  | 28/36 [05:05<01:25, 10.69s/it]pairwise judge:  81%|████████  | 29/36 [05:23<01:30, 12.90s/it]pairwise judge:  83%|████████▎ | 30/36 [05:30<01:06, 11.15s/it]pairwise judge:  86%|████████▌ | 31/36 [05:46<01:02, 12.56s/it]pairwise judge:  89%|████████▉ | 32/36 [05:58<00:49, 12.45s/it]pairwise judge:  92%|█████████▏| 33/36 [06:22<00:47, 15.85s/it]pairwise judge:  94%|█████████▍| 34/36 [06:44<00:35, 17.54s/it]pairwise judge:  97%|█████████▋| 35/36 [06:51<00:14, 14.53s/it]pairwise judge: 100%|██████████| 36/36 [07:09<00:00, 15.52s/it]pairwise judge: 100%|██████████| 36/36 [07:09<00:00, 11.93s/it]
+
+pairwise judge on 216 comparisons: consistent 148, tie both ways 19, FLIPPED with order 26, mixed 23; first-shown wins 0.53 of non-tie verdicts (0.5 = no position bias)
+win rate (consistent wins / comparisons): A 0.71, B 0.38, C 0.12, D 0.16
+
+wrote /Users/javanchok/Documents/GitHub/careercopilot/data/labels/e3_human_sample.csv: label each claim against its resume (hide the variant column)
+wrote /Users/javanchok/Documents/GitHub/careercopilot/data/labels/e3_preference.csv: hide the *_variant columns, pick the version you'd rather receive
+# exit: 0 finished: Mon Oct 26 19:35:40 +08 2026

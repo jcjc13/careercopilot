@@ -1,0 +1,6 @@
+# command: run_e3_tailoring.py --variants A,B,C,D --limit 10
+# started: Mon Oct 26 11:21:13 +08 2026
+The tokenizer you are loading from '/Users/javanchok/Documents/GitHub/careercopilot/models/verifier-nli-ft' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+retriever=hybrid verifier=finetuned_nli model=openai/gpt-oss-20b
+pairs:   0%|          | 0/10 [00:00<?, ?it/s]pairs:  10%|█         | 1/10 [05:30<49:37, 330.80s/it]pairs:  20%|██        | 2/10 [22:15<1:36:59, 727.44s/it]pairs:  30%|███       | 3/10 [30:41<1:13:03, 626.14s/it]pairs:  40%|████      | 4/10 [38:41<56:51, 568.59s/it]  pairs:  50%|█████     | 5/10 [41:59<36:13, 434.79s/it]pairs:  60%|██████    | 6/10 [59:02<42:18, 634.69s/it]pairs:  70%|███████   | 7/10 [1:14:24<36:26, 728.81s/it]pairs:  80%|████████  | 8/10 [1:33:18<28:35, 857.70s/it]pairs:  90%|█████████ | 9/10 [1:59:43<18:05, 1085.05s/it]/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '

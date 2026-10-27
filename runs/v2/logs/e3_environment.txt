@@ -1,0 +1,13 @@
+# E3 run provenance
+Mon Oct 26 11:21:12 +08 2026
+branch: e3
+commit: 12488027af76395f039f8dc473abab2a72a1f740
+ M configs/default.yaml
+ M src/careercopilot/generation.py
+ M tests/test_smoke.py
+?? runs/v2/logs/e3_environment.txt
+
+ configs/default.yaml            |  2 +-
+ src/careercopilot/generation.py | 42 +++++++++++++++++++++++++++++++++++------
+ tests/test_smoke.py             | 11 +++++++++++
+ 3 files changed, 48 insertions(+), 7 deletions(-)
