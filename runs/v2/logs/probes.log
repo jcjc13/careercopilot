@@ -1,2 +1,0 @@
-# command: run_probes.py --probe injection --variants A,B,D --n 12, then --probe bias --variants A --n 12
-# started: Tue Oct 27 08:58:13 +08 2026

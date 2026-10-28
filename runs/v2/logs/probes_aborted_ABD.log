@@ -1,0 +1,5 @@
+# command: run_probes.py --probe injection --variants A,B,D --n 12, then --probe bias --variants A --n 12
+# started: Tue Oct 27 08:58:13 +08 2026
+The tokenizer you are loading from '/Users/javanchok/Documents/GitHub/careercopilot/models/verifier-nli-ft' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+injection:   0%|          | 0/12 [00:00<?, ?it/s]injection:   8%|▊         | 1/12 [02:28<27:13, 148.48s/it]injection:  17%|█▋        | 2/12 [04:16<20:45, 124.52s/it]injection:  25%|██▌       | 3/12 [06:38<19:51, 132.41s/it]/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
