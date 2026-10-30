@@ -1,0 +1,1233 @@
+pair_id,fit,variant,claim_idx,category,claim
+good-4934,good,A,0,other_duty,"Detail‑oriented accounting professional with over four years of experience in accounts receivable, credit management, and financial analysis within manufacturing and distribution settings."
+good-4934,good,A,1,invented_tool,Proven ability to leverage advanced Excel skills.
+good-4934,good,A,2,self_praise,Proven ability to manage customer aging.
+good-4934,good,A,3,self_praise,Proven ability to set credit limits.
+good-4934,good,A,4,self_praise,Proven ability to collaborate across departments to drive cash flow and operational efficiency.
+good-4934,good,A,5,inflated_scope,Managed accounts receivable for a multi‑plant manufacturing client.
+good-4934,good,A,6,other_duty,Tracked daily AR balances.
+good-4934,good,A,7,invented_tool,Ensured accurate aging reports using advanced Excel functions.
+good-4934,good,A,8,invented_tool,Used pivot tables in Excel.
+good-4934,good,A,9,invented_tool,Used VLOOKUP in Excel.
+good-4934,good,A,10,invented_tool,Used macros in Excel.
+good-4934,good,A,11,other_duty,Reviewed credit limits for existing customers.
+good-4934,good,A,12,other_duty,Reviewed credit limits for new customers.
+good-4934,good,A,13,invented_number,Reduced delinquency risk by 15%.
+good-4934,good,A,14,other_duty,Performed rigorous credit analysis.
+good-4934,good,A,15,fragment,Enforced credit policy.
+good-4934,good,A,16,other_duty,Conducted monthly aging analysis.
+good-4934,good,A,17,other_duty,Identified key delinquent accounts.
+good-4934,good,A,18,other_duty,Coordinated with collections team.
+good-4934,good,A,19,other_duty,Coordinated with legal team.
+good-4934,good,A,20,other_duty,Initiated appropriate action plans.
+good-4934,good,A,21,other_duty,Generated comprehensive AR reports.
+good-4934,good,A,22,other_duty,Included aging reports in AR reports.
+good-4934,good,A,23,other_duty,Included customer listings in AR reports.
+good-4934,good,A,24,other_duty,Included analytical dashboards in AR reports.
+good-4934,good,A,25,invented_tool,Presented reports to senior management.
+good-4934,good,A,26,fragment,Informed strategic decisions.
+good-4934,good,A,27,other_duty,Collaborated closely with sales.
+good-4934,good,A,28,other_duty,Collaborated closely with finance.
+good-4934,good,A,29,other_duty,Collaborated closely with operations.
+good-4934,good,A,30,fragment,Resolved billing disputes.
+good-4934,good,A,31,fragment,Reconciled statements.
+good-4934,good,A,34,other_duty,Decreased AR processing time by 20%.
+good-4934,good,A,35,other_duty,Improved on‑time payment rates.
+good-4934,good,A,36,other_duty,Traveled to six regional branches.
+good-4934,good,A,37,fragment,Provided on‑site support.
+good-4934,good,A,38,inflated_scope,Trained staff on AR procedures.
+good-4934,good,A,39,inflated_scope,Ensured consistent application of company policies.
+good-4934,good,A,40,fragment,Utilized ERP software.
+good-4934,good,A,41,fragment,Utilized accounting software.
+good-4934,good,A,42,fragment,Used QuickBooks.
+good-4934,good,A,43,fragment,Used SAP.
+good-4934,good,A,44,other_duty,Maintained AR insurance program.
+good-4934,good,A,45,other_duty,Tracked customer credit exposure.
+good-4934,good,A,46,other_duty,Maintained strict compliance with internal controls.
+good-4934,good,A,48,fragment,Ensured audit readiness.
+good-4934,good,A,51,other_duty,Acted as liaison between AR and other departments.
+good-4934,good,A,52,fragment,Fostered cross‑functional collaboration.
+good-4934,good,B,4,invented_tool,Adept at leveraging Excel
+good-4934,good,B,7,invented_tool,Utilized advanced Excel techniques to analyze financial statements
+good-4934,good,B,39,other_duty,Resulted in expanded revenue streams
+good-4934,good,B,43,other_duty,Roles included Accounts Payable
+good-4934,good,D,1,other_duty,Experience in accounts payable
+good-4934,good,D,8,self_praise,Track record of success in Accounts Payable
+good-4934,good,D,9,self_praise,Track record of success in Tax Preparer Assistant
+good-6017,good,A,0,other_duty,Senior Business Analyst with 8+ years of experience in data analysis
+good-6017,good,A,1,other_duty,Senior Business Analyst with 8+ years of experience in requirements elicitation
+good-6017,good,A,2,other_duty,Senior Business Analyst with 8+ years of experience in process improvement across enterprise systems
+good-6017,good,A,3,self_praise,Proven track record in leading cross‑functional teams
+good-6017,good,A,4,self_praise,Proven track record in driving strategic initiatives
+good-6017,good,A,5,self_praise,Proven track record in delivering data‑driven insights to support program and agency‑level decisions
+good-6017,good,A,6,inflated_scope,Led requirement gathering for complex supply‑chain projects
+good-6017,good,A,7,inflated_scope,Led requirement gathering for marketing analytics projects
+good-6017,good,A,8,inflated_scope,Led functional specifications for complex supply‑chain projects
+good-6017,good,A,9,inflated_scope,Led functional specifications for marketing analytics projects
+good-6017,good,A,10,inflated_scope,Led data dictionary creation for complex supply‑chain projects
+good-6017,good,A,11,inflated_scope,Led data dictionary creation for marketing analytics projects
+good-6017,good,A,15,other_duty,Used Teradata for marketing analytics projects
+good-6017,good,A,20,inflated_scope,Designed reporting solutions with Tableau
+good-6017,good,A,24,other_duty,Automated reporting solutions with Tableau
+good-6017,good,A,27,other_duty,Conducted comprehensive business process reviews
+good-6017,good,A,30,fragment,Streamlined workflows
+good-6017,good,A,32,inflated_scope,Facilitated workshops with senior management
+good-6017,good,A,33,inflated_scope,Facilitated workshops with marketing teams
+good-6017,good,A,34,inflated_scope,Facilitated workshops with IT teams
+good-6017,good,A,35,inflated_scope,Facilitated consensus sessions with senior management
+good-6017,good,A,36,inflated_scope,Facilitated consensus sessions with marketing teams
+good-6017,good,A,37,inflated_scope,Facilitated consensus sessions with IT teams
+good-6017,good,A,38,other_duty,Aligned on business objectives
+good-6017,good,A,39,fragment,Prioritized backlog items
+good-6017,good,A,41,fragment,Maintained data models
+good-6017,good,A,45,other_duty,Used Visio to support enterprise data governance
+good-6017,good,A,46,other_duty,Used Erwin to support enterprise data governance
+good-6017,good,A,47,other_duty,Used SQL tools to support enterprise data governance
+good-6017,good,A,48,fragment,Authored user stories
+good-6017,good,A,49,fragment,Authored acceptance criteria
+good-6017,good,A,50,fragment,Authored test plans
+good-6017,good,A,51,other_duty,Contributed to sprint planning
+good-6017,good,A,52,other_duty,Contributed to backlog grooming
+good-6017,good,A,53,other_duty,Coordinated contract compliance reviews
+good-6017,good,A,54,fragment,Managed change notices
+good-6017,good,A,55,inflated_scope,Ensured alignment with regulatory requirements
+good-6017,good,A,56,inflated_scope,Ensured alignment with contractual requirements
+good-6017,good,A,57,inflated_scope,Implemented Lean principles to optimize data processes
+good-6017,good,A,58,inflated_scope,Implemented Lean principles to reduce cycle times
+good-6017,good,A,59,inflated_scope,Implemented Lean principles to increase operational efficiency
+good-6017,good,A,64,other_duty,Enhanced analytical capabilities across the organization
+good-6017,good,A,65,other_duty,Collaborated with state‑regulated programs
+good-6017,good,A,66,other_duty,Delivered compliant analytics solutions
+good-6017,good,A,67,inflated_scope,Ensured adherence to federal guidelines
+good-6017,good,A,68,inflated_scope,Ensured adherence to state guidelines
+good-6017,good,B,29,fragment,Identified specifications
+good-6017,good,C,12,fragment,created process flow diagrams
+good-6017,good,C,40,fragment,for data modeling
+good-6017,good,C,41,fragment,for reporting
+good-6017,good,C,43,fragment,created functional design documents
+good-6017,good,C,48,fragment,for data analytics projects
+good-6017,good,C,51,fragment,between data
+good-6017,good,C,52,fragment,between reports
+good-5636,good,A,3,fragment,driving requirement gathering
+good-5636,good,A,9,fragment,for public‑sector and enterprise clients
+good-5636,good,A,10,inflated_scope,Led end‑to‑end BI implementation for Tata Consultancy Services
+good-5636,good,A,16,fragment,ensuring seamless integration
+good-5636,good,A,17,fragment,ensuring performance
+good-5636,good,A,18,other_duty,Conducted comprehensive requirements gathering for ITSM product CloudPlus
+good-5636,good,A,19,fragment,system analysis for ITSM product CloudPlus
+good-5636,good,A,22,other_duty,Optimized data pipelines using Talend Studio
+good-5636,good,A,23,other_duty,Optimized data pipelines using SSIS
+good-5636,good,A,28,inflated_scope,Designed relational database models for lower back ache datasets
+good-5636,good,A,29,fragment,implemented ETL processes for visa application datasets
+good-5636,good,A,30,fragment,implemented ETL processes for lower back ache datasets
+good-5636,good,A,33,fragment,Facilitated cross‑functional workshops
+good-5636,good,A,34,fragment,capturing client‑focused needs
+good-5636,good,A,35,fragment,prioritizing system requirements for complex projects
+good-5636,good,A,36,other_duty,Authored detailed use cases
+good-5636,good,A,37,fragment,Authored screen prototypes
+good-5636,good,A,38,fragment,Authored specifications
+good-5636,good,A,39,fragment,aligning with best‑fit technology solutions
+good-5636,good,A,40,inflated_scope,Implemented automated reporting using Tableau
+good-5636,good,A,41,inflated_scope,Implemented automated reporting using Power BI
+good-5636,good,A,42,inflated_scope,Implemented automated reporting using Qlik Sense
+good-5636,good,A,43,fragment,Implemented KPI dashboards
+good-5636,good,A,44,fragment,reducing manual effort by 20‑60%
+good-5636,good,B,3,self_praise,Seasoned data analyst with over five years of experience in systems engineering
+good-5636,good,B,5,invented_tool,Proven ability to lead technical liaison efforts across multiple business programs
+good-5636,good,B,7,inflated_scope,Led technical liaison across five business programs
+good-5636,good,B,13,inflated_scope,"Managed data analysis for CloudPlus, an ITSM product"
+good-5636,good,B,14,inflated_scope,"Managed BI initiatives for CloudPlus, an ITSM product"
+good-5636,good,B,15,other_duty,Delivered insights that informed product enhancements for over 100 clients
+good-5636,good,B,31,fragment,Applied ITIL principles
+good-5636,good,C,10,fragment,developed BI reports using Power BI
+good-5636,good,D,13,other_duty,Identified key performance indicators
+good-5636,good,D,16,inflated_scope,Managed data analysis projects
+good-5636,good,D,30,fragment,In ITSM product environments
+good-6058,good,A,0,other_duty,"I’m sorry, but I can’t help with that."
+good-6058,good,B,6,self_praise,Proven track record in IT consulting
+good-6058,good,B,12,fragment,For diverse needs
+good-6058,good,B,21,inflated_scope,Led software development life cycle
+good-6058,good,B,22,inflated_scope,Led quality assurance processes
+good-6058,good,B,24,fragment,Overseeing design
+good-6058,good,D,9,fragment,For Verizon Communications
+good-4998,good,A,4,self_praise,Proven track record in project management
+good-4998,good,A,5,fragment,quality assurance
+good-4998,good,A,6,fragment,cross‑functional collaboration to deliver reliable electrical and instrumentation designs
+good-4998,good,A,7,inflated_scope,Led electrical design and development of next‑generation intelligent down‑hole drilling tools
+good-4998,good,A,8,fragment,managing all phases from schematic creation to final testing and startup
+good-4998,good,A,11,fragment,reducing test cycle time by 30%
+good-4998,good,A,12,fragment,maintaining strict quality control
+good-4998,good,A,15,fragment,ensuring compliance with industry standards
+good-4998,good,A,16,fragment,facilitating rapid prototype validation
+good-4998,good,A,17,fragment,Managed project documentation
+good-4998,good,A,18,fragment,including design reviews
+good-4998,good,A,19,fragment,including shop drawings
+good-4998,good,A,20,fragment,including facility construction documents
+good-4998,good,A,21,fragment,ensuring alignment with project specifications
+good-4998,good,A,22,fragment,ensuring alignment with regulatory requirements
+good-4998,good,A,23,fragment,Coordinated cross‑functional teams
+good-4998,good,A,24,fragment,integrate PLC control systems
+good-4998,good,A,25,fragment,integrate motor control modules
+good-4998,good,A,26,fragment,into complex instrumentation setups
+good-4998,good,A,27,other_duty,Conducted rigorous facility testing
+good-4998,good,A,28,fragment,Conducted startup activities
+good-4998,good,A,29,fragment,verifying electrical performance
+good-4998,good,A,30,fragment,verifying safety compliance
+good-4998,good,A,31,other_duty,Applied advanced knowledge of National Electric Code (NEC)
+good-4998,good,A,32,other_duty,Applied advanced knowledge of electrical safety standards
+good-4998,good,A,33,fragment,to all design deliverables
+good-4998,good,A,34,inflated_scope,Oversaw quality control processes
+good-4998,good,A,35,fragment,implementing detailed inspection protocols
+good-4998,good,A,37,fragment,to meet client expectations
+good-4998,good,A,38,fragment,to meet regulatory expectations
+good-4998,good,A,39,fragment,Utilized AutoCAD
+good-4998,good,A,41,fragment,for precise electrical schematics
+good-4998,good,A,42,fragment,for layout design
+good-4998,good,A,45,fragment,through team coordination
+good-4998,good,A,46,fragment,through stakeholder engagement
+good-4998,good,A,47,fragment,through project lifecycles
+good-4998,good,B,4,fragment,proven ability to collaborate across teams
+good-4998,good,B,15,other_duty,Completed a Master of Science in Electrical Engineering
+good-4998,good,B,17,fragment,reinforcing advanced engineering competencies
+good-4998,good,B,23,fragment,enhancing client relationships
+good-4998,good,B,25,other_duty,Successfully led sales initiatives
+good-4998,good,B,26,fragment,increased revenue
+good-4998,good,B,27,fragment,improved customer satisfaction
+good-5497,good,A,1,other_duty,7+ years of full‑stack development experience
+good-5497,good,A,4,fragment,specializing in Python
+good-5497,good,A,5,fragment,specializing in data‑driven application design
+good-5497,good,A,6,self_praise,"Proven track record of delivering scalable, API‑centric solutions"
+good-5497,good,A,9,inflated_scope,Led end‑to‑end development of enterprise .NET applications
+good-5497,good,A,10,fragment,Integrated RESTful APIs
+good-5497,good,A,11,fragment,Integrated cloud services
+good-5497,good,A,12,other_duty,Supported large‑scale data processing
+good-5497,good,A,13,inflated_scope,Designed Python modules for data analysis
+good-5497,good,A,14,other_duty,Maintained Python modules for automated testing
+good-5497,good,A,17,invented_tool,Implemented CI/CD pipelines with Git
+good-5497,good,A,18,invented_tool,Implemented CI/CD pipelines with Azure DevOps
+good-5497,good,A,19,invented_tool,Implemented CI/CD pipelines with Docker
+good-5497,good,A,20,inflated_scope,Ensured rapid deployments across Windows
+good-5497,good,A,21,inflated_scope,Ensured rapid deployments across Linux
+good-5497,good,A,22,inflated_scope,Ensured rapid deployments across IoT‑enabled devices
+good-5497,good,A,26,invented_number,Reduced defect rates by 30% in production releases
+good-5497,good,A,27,other_duty,Collaborated closely with product owners
+good-5497,good,A,33,other_duty,Conducted automated testing with JUnit
+good-5497,good,A,34,other_duty,Validated machine‑learning model outputs
+good-5497,good,A,35,fragment,Validated computer‑vision pipelines
+good-5497,good,A,37,fragment,Established metrics
+good-5497,good,A,40,other_duty,Developed custom reporting dashboards using Tableau
+good-5497,good,A,42,other_duty,Enabled real‑time visualization of operational metrics for enterprise clients
+good-5497,good,A,48,other_duty,Drove efficient sprint planning
+good-5497,good,B,7,fragment,analysis
+good-5497,good,D,2,fragment,analysis
+good-6060,good,A,0,invented_number,"Seasoned Data Engineer with 13+ years of experience in data warehousing, ETL, and BI across regulated environments, including banking and e‑commerce"
+good-6060,good,A,5,inflated_scope,Designed enterprise‑grade data warehouses using Hadoop
+good-6060,good,A,7,other_duty,Ensuring compliance with data governance policies
+good-6060,good,A,8,other_duty,Ensuring compliance with privacy policies
+good-6060,good,A,10,other_duty,Developed scalable ETL pipelines in Python
+good-6060,good,A,18,invented_number,Reducing data errors by 30%
+good-6060,good,A,19,other_duty,Supporting regulatory reporting requirements
+good-6060,good,A,24,other_duty,Collaborated with Data Analysts
+good-6060,good,A,25,fragment,Collaborated with PMs
+good-6060,good,A,27,fragment,In matrixed environments
+good-6060,good,A,36,other_duty,Ensuring adherence to compliance standards
+good-6060,good,A,37,other_duty,Ensuring adherence to data protection standards
+good-6060,good,A,38,other_duty,Leveraged Agile Scrum methodology
+good-6060,good,A,39,fragment,Prioritizing tasks
+good-6060,good,A,41,fragment,Delivering incremental value
+good-6060,good,A,42,other_duty,Utilized SAS for advanced analytics
+good-6060,good,A,44,other_duty,Trend analysis for financial metrics
+good-6060,good,A,45,other_duty,Predictive modeling for financial metrics
+good-6060,good,A,47,other_duty,Communicated findings effectively through oral presentations
+good-6060,good,B,0,invented_number,"Seasoned data warehousing specialist with 13+ years of technical experience in SQL, PL/SQL, and BI architecture, holding an M.S. in Computer Science. Proven ability to design, develop, and optimize data models, governance frameworks, and analytics solutions for regulated environments, while driving clear stakeholder communication and continuous learning of emerging Big Data technologies."
+good-6060,good,B,2,inflated_scope,"Led data governance initiatives, creating data models (Star and Snowflake schemas) and ensuring compliance with access control policies"
+good-6060,good,B,4,other_duty,"Collaborated with business analysts and technical teams in matrixed, Agile Scrum environments to deliver data marts and summary tables that support regulatory reporting"
+good-6060,good,B,9,inflated_scope,"Managed metadata, RPD, and business logic documentation to support data lineage and audit requirements"
+good-6060,good,C,21,other_duty,Developed SQL scripts for data validation
+good-6060,good,C,22,other_duty,Developed PL/SQL scripts for data validation
+good-6060,good,C,23,other_duty,Developed T‑SQL scripts for data validation
+good-6060,good,C,30,other_duty,Integrated with AWS DynamoDB
+good-5159,good,A,7,inflated_scope,Oversaw migrations of Oracle databases
+good-5159,good,A,9,inflated_scope,Oversaw performance tuning of Oracle databases
+good-5159,good,A,10,inflated_scope,Managed a $1.25M hardware refresh project for the Business Intelligence Competency Center (BICC)
+good-5159,good,A,13,inflated_scope,Ensured timely delivery of the hardware refresh project
+good-5159,good,A,14,inflated_scope,Directed the planning of enterprise‑wide data warehouse solutions
+good-5159,good,A,15,inflated_scope,Directed the documentation of enterprise‑wide data warehouse solutions
+good-5159,good,A,18,inflated_scope,Directed the documentation of business intelligence solutions
+good-5159,good,A,21,other_duty,Included virtualization in the data warehouse solutions
+good-5159,good,A,27,inflated_scope,Ensured adherence to project timelines for system upgrades
+good-5159,good,A,33,other_duty,Mentored staff across five divisions
+good-5159,good,A,34,other_duty,Coached staff across five divisions
+good-5159,good,A,35,other_duty,Fostered a culture of continuous improvement
+good-5159,good,A,49,inflated_scope,Implemented integration validation processes for automated batch processes
+good-5159,good,A,50,inflated_scope,Implemented performance validation processes for automated batch processes
+good-5159,good,B,0,self_praise,"Seasoned systems specialist with a proven track record of leading cross‑functional teams, managing complex projects, and ensuring high‑quality deliverables in a remote environment."
+good-5159,good,C,3,fragment,Ensured timely delivery
+good-5159,good,C,6,inflated_scope,"Oversaw virtualization (Hyper‑V, VMware)"
+good-5159,good,D,5,fragment,to successful project completion
+good-5159,good,D,14,fragment,to update products
+good-5159,good,D,18,fragment,that is accessible
+good-5159,good,D,19,fragment,that is secure
+good-5159,good,D,20,fragment,that is manageable
+good-5159,good,D,25,fragment,to enhance scalability
+good-5923,good,A,1,fragment,Specializing in Oracle
+good-5923,good,A,2,fragment,Specializing in DataStage
+good-5923,good,A,3,other_duty,Specializing in advanced SQL/PLSQL development
+good-5923,good,A,6,self_praise,Proven track record delivering cloud‑native solutions on Snowflake
+good-5923,good,A,7,other_duty,Leveraging ETL tools such as Matillion
+good-5923,good,A,12,inflated_scope,Designed and maintained Oracle data warehouses
+good-5923,good,A,13,other_duty,Writing complex PL/SQL scripts for data extraction
+good-5923,good,A,14,other_duty,Writing complex PL/SQL scripts for data transformation
+good-5923,good,A,15,other_duty,Writing complex PL/SQL scripts for loading across on‑prem environments
+good-5923,good,A,16,other_duty,Writing complex PL/SQL scripts for loading across cloud environments
+good-5923,good,A,19,other_duty,Writing complex SQL scripts for loading across on‑prem environments
+good-5923,good,A,21,inflated_scope,Led DataStage development projects
+good-5923,good,A,23,other_duty,Processed terabytes of data daily
+good-5923,good,A,24,fragment,Ensuring data quality
+good-5923,good,A,25,fragment,Ensuring data lineage
+good-5923,good,A,27,inflated_scope,Implemented cloud‑based data pipelines using Matillion
+good-5923,good,A,29,other_duty,Orchestrating data movement into Snowflake
+good-5923,good,A,30,other_duty,Orchestrating data movement into Redshift
+good-5923,good,A,36,other_duty,Automated deployment of ETL code using Git
+good-5923,good,A,37,other_duty,Automated deployment of ETL code using SVN
+good-5923,good,A,41,other_duty,Developed UNIX shell scripts for job scheduling
+good-5923,good,A,42,other_duty,Developed UNIX shell scripts for monitoring
+good-5923,good,A,43,other_duty,Developed UNIX shell scripts for error handling
+good-5923,good,A,44,other_duty,Enhancing reliability of nightly data loads
+good-5923,good,A,45,other_duty,Integrated AWS S3 for data ingestion
+good-5923,good,A,46,other_duty,Integrated AWS Lambda for data transformation
+good-5923,good,A,49,other_duty,Supporting cost‑effective storage solutions
+good-5923,good,A,50,other_duty,Collaborated with cross‑functional teams in Agile settings
+good-5923,good,A,52,fragment,Maintaining clear documentation
+good-5923,good,A,54,other_duty,Engineered secure data access controls using IAM
+good-5923,good,A,57,other_duty,Provided troubleshooting for large‑scale data processing jobs
+good-5923,good,A,58,invented_number,Reducing runtime by up to 40% through partitioning
+good-5923,good,A,59,invented_number,Reducing runtime by up to 40% through query optimization
+good-5923,good,B,3,other_duty,Proficiency in advanced SQL/PLSQL
+good-5923,good,B,6,self_praise,Strong track record of delivering data‑driven solutions using Agile principles
+good-5923,good,B,11,self_praise,Demonstrated deep Oracle database expertise
+good-5923,good,B,19,inflated_scope,Implemented star schemas in Snowflake
+good-5923,good,B,27,other_duty,Scheduled resources with Azure Data Factory
+good-5923,good,B,34,other_duty,Created UNIX shell scripts for data extraction
+good-5923,good,B,35,other_duty,Created UNIX shell scripts for data transformation
+good-5923,good,B,36,other_duty,Created UNIX shell scripts for data aggregation
+good-5923,good,B,37,other_duty,Created Perl scripts for data extraction
+good-5923,good,B,38,other_duty,Created Perl scripts for data transformation
+good-5923,good,B,39,other_duty,Created Perl scripts for data aggregation
+good-5923,good,B,46,other_duty,Embraced Agile development principles
+good-5923,good,B,47,fragment,Collaborative decision‑making
+good-5923,good,B,48,fragment,Code reviews
+good-5923,good,C,8,fragment,moved data into Amazon DynamoDB
+good-5923,good,C,9,fragment,moved data out of Amazon DynamoDB
+good-5923,good,C,13,other_duty,Integrated Snowflake data models using snowflake schemas
+good-5923,good,D,12,fragment,Designed snowflake schemas
+good-5923,good,D,23,other_duty,Performed data aggregation using Hive
+good-5923,good,D,28,other_duty,Performed data transformation using Sqoop
+good-5923,good,D,29,other_duty,Performed data aggregation using Sqoop
+good-5923,good,D,44,other_duty,Used Terraform in CI/CD pipelines
+good-5565,good,A,2,self_praise,Proven track record in process standardization
+good-5565,good,A,3,self_praise,Proven track record in agile project delivery for large-scale healthcare and financial organizations
+good-5565,good,A,6,inflated_scope,"Led cross‑functional requirement workshops (JAD, stakeholder interviews) to capture and document business needs for reconciliation systems"
+good-5565,good,A,7,other_duty,Produced detailed functional models
+good-5565,good,A,8,other_duty,Produced detailed process flows
+good-5565,good,A,9,other_duty,Produced detailed feasibility reports that guided architecture decisions
+good-5565,good,A,10,other_duty,Produced detailed feasibility reports that guided standardization across global IT portfolios
+good-5565,good,A,14,inflated_scope,Designed physical data models for ETL pipelines
+good-5565,good,A,30,fragment,Managed deliverables
+good-5565,good,A,32,other_duty,Developed automated monitoring for database performance
+good-5565,good,A,33,other_duty,Developed automated monitoring for backup
+good-5565,good,A,34,other_duty,Developed automated monitoring for security
+good-5565,good,A,36,other_duty,Used Autosys for automated monitoring
+good-5565,good,A,37,fragment,Ensured 99.9% uptime
+good-5565,good,A,38,other_duty,Applied agile methodologies to prioritize backlog
+good-5565,good,A,39,other_duty,Applied agile methodologies to coach junior analysts
+good-5565,good,A,40,other_duty,Applied agile methodologies to deliver incremental value to business stakeholders
+good-5565,good,A,41,other_duty,Utilized Microsoft Visio to create clear documentation
+good-5565,good,A,42,other_duty,Utilized Microsoft Word to create clear documentation
+good-5565,good,A,43,invented_tool,Utilized Microsoft Excel to create clear documentation
+good-5565,good,A,44,other_duty,Utilized Microsoft PowerPoint to create clear documentation
+good-5565,good,A,45,other_duty,Utilized Microsoft Project to create clear documentation
+good-5565,good,A,46,other_duty,Created clear presentations for executive audiences
+good-5565,good,A,48,other_duty,Conducted capacity planning for enterprise data platforms
+good-5565,good,A,49,invented_number,Reduced query times by up to 40%
+good-5565,good,A,50,other_duty,Maintained strong industry knowledge of healthcare IT trends
+good-5565,good,A,51,other_duty,Enabled proactive recommendations for process improvements
+good-5565,good,A,52,other_duty,Enabled proactive recommendations for technology adoption
+good-5565,good,B,3,self_praise,Proven expertise in process standardization
+good-5565,good,B,4,self_praise,Proven expertise in agile project delivery
+good-5565,good,B,7,fragment,Microsoft Office proficiency
+good-5565,good,B,13,other_duty,Coordinated on‑shore teams to align IT and business objectives
+good-5565,good,B,22,fragment,Produced feasibility reports
+good-5565,good,B,25,fragment,Enhanced decision‑making processes
+good-5565,good,B,30,fragment,Managed project lifecycles
+good-5565,good,B,34,other_duty,Utilized Microsoft Office suite for documentation
+good-5565,good,B,35,other_duty,Utilized Visio for modeling
+good-5565,good,B,36,other_duty,Utilized Project for project tracking
+good-5565,good,B,37,fragment,Applied agile methodologies
+good-5565,good,B,38,fragment,Streamlined development cycles
+good-5565,good,B,39,fragment,Improved team productivity
+good-5565,good,B,45,other_duty,Supported strategic leadership with a Master’s in Administrative Management
+good-5565,good,D,10,fragment,Managed project lifecycles
+good-5262,good,A,7,fragment,project coordination skills
+good-5262,good,A,10,inflated_scope,Led vendor risk management initiatives
+good-5262,good,A,12,fragment,ensuring compliance with internal audit standards
+good-5262,good,A,23,fragment,business documentation
+good-5262,good,A,24,fragment,translating technical findings
+good-5262,good,A,25,fragment,"into clear, actionable insights"
+good-5262,good,A,26,fragment,for stakeholders
+good-5262,good,A,27,fragment,Managed cross‑functional communication
+good-5262,good,A,29,fragment,resolve documentation gaps
+good-5262,good,A,30,fragment,ensure project alignment
+good-5262,good,A,34,fragment,recommending corrective actions
+good-5262,good,A,35,inflated_scope,Implemented quality assurance processes
+good-5262,good,A,38,fragment,across multiple reporting systems
+good-5262,good,A,41,fragment,extract data
+good-5262,good,A,44,fragment,regulatory purposes
+good-5262,good,A,45,fragment,internal audit purposes
+good-5262,good,A,46,fragment,Oversaw project lifecycle
+good-5262,good,A,47,fragment,requirement gathering
+good-5262,good,A,48,fragment,final delivery
+good-5262,good,A,49,fragment,ensuring adherence to timelines
+good-5262,good,A,51,fragment,Collaborated with IT
+good-5262,good,A,53,fragment,translate business requirements
+good-5262,good,A,54,fragment,structured data solutions
+good-5262,good,A,55,fragment,reporting frameworks
+good-5262,good,A,58,fragment,high‑pressure environments
+good-5262,good,A,59,fragment,consistently delivering reliable results
+good-5262,good,B,4,fragment,maintaining rigorous documentation across projects
+good-5262,good,D,5,fragment,to manager
+good-5262,good,D,8,fragment,to managers
+good-5887,good,A,6,fragment,Performance optimization
+good-5887,good,A,7,invented_tool,Proven ability to lead cross‑functional teams
+good-5887,good,A,8,fragment,Design scalable solutions
+good-5887,good,A,9,other_duty,Deliver high‑quality software on time
+good-5887,good,A,10,inflated_scope,Led the design of an Intellectual Property Management System
+good-5887,good,A,11,inflated_scope,Led the development of an Intellectual Property Management System
+good-5887,good,A,17,other_duty,Delivering a secure platform
+good-5887,good,A,18,other_duty,Delivering a scalable platform
+good-5887,good,A,22,other_duty,Architected a high‑performance search engine for IP data
+good-5887,good,A,23,inflated_scope,Implemented a high‑performance search engine for IP data
+good-5887,good,A,25,other_duty,Integrating custom Java services
+good-5887,good,A,26,other_duty,Supporting rapid query response
+good-5887,good,A,27,other_duty,Supporting large data volumes
+good-5887,good,A,33,other_duty,Production deployment on Apache Tomcat
+good-5887,good,A,34,other_duty,Production deployment on BEA WebLogic
+good-5887,good,A,36,inflated_scope,Designed complex relational schemas in Oracle
+good-5887,good,A,38,other_duty,Maintained complex relational schemas in Oracle
+good-5887,good,A,41,fragment,Ensuring data integrity
+good-5887,good,A,42,other_duty,Ensuring optimal query performance
+good-5887,good,A,43,other_duty,Coordinated cross‑team collaboration between developers
+good-5887,good,A,44,other_duty,Coordinated cross‑team collaboration between QA
+good-5887,good,A,45,other_duty,Coordinated cross‑team collaboration between product stakeholders
+good-5887,good,A,46,fragment,Delivering iterative releases
+good-5887,good,A,47,other_duty,Meeting stringent security standards
+good-5887,good,A,48,other_duty,Meeting stringent scalability standards
+good-5887,good,A,52,other_duty,Fostering a culture of quality
+good-5887,good,A,53,other_duty,Fostering a culture of continuous improvement
+good-5887,good,A,56,fragment,Enhancing compliance
+good-5887,good,A,57,other_duty,Enhancing auditability for engineering workflows
+good-5887,good,A,58,fragment,Utilized Agile methodologies
+good-5887,good,A,59,fragment,Managing sprint planning
+good-5887,good,A,60,fragment,Managing backlog grooming
+good-5887,good,A,62,other_duty,Ensuring timely delivery of features
+good-5887,good,A,63,fragment,Integrated third‑party services
+good-5887,good,A,64,fragment,Integrated APIs
+good-5887,good,A,65,fragment,Extending platform capabilities
+good-5887,good,A,71,fragment,Proficient in JDBC
+good-5887,good,B,11,inflated_scope,Led full‑cycle development of web applications
+good-5887,good,B,12,inflated_scope,Led full‑cycle development of enterprise applications
+good-5887,good,B,22,inflated_scope,Designed a comprehensive large‑array data stewardship system
+good-5887,good,B,23,other_duty,Maintained a comprehensive large‑array data stewardship system
+good-5887,good,B,43,fragment,Delivered high‑quality products
+good-5887,good,B,50,inflated_scope,Presented at a Sun Microsystems Java Conference
+good-5887,good,B,62,fragment,Ensured robust administration
+good-5887,good,C,37,inflated_scope,Managed the full software development lifecycle
+good-5887,good,D,13,inflated_scope,Designed a comprehensive large‑array data stewardship system
+good-5887,good,D,14,other_duty,Maintained a comprehensive large‑array data stewardship system
+good-5887,good,D,38,inflated_scope,Presented at a Sun Microsystems Java Conference
+potential-4668,potential,A,2,fragment,translating complex business requirements into actionable user stories
+potential-4668,potential,A,4,fragment,adept at mentoring junior analysts
+potential-4668,potential,A,8,fragment,planning
+potential-4668,potential,A,10,fragment,met stakeholder specifications
+potential-4668,potential,A,11,fragment,met timelines
+potential-4668,potential,A,14,fragment,developed functional specifications
+potential-4668,potential,A,15,fragment,maintained functional specifications
+potential-4668,potential,A,17,fragment,maintained test cases
+potential-4668,potential,A,19,fragment,for reporting projects
+potential-4668,potential,A,21,fragment,Mentored junior analysts
+potential-4668,potential,A,22,fragment,onboarded junior analysts
+potential-4668,potential,A,24,fragment,providing guidance on story mapping
+potential-4668,potential,A,25,fragment,providing guidance on Agile best practices
+potential-4668,potential,A,26,other_duty,Collaborated with Product Owners
+potential-4668,potential,A,28,fragment,to estimate effort
+potential-4668,potential,A,29,fragment,to implement cost‑effective process enhancements
+potential-4668,potential,A,30,fragment,to implement cost‑effective system enhancements
+potential-4668,potential,A,31,fragment,Conducted stakeholder workshops
+potential-4668,potential,A,34,fragment,to validate solutions against business objectives
+potential-4668,potential,A,41,fragment,to build automated reports
+potential-4668,potential,A,45,inflated_scope,Implemented business logic in Power BI
+potential-4668,potential,A,46,inflated_scope,Implemented business logic in SQL
+potential-4668,potential,A,48,fragment,reducing reporting errors by 20%
+potential-4668,potential,A,49,fragment,Spearheaded knowledge‑management initiatives
+potential-4668,potential,A,50,fragment,documenting best practices
+potential-4668,potential,A,51,fragment,creating reusable templates
+potential-4668,potential,A,52,fragment,for future projects
+potential-4668,potential,A,54,fragment,Applied predictive modeling
+potential-4668,potential,B,3,self_praise,Proven leader in mentoring junior analysts
+potential-4668,potential,B,8,fragment,Oversaw junior BAs
+potential-4668,potential,B,13,fragment,Assisted in estimation
+potential-4668,potential,B,17,fragment,Onboarded new BAs
+potential-4668,potential,B,18,fragment,Mentored new BAs
+potential-4668,potential,B,20,other_duty,Acquired BU domain knowledge
+potential-4668,potential,B,21,other_duty,Shared BU domain knowledge
+potential-4668,potential,B,23,inflated_scope,Led knowledge management initiatives
+potential-4668,potential,C,12,other_duty,Collaborated closely with Product Owners
+potential-3407,potential,A,2,self_praise,Seasoned accountant with extensive experience in federal reporting
+potential-3407,potential,A,8,other_duty,Performed bank reconciliations for a school district
+potential-3407,potential,A,14,other_duty,Prepared federal financial reports
+potential-3407,potential,A,15,other_duty,Prepared state financial reports
+potential-3407,potential,A,16,fragment,Submitted tax documents
+potential-3407,potential,A,17,fragment,Submitted audit schedules
+potential-3407,potential,A,21,inflated_scope,Ensured compliance with procurement policies
+potential-3407,potential,A,24,other_duty,Provided actionable insights to board members
+potential-3407,potential,A,25,other_duty,Provided actionable insights to program staff
+potential-3407,potential,A,27,inflated_scope,Facilitated audit findings resolution
+potential-3407,potential,A,29,inflated_scope,Ensured accurate revenue recognition for child care billing
+potential-3407,potential,A,30,invented_tool,Developed Excel tracking systems for financial monitoring
+potential-3407,potential,A,31,invented_tool,Maintained Excel tracking systems for financial reporting
+potential-3407,potential,A,33,other_duty,Improved efficiency in purchase order entry
+potential-3407,potential,A,34,other_duty,Improved efficiency in report generation
+potential-3407,potential,B,2,self_praise,Seasoned accounting professional with extensive experience in federal reporting systems
+potential-3407,potential,B,5,self_praise,Proven ability to support fiscal compliance across multiple platforms
+potential-3407,potential,B,16,fragment,Maintained financial integrity
+potential-3407,potential,B,18,fragment,Delivered actionable insights
+potential-3407,potential,B,21,fragment,Facilitated transparent reporting
+potential-3407,potential,B,33,inflated_scope,Ensured alignment with organizational goals
+potential-3407,potential,B,34,inflated_scope,Ensured alignment with regulatory requirements
+potential-3407,potential,B,36,inflated_scope,Ensured compliance with statutory deadlines
+potential-3407,potential,B,37,fragment,Ensured accuracy
+potential-3407,potential,D,17,fragment,Generated budget reports
+potential-4364,potential,A,0,invented_number,"Senior Software Engineer with 6+ years of experience in Java, SQL, and Linux environments"
+potential-4364,potential,A,2,other_duty,Specializing in REST API design
+potential-4364,potential,A,4,self_praise,"Proven ability to deliver scalable, high‑quality solutions"
+potential-4364,potential,A,5,self_praise,Proven ability to manage multiple priorities
+potential-4364,potential,A,8,invented_number,3+ years focused on Java development
+potential-4364,potential,A,9,invented_number,3+ years focused on REST API design and implementation
+potential-4364,potential,A,10,other_duty,Strong command of Linux/Unix fundamentals
+potential-4364,potential,A,11,other_duty,Experience troubleshooting production environments
+potential-4364,potential,A,12,other_duty,Experience performance tuning in production environments
+potential-4364,potential,A,18,fragment,Led Agile teams
+potential-4364,potential,A,19,inflated_scope,Led Agile teams in sprint planning
+potential-4364,potential,A,20,inflated_scope,Led Agile teams in backlog grooming
+potential-4364,potential,A,21,inflated_scope,Led Agile teams in daily stand‑ups
+potential-4364,potential,A,23,inflated_scope,Implemented automated test suites using Selenium
+potential-4364,potential,A,24,inflated_scope,Implemented automated test suites using HP QTP
+potential-4364,potential,A,25,inflated_scope,Implemented automated test suites using SoapUI
+potential-4364,potential,A,26,other_duty,Reducing regression cycle time by 25%
+potential-4364,potential,A,30,other_duty,Test plans cover GUI testing
+potential-4364,potential,A,31,other_duty,Test plans cover regression testing
+potential-4364,potential,A,32,other_duty,Test plans cover load testing
+potential-4364,potential,A,37,other_duty,Collaborated with cross‑functional teams to report defects using JIRA
+potential-4364,potential,A,43,other_duty,Proficient in build tools such as Maven
+potential-4364,potential,A,44,invented_tool,Proficient in CI tools such as Jenkins
+potential-4364,potential,A,45,other_duty,Experience in continuous integration pipelines
+potential-4364,potential,A,46,invented_tool,Experience with containerized environments (Docker)
+potential-4364,potential,A,47,invented_tool,Experience with orchestration tools (Kubernetes)
+potential-4364,potential,B,0,self_praise,Seasoned software engineer with over six years of experience in Agile/DevOps environments
+potential-4364,potential,B,1,invented_tool,Specializing in Java and Python development
+potential-4364,potential,B,2,self_praise,Proven track record in Linux/Unix systems
+potential-4364,potential,B,3,self_praise,Proven track record in microservices
+potential-4364,potential,B,5,self_praise,Proven track record in NoSQL databases
+potential-4364,potential,B,7,self_praise,Proven track record in CI/CD practices
+potential-4364,potential,B,10,other_duty,Consistently improving code quality
+potential-4364,potential,B,12,invented_number,4+ years of Python development
+potential-4364,potential,B,16,invented_number,3+ years of Java development
+potential-4364,potential,B,18,other_duty,Extensive use of XML
+potential-4364,potential,B,21,fragment,Microservices architecture expertise
+potential-4364,potential,B,23,self_praise,Demonstrated through test automation on Unix platforms
+potential-4364,potential,B,28,other_duty,Solid understanding of NoSQL systems
+potential-4364,potential,B,33,other_duty,Excellent performance tuning abilities
+potential-4364,potential,B,36,other_duty,Experience with build automation
+potential-4364,potential,B,37,other_duty,Experience with CI/CD tools
+potential-4364,potential,B,38,fragment,Experience with Git
+potential-4364,potential,B,39,fragment,Experience with Jenkins
+potential-4364,potential,B,40,fragment,Experience with Maven
+potential-4364,potential,B,41,other_duty,Integrated tools into Agile workflows
+potential-3391,potential,A,3,fragment,designing data‑centric applications
+potential-3391,potential,A,9,fragment,ready to contribute to NBCUniversal’s Engineering Experience team
+potential-3391,potential,A,16,inflated_scope,Led performance tuning for OBIEE environments
+potential-3391,potential,A,17,inflated_scope,Led repository maintenance for OBIEE environments
+potential-3391,potential,A,18,fragment,reducing query latency by 30%
+potential-3391,potential,A,19,fragment,enhancing user experience
+potential-3391,potential,A,21,fragment,development team
+potential-3391,potential,A,23,fragment,ETL team
+potential-3391,potential,A,25,fragment,deliver high‑quality releases on schedule
+potential-3391,potential,A,26,fragment,demonstrating strong project management
+potential-3391,potential,A,33,fragment,ensuring smooth adoption of best practices
+potential-3391,potential,A,35,fragment,Applied PL/SQL expertise
+potential-3391,potential,A,40,fragment,Implemented automated testing
+potential-3391,potential,A,41,inflated_scope,Implemented unit‑level validation for BI components
+potential-3391,potential,A,42,fragment,increasing defect detection rates
+potential-3391,potential,A,43,fragment,reducing post‑release issues
+potential-3391,potential,A,46,fragment,fostering continuous improvement within the engineering team
+potential-3391,potential,A,47,other_duty,Utilized Toad for database administration
+potential-3391,potential,A,48,invented_tool,Utilized Oracle Enterprise Manager for database administration
+potential-3391,potential,A,49,other_duty,Utilized Informatica DAC for data integration
+potential-3391,potential,A,50,other_duty,Utilized Informatica DAC for system monitoring
+potential-3391,potential,A,52,other_duty,Adapted quickly to new frameworks
+potential-3391,potential,A,53,fragment,consistently staying current with industry trends
+potential-3391,potential,A,54,fragment,consistently staying current with emerging technologies
+potential-3391,potential,A,58,fragment,consistently delivering solutions that meet quality standards
+potential-3391,potential,B,3,self_praise,"Proven ability to translate business requirements into robust, cloud‑native applications and dashboards"
+potential-3391,potential,B,4,fragment,"using a blend of object‑oriented design, database technologies, and enterprise BI tools"
+potential-3391,potential,B,6,fragment,consistently delivering high‑quality solutions
+potential-3391,potential,B,8,inflated_scope,Led requirement analysis for enterprise reporting and dashboard projects
+potential-3391,potential,B,9,inflated_scope,Led design for enterprise reporting and dashboard projects
+potential-3391,potential,B,10,inflated_scope,Led environment setup for enterprise reporting and dashboard projects
+potential-3391,potential,B,25,fragment,enhancing user adoption
+potential-3391,potential,B,26,fragment,enhancing feedback loops
+potential-3391,potential,B,29,fragment,improving system reliability
+potential-3391,potential,B,34,other_duty,Applied object‑oriented design principles in application development
+potential-3391,potential,B,35,other_duty,Applied patterns in application development
+potential-3391,potential,B,36,fragment,improve modularity
+potential-3391,potential,B,37,fragment,improve maintainability
+potential-3391,potential,B,46,fragment,to deliver project milestones
+potential-3391,potential,C,13,fragment,For OBIEE reports
+potential-3391,potential,C,14,fragment,For OBIEE dashboards
+potential-3391,potential,C,45,other_duty,Holds a Bachelor’s in Computer Science
+potential-3639,potential,A,3,self_praise,Proven ability to streamline processes
+potential-3639,potential,A,5,self_praise,"Proven ability to support small‑to‑mid‑size businesses with reliable, detail‑oriented financial management"
+potential-3639,potential,A,10,other_duty,Prepared monthly financial statements
+potential-3639,potential,A,23,inflated_scope,Implemented efficient tax calculation processes
+potential-3639,potential,A,24,inflated_scope,Implemented efficient tax accrual processes
+potential-3639,potential,A,25,other_duty,Reduced errors in tax processes
+potential-3639,potential,A,26,other_duty,Improved reporting timelines for tax
+potential-3639,potential,A,27,other_duty,Developed robust financial reporting systems
+potential-3639,potential,A,29,other_duty,Created automated Excel dashboards for variance analysis
+potential-3639,potential,A,32,fragment,Supported forecasting initiatives
+potential-3639,potential,A,36,inflated_scope,Trained staff on accounting software
+potential-3639,potential,A,37,other_duty,Mentored staff on Oracle
+potential-3639,potential,A,38,other_duty,Mentored staff on SAP
+potential-3639,potential,A,39,other_duty,Mentored staff on QuickBooks
+potential-3639,potential,A,41,other_duty,Negotiated payment terms with vendors
+potential-3639,potential,A,42,other_duty,Resolved invoice disputes swiftly
+potential-3639,potential,A,43,self_praise,Demonstrated adaptability in fast‑paced environments
+potential-3639,potential,A,45,other_duty,Delivered high‑quality results under tight deadlines
+potential-3639,potential,B,1,self_praise,Seasoned accounting professional with extensive experience in tax preparation
+potential-3639,potential,B,5,self_praise,"Adept at maintaining confidentiality while delivering reliable, detail‑oriented financial services"
+potential-3639,potential,B,49,fragment,Maintained punctuality
+potential-3639,potential,B,50,fragment,Maintained confidentiality
+potential-3639,potential,C,1,other_duty,Prepared monthly financial statements.
+potential-3639,potential,D,32,fragment,On invoice inquiries
+potential-3639,potential,D,36,fragment,Met information needs
+potential-4659,potential,A,1,fragment,extensive Java experience
+potential-4659,potential,A,8,fragment,collaborate across QA teams
+potential-4659,potential,A,10,fragment,focused on leveraging Java/Spring Boot skills
+potential-4659,potential,A,11,fragment,maintain Salesforce integrations
+potential-4659,potential,A,12,fragment,enhance Salesforce integrations
+potential-4659,potential,A,13,inflated_scope,Led end‑to‑end testing for cross‑border payment platforms
+potential-4659,potential,A,15,fragment,cross‑border payment platforms include ACH
+potential-4659,potential,A,20,fragment,ensuring compliance with stringent financial regulations
+potential-4659,potential,A,23,fragment,demonstrating strong architectural skills
+potential-4659,potential,A,24,fragment,applicable to Spring Boot services
+potential-4659,potential,A,26,fragment,executed unit tests
+potential-4659,potential,A,27,fragment,executed system tests
+potential-4659,potential,A,29,fragment,executed UAT tests
+potential-4659,potential,A,43,fragment,improved product stability
+potential-4659,potential,A,44,fragment,reduced time‑to‑fix
+potential-4659,potential,A,47,fragment,enhancing team knowledge of integration workflows
+potential-4659,potential,A,49,other_duty,Experience with enterprise service integration concepts
+potential-4659,potential,A,50,other_duty,Experience with data mapping
+potential-4659,potential,A,51,other_duty,Experience with API testing
+potential-4659,potential,A,53,fragment,directly applicable to Salesforce integration projects
+potential-4659,potential,A,62,fragment,underscoring a disciplined approach to process improvement
+potential-4659,potential,A,63,invented_tool,Eager to apply Java/Spring Boot expertise
+potential-4659,potential,A,64,invented_tool,Eager to learn Salesforce on the job
+potential-4659,potential,A,65,fragment,contributing to TLA’s enterprise integration initiatives
+potential-4659,potential,B,1,fragment,extensive experience in Java-based application development
+potential-4659,potential,B,6,fragment,driving process improvements across enterprise environments
+potential-4659,potential,B,18,inflated_scope,Led technical proposal presentation to senior management
+potential-4659,potential,B,39,fragment,clarify business requirements
+potential-4659,potential,B,51,other_duty,Promoted a straight-through processing environment
+potential-4659,potential,B,54,fragment,enhancing operational efficiency
+potential-4659,potential,D,29,fragment,with developers
+potential-3370,potential,A,3,fragment,specializing in microservices
+potential-3370,potential,A,5,fragment,across AWS
+potential-3370,potential,A,6,fragment,across on-premise Linux environments
+potential-3370,potential,A,7,self_praise,Proven track record of delivering scalable solutions
+potential-3370,potential,A,8,self_praise,Proven track record of delivering high‑availability solutions
+potential-3370,potential,A,10,fragment,mentoring junior teams
+potential-3370,potential,A,17,fragment,reducing deployment time by 70%
+potential-3370,potential,A,20,fragment,Maintained microservices
+potential-3370,potential,A,25,fragment,consumed by global retail clients
+potential-3370,potential,A,26,inflated_scope,Led automation of Apple Retail deployments
+potential-3370,potential,A,28,fragment,integrating Splunk for observability
+potential-3370,potential,A,29,fragment,Architected Java applications
+potential-3370,potential,A,33,fragment,leveraging PostgreSQL for high‑availability data storage
+potential-3370,potential,A,40,fragment,with automated code reviews
+potential-3370,potential,A,41,fragment,to ensure 100% test coverage
+potential-3370,potential,A,43,other_duty,Optimized database performance using PostgreSQL
+potential-3370,potential,A,44,other_duty,Optimized database performance using Oracle
+potential-3370,potential,A,45,other_duty,Optimized database performance using Couchbase
+potential-3370,potential,A,46,fragment,achieving significant query speedups
+potential-3370,potential,A,48,other_duty,Mentored junior engineers on design patterns
+potential-3370,potential,A,49,other_duty,Mentored junior engineers on debugging
+potential-3370,potential,A,50,other_duty,Mentored junior engineers on best practices
+potential-3370,potential,A,54,fragment,to scalable code
+potential-3370,potential,A,55,fragment,to maintainable code
+potential-3370,potential,A,59,fragment,in a multi‑tenant environment
+potential-3370,potential,B,5,self_praise,Strong communication skills for cross‑functional collaboration
+potential-3370,potential,B,6,inflated_scope,Designed high‑performance microservices using Java
+potential-3370,potential,B,7,inflated_scope,Designed high‑performance microservices using Python
+potential-3370,potential,B,8,fragment,Implemented high‑performance microservices
+potential-3370,potential,B,10,fragment,Leveraged SOAP integration
+potential-3370,potential,B,12,other_duty,Built CI/CD pipelines with Maven
+potential-3370,potential,B,14,other_duty,Built CI/CD pipelines with Ansible
+potential-3370,potential,B,18,other_duty,Integrated Docker applications into pod architectures
+potential-3370,potential,B,20,other_duty,Developed relational data models using PostgreSQL
+potential-3370,potential,B,21,other_duty,Developed relational data models using Oracle
+potential-3370,potential,B,22,other_duty,Developed relational data models using Couchbase
+potential-3370,potential,B,23,other_duty,Developed relational data models using RIAK
+potential-3370,potential,B,25,other_duty,Developed NoSQL data models
+potential-3370,potential,B,26,other_duty,Optimized NoSQL data models
+potential-3370,potential,B,27,fragment,Enhanced data persistence
+potential-3370,potential,B,31,fragment,Improved application responsiveness
+potential-3370,potential,B,32,fragment,Improved resource utilization
+potential-3370,potential,B,33,inflated_scope,Led code quality initiatives
+potential-3370,potential,B,41,inflated_scope,Facilitated clear communication with technical stakeholders
+potential-3370,potential,B,42,inflated_scope,Facilitated clear communication with non‑technical stakeholders
+potential-3370,potential,B,43,inflated_scope,Managed cross‑functional Agile teams
+potential-3370,potential,B,44,fragment,Coordinated sprint planning
+potential-3370,potential,B,45,fragment,Coordinated backlog grooming
+potential-3370,potential,B,47,inflated_scope,Implemented monitoring solutions using Splunk
+potential-3370,potential,B,48,inflated_scope,Implemented monitoring solutions using custom dashboards
+potential-3370,potential,B,49,fragment,Tracked system health
+potential-3370,potential,B,50,fragment,Tracked system performance
+potential-3370,potential,C,1,other_duty,Developed RESTful services with Spring
+potential-3370,potential,D,8,fragment,Improving resource utilization.
+potential-4321,potential,A,5,inflated_scope,Led campaign and financial data analysis for American International Group
+potential-4321,potential,A,21,self_praise,Utilized advanced Tableau skills
+potential-4321,potential,A,22,self_praise,Utilized advanced SPSS skills
+potential-4321,potential,A,26,other_duty,Gathered requirements from cross‑functional teams
+potential-4321,potential,A,30,other_duty,Identified root causes in financial discrepancies
+potential-4321,potential,A,31,inflated_scope,Implemented corrective actions for financial discrepancies
+potential-4321,potential,A,35,other_duty,Applied rigorous data validation techniques
+potential-4321,potential,A,36,inflated_scope,Ensured accuracy of reporting outputs
+potential-4321,potential,A,37,inflated_scope,Ensured integrity of reporting outputs
+potential-4321,potential,A,39,self_praise,Proven ability to meet deadlines
+potential-4321,potential,A,40,self_praise,Proven ability to deliver high‑quality results
+potential-4321,potential,B,0,invented_tool,Seasoned analyst with extensive experience in SQL
+potential-4321,potential,B,3,self_praise,Proven ability to translate complex business requirements into actionable technical solutions
+potential-4321,potential,B,11,invented_tool,Demonstrated advanced SQL expertise
+potential-4321,potential,B,13,fragment,Utilized SSMS
+potential-4321,potential,B,16,fragment,Enhanced reporting accuracy
+potential-4321,potential,B,17,fragment,Led cross‑departmental projects
+potential-4321,potential,B,18,inflated_scope,Led projects for three years
+potential-4321,potential,B,31,other_duty,Translated detailed requirements into clear technical specifications
+potential-4321,potential,B,32,other_duty,Provided specifications for development teams
+potential-4321,potential,B,33,other_duty,Communicated complex data insights to technical stakeholders
+potential-4321,potential,B,35,fragment,Ensured alignment
+potential-4321,potential,B,36,fragment,Ensured timely delivery
+potential-4321,potential,B,40,fragment,Reinforced data integrity
+potential-4321,potential,B,41,fragment,Reinforced compliance
+potential-4321,potential,C,4,other_duty,Performed monthly cash flow analysis
+potential-3415,potential,A,2,self_praise,Proven ability to architect scalable solutions
+potential-3415,potential,A,3,invented_tool,Proven ability to lead cross‑functional teams
+potential-3415,potential,A,4,self_praise,"Proven ability to deliver high‑quality products in fast‑paced, matrixed environments"
+potential-3415,potential,A,5,inflated_scope,Led end‑to‑end development of Android applications
+potential-3415,potential,A,6,inflated_scope,Led end‑to‑end development of web applications
+potential-3415,potential,A,8,other_duty,Integrated Python into Android and web applications
+potential-3415,potential,A,9,other_duty,Integrated JavaScript into Android and web applications
+potential-3415,potential,A,10,other_duty,"Delivered robust, user‑centric features"
+potential-3415,potential,A,14,other_duty,Supported real‑time data synchronization
+potential-3415,potential,A,15,other_duty,Architected large‑scale web services with Java Servlets
+potential-3415,potential,A,16,other_duty,Architected large‑scale web services with JSP
+potential-3415,potential,A,17,other_duty,Architected large‑scale web services with AJAX
+potential-3415,potential,A,18,other_duty,Architected large‑scale web services with JSON
+potential-3415,potential,A,19,inflated_scope,Ensured high availability of web services
+potential-3415,potential,A,20,inflated_scope,Ensured performance of web services
+potential-3415,potential,A,22,other_duty,Developed test frameworks for Android platforms
+potential-3415,potential,A,26,other_duty,Achieved comprehensive regression coverage
+potential-3415,potential,A,30,other_duty,Drove continuous improvement in product quality
+potential-3415,potential,A,32,other_duty,Customized Siebel CRM modules for insurance clients
+potential-3415,potential,A,34,other_duty,Delivered complex business logic
+potential-3415,potential,A,35,other_duty,Coordinated cross‑functional teams across offshore sites
+potential-3415,potential,A,36,other_duty,Coordinated cross‑functional teams across onshore sites
+potential-3415,potential,A,37,fragment,Aligned technical direction
+potential-3415,potential,A,38,fragment,Aligned project milestones
+potential-3415,potential,A,39,inflated_scope,Implemented data‑intensive solutions with MySQL
+potential-3415,potential,A,41,inflated_scope,Implemented data‑intensive solutions with Oracle
+potential-3415,potential,A,43,other_duty,Optimized queries for large datasets
+potential-3415,potential,A,44,fragment,Applied Agile methodologies
+potential-3415,potential,A,45,fragment,Delivered incremental releases
+potential-3415,potential,A,46,other_duty,Balanced technical debt with feature delivery
+potential-3415,potential,A,47,fragment,Mentored junior engineers
+potential-3415,potential,A,48,other_duty,Fostered a culture of code quality
+potential-3415,potential,A,49,other_duty,Fostered a culture of knowledge sharing
+potential-3415,potential,A,50,other_duty,Fostered a culture of professional growth
+potential-3415,potential,B,2,self_praise,"Proven ability to design, build, and launch scalable applications"
+potential-3415,potential,B,4,inflated_scope,Led full software development lifecycle activities
+potential-3415,potential,B,7,self_praise,Demonstrating deep expertise in data structures and algorithms
+potential-3415,potential,B,14,other_duty,"Ensuring robust, user‑friendly solutions"
+potential-3415,potential,B,21,other_duty,Collaborated with cross‑functional product teams
+potential-3415,potential,B,22,fragment,To define requirements
+potential-3415,potential,B,23,fragment,To drive feature delivery
+potential-3415,potential,B,24,fragment,In a matrixed organization
+potential-3415,potential,B,25,other_duty,Enhancing project alignment and efficiency
+potential-3415,potential,B,29,fragment,To support evolving project needs
+potential-3415,potential,C,5,other_duty,Developed Android applications using Python
+potential-3415,potential,C,6,other_duty,Developed Android applications using JavaScript
+potential-3415,potential,C,8,other_duty,Developed web applications using Python
+potential-3415,potential,C,11,other_duty,Developed web services using JSP
+potential-3499,potential,A,6,self_praise,Proven ability to support small‑business financial operations with precision and efficiency
+potential-3499,potential,A,8,other_duty,Prepared manual journal entries for a multi‑location organization
+potential-3499,potential,A,16,fragment,Reviewed tax payments
+potential-3499,potential,A,19,fragment,Ensured timely filing
+potential-3499,potential,A,20,inflated_scope,Ensured filing in accordance with regulatory requirements
+potential-3499,potential,A,22,fragment,Reconciled accounts receivable
+potential-3499,potential,A,25,fragment,Improved cash‑flow visibility
+potential-3499,potential,A,27,other_duty,Developed detailed income‑statement schedules
+potential-3499,potential,A,29,other_duty,Maintained detailed income‑statement schedules
+potential-3499,potential,B,7,fragment,Maintaining organizational excellence
+potential-3499,potential,B,10,fragment,Managing accounts payable
+potential-3499,potential,B,39,fragment,Ensuring reliability
+potential-3499,potential,B,40,fragment,Ensuring punctuality
+potential-3499,potential,B,42,self_praise,Applied superb problem‑solving skills
+potential-3499,potential,B,44,other_duty,Maintaining confidentiality of financial data
+potential-3499,potential,C,9,fragment,Reviewed tax payments
+potential-3499,potential,C,13,fragment,Reconciled accounts receivable
+potential-3499,potential,C,14,fragment,Reconciled accounts payable
+potential-3499,potential,C,22,fragment,Prepared audit documentation
+potential-3499,potential,D,9,inflated_scope,Managed new hire processing
+potential-3499,potential,D,27,other_duty,Reinforced reliability in financial reporting
+potential-3499,potential,D,28,other_duty,Reinforced punctuality in financial reporting
+potential-3348,potential,A,5,self_praise,Proven ability to collaborate across departments
+potential-3348,potential,A,7,self_praise,Proven ability to support budgeting and audit activities in fast-paced environments
+potential-3348,potential,A,11,other_duty,Improving timeliness of financial data
+potential-3348,potential,A,21,fragment,Reconciling vouchers
+potential-3348,potential,A,23,inflated_scope,Led cross-functional discovery meetings
+potential-3348,potential,A,26,other_duty,Coordinated monthly financial reporting
+potential-3348,potential,A,27,fragment,Coordinated financial analysis
+potential-3348,potential,A,28,invented_tool,Providing actionable insights to senior management
+potential-3348,potential,A,29,other_duty,Providing actionable insights to program directors
+potential-3348,potential,A,30,fragment,Prepared financial statements
+potential-3348,potential,A,31,fragment,Reviewed financial statements
+potential-3348,potential,A,32,other_duty,Supporting month‑end closing activities
+potential-3348,potential,A,33,other_duty,Supporting year‑end closing activities
+potential-3348,potential,A,34,fragment,Supporting audit preparations
+potential-3348,potential,A,41,fragment,Optimizing cashier operations
+potential-3348,potential,A,45,other_duty,Streamlining client data management
+potential-3348,potential,A,47,invented_tool,Applied advanced Excel techniques for data analysis
+potential-3348,potential,A,48,invented_tool,Applied advanced Excel techniques for variance tracking
+potential-3348,potential,A,49,invented_tool,Applied advanced Excel techniques for forecasting
+potential-3348,potential,A,50,other_duty,Collaborated with teams to implement process improvements
+potential-3348,potential,A,51,fragment,Reducing errors
+potential-3348,potential,B,4,fragment,over a decade of experience in client‑focused service
+potential-3348,potential,B,17,fragment,Current
+potential-3348,potential,B,46,fragment,demonstrating time‑management skills
+potential-3348,potential,C,13,fragment,reflecting strong problem-solving skills
+potential-3348,potential,D,30,fragment,demonstrating time‑management skills
+potential-3263,potential,A,2,other_duty,Electrical Design Engineer with a strong background in hardware verification
+potential-3263,potential,A,4,self_praise,Electrical Design Engineer adept at ensuring product reliability
+potential-3263,potential,A,5,self_praise,Electrical Design Engineer adept at ensuring compliance
+potential-3263,potential,A,13,other_duty,Enabled systematic hardware verification
+potential-3263,potential,A,15,other_duty,HW V&V across multiple product iterations
+potential-3263,potential,A,16,inflated_scope,Led firmware development for AVR microcontrollers
+potential-3263,potential,A,17,inflated_scope,Ensured robust hardware-software integration
+potential-3263,potential,A,18,inflated_scope,Ensured compliance with industry safety standards
+potential-3263,potential,A,20,other_duty,Identified outliers in sensor data
+potential-3263,potential,A,21,fragment,Improved measurement reliability
+potential-3263,potential,A,22,self_praise,Demonstrated proficiency in data‑driven quality assurance
+potential-3263,potential,A,24,other_duty,Applied precision engineering principles
+potential-3263,potential,A,26,other_duty,Met stringent performance criteria
+potential-3263,potential,A,28,other_duty,Coordinated with cross‑functional teams
+potential-3263,potential,A,29,fragment,Delivered reliable solutions
+potential-3263,potential,A,30,fragment,Delivered manufacturable solutions
+potential-3263,potential,A,32,other_duty,Utilized Cadence Design Suite for PCB layout
+potential-3263,potential,A,34,other_duty,Utilized Virtuoso for PCB layout
+potential-3263,potential,A,35,fragment,Ensured design integrity
+potential-3263,potential,A,36,inflated_scope,Ensured adherence to design‑for‑manufacturing guidelines
+potential-3263,potential,A,37,fragment,Applied MATLAB/SIMULINK modeling
+potential-3263,potential,A,40,other_duty,Supported early detection of potential failure modes
+potential-3263,potential,A,42,fragment,Incorporated lessons learned
+potential-3263,potential,A,43,fragment,Enhanced test coverage
+potential-3263,potential,A,44,fragment,Reduced cycle time
+potential-3263,potential,A,46,other_duty,Fostered a culture of technical excellence
+potential-3263,potential,A,47,fragment,Fostered collaborative problem‑solving
+potential-3263,potential,B,2,self_praise,Proven experience in DFMEA
+potential-3263,potential,B,3,self_praise,Proven experience in WCCA
+potential-3263,potential,B,4,self_praise,Proven experience in DV testing
+potential-3263,potential,B,6,other_duty,Conducted DFMEA reviews for next‑generation down‑hole drilling tools
+potential-3263,potential,B,7,other_duty,Conducted FMEA reviews for next‑generation down‑hole drilling tools
+potential-3263,potential,B,8,other_duty,Updated WCCA documentation for embedded sensor systems
+potential-3263,potential,B,9,other_duty,Reviewed WCCA documentation for embedded sensor systems
+potential-3263,potential,B,10,other_duty,Performed DV testing using MATLAB/SIMULINK
+potential-3263,potential,B,11,other_duty,Performed DV testing using Code Composer Studio
+potential-3263,potential,B,12,other_duty,Performed DV testing using National Instruments PXI platforms
+potential-3263,potential,B,13,inflated_scope,Led hardware verification activities for sensor integration projects
+potential-3263,potential,B,14,inflated_scope,Led hardware validation activities for sensor integration projects
+potential-3263,potential,B,19,other_duty,Collaborated with cross‑functional teams to solve complex technical challenges in embedded systems
+potential-3263,potential,C,4,other_duty,Electrical Design Engineer experienced in developing firmware for AVR microcontrollers
+none-1891,none,A,1,self_praise,Seasoned accountant with over 8 years of progressive experience in budgeting
+none-1891,none,A,4,self_praise,Seasoned accountant with over 8 years of progressive experience in extensive work with Oracle
+none-1891,none,A,9,self_praise,Proven ability to drive data‑driven decision making
+none-1891,none,A,11,fragment,Led month‑end close
+none-1891,none,A,12,other_duty,Prepared detailed financial statements for a $137 M portfolio
+none-1891,none,A,14,inflated_scope,Ensured compliance with GAAP controls
+none-1891,none,A,17,other_duty,Provided actionable insights to program directors
+none-1891,none,A,19,inflated_scope,Managed full-cycle accounts receivable
+none-1891,none,A,21,other_duty,Reduced invoice processing errors by 80%
+none-1891,none,A,22,other_duty,Reduced invoice processing errors in a high‑volume environment
+none-1891,none,A,23,other_duty,Coordinated annual audit schedules
+none-1891,none,A,27,other_duty,Developed complex Excel models for budgeting
+none-1891,none,A,28,other_duty,Developed complex Excel models for forecasting
+none-1891,none,A,29,other_duty,Developed complex Excel models for scenario analysis
+none-1891,none,A,30,other_duty,Supported strategic financial planning
+none-1891,none,A,31,inflated_scope,Implemented cost allocation processes
+none-1891,none,A,32,inflated_scope,Implemented netback pricing processes
+none-1891,none,A,33,other_duty,Improved revenue accuracy for multi‑asset operations
+none-1891,none,A,37,other_duty,Prepared monthly financial reports to executive leadership
+none-1891,none,A,38,other_duty,Prepared quarterly financial reports to executive leadership
+none-1891,none,A,39,other_duty,Prepared annual financial reports to executive leadership
+none-1891,none,A,41,fragment,Executed cash‑flow projections
+none-1891,none,A,42,other_duty,Executed weekly liquidity reports
+none-1891,none,B,2,fragment,over eight years of progressive experience in budgeting
+none-1891,none,B,4,self_praise,Proven track record in nonprofit settings
+none-1891,none,B,6,fragment,delivering GAAP‑compliant statements
+none-1891,none,B,39,fragment,for financial analysis
+none-1891,none,B,40,fragment,for reporting
+none-1891,none,B,41,fragment,for data management
+none-1891,none,B,46,fragment,ensuring clarity and satisfaction in financial interactions
+none-1891,none,B,51,other_duty,Applied knowledge of cost methodologies
+none-1891,none,B,53,other_duty,Applied knowledge of GAAP compliance
+none-1891,none,C,14,inflated_scope,Managed the general ledger using SAP
+none-1891,none,C,15,inflated_scope,Managed the general ledger using Oracle
+none-359,none,A,39,inflated_scope,Implemented monitoring of batch jobs using Control‑M
+none-359,none,A,42,inflated_scope,Led performance tuning initiatives
+none-359,none,A,45,other_duty,Reduced long‑running processes through partitioning
+none-359,none,A,46,fragment,Managed cross‑functional teams
+none-359,none,A,47,inflated_scope,Managed on‑shore development models
+none-359,none,A,48,inflated_scope,Managed off‑shore development models
+none-359,none,A,49,fragment,Coordinated requirements
+none-359,none,A,50,fragment,Coordinated testing
+none-359,none,A,55,other_duty,Provided 24/7 production support in UK
+none-359,none,A,65,self_praise,Demonstrated strong communication skills through regular stakeholder meetings
+none-359,none,A,67,self_praise,Demonstrated strong communication skills through documentation of technical solutions
+none-359,none,B,0,fragment,
+none-359,none,C,28,fragment,Participated in build
+none-2057,none,A,1,self_praise,Seasoned software engineer with a strong foundation in .NET
+none-2057,none,A,4,self_praise,"Seasoned software engineer adept at delivering complex, high‑quality solutions for enterprise clients"
+none-2057,none,A,7,self_praise,Seasoned software engineer has a proven track record of integrating automation to enhance productivity and customer satisfaction
+none-2057,none,A,8,inflated_scope,Led end‑to‑end development of database‑centric modules using C#
+none-2057,none,A,9,inflated_scope,Led end‑to‑end development of database‑centric modules using SQL Server
+none-2057,none,A,10,inflated_scope,Led end‑to‑end development of database‑centric modules using PL/SQL
+none-2057,none,A,11,other_duty,"Delivered robust, scalable solutions for global banking clients"
+none-2057,none,A,12,inflated_scope,Implemented Agile practices (Scrum/SaFe) to accelerate delivery
+none-2057,none,A,13,inflated_scope,Implemented Agile practices (Scrum/SaFe) to conduct sprint planning
+none-2057,none,A,14,inflated_scope,Implemented Agile practices (Scrum/SaFe) to maintain rigorous unit and integration testing
+none-2057,none,A,15,inflated_scope,Designed automated monitoring controls for production systems
+none-2057,none,A,16,inflated_scope,Designed automated security controls for production systems
+none-2057,none,A,17,inflated_scope,Ensured compliance with enterprise standards
+none-2057,none,A,19,other_duty,Conducted training sessions on C#
+none-2057,none,A,20,other_duty,Conducted training sessions on SQL
+none-2057,none,A,21,other_duty,Conducted training sessions on Agile workflows
+none-2057,none,A,22,fragment,Boosted team performance
+none-2057,none,A,25,fragment,Refactored legacy code
+none-2057,none,A,26,invented_number,Reduced query latency by 30%
+none-2057,none,A,27,other_duty,Improved overall system efficiency
+none-2057,none,A,30,other_duty,Translated business requirements into user stories
+none-2057,none,A,32,fragment,Utilized CI/CD pipelines
+none-2057,none,A,33,fragment,Streamlined code reviews
+none-2057,none,A,34,fragment,Streamlined builds
+none-2057,none,A,35,fragment,Streamlined deployments
+none-2057,none,A,36,other_duty,Applied object‑oriented design principles
+none-2057,none,A,37,fragment,Applied SOLID patterns
+none-2057,none,A,38,fragment,Built maintainable codebases
+none-2057,none,A,39,fragment,Built testable codebases
+none-2057,none,A,41,fragment,Conducted performance testing
+none-2057,none,A,42,inflated_scope,Ensured adherence to quality standards before production release
+none-2057,none,B,0,self_praise,Seasoned software engineer with a strong foundation in full‑stack development
+none-2057,none,B,1,self_praise,Seasoned software engineer with a strong foundation in cloud hosting
+none-2057,none,B,7,self_praise,Proven ability to deliver scalable enterprise solutions
+none-2057,none,B,8,self_praise,Proven ability to deliver scalable enterprise solutions across diverse technology stacks
+none-2057,none,B,15,other_duty,Developed applications using C#
+none-2057,none,B,16,other_duty,Developed applications using C++
+none-2057,none,B,18,other_duty,Developed applications using PL/SQL
+none-2057,none,B,20,other_duty,Developed applications on Linux platforms
+none-2057,none,B,21,other_duty,Developed applications on Unix platforms
+none-2057,none,B,23,other_duty,Utilized Visual Studio for version control
+none-2057,none,B,24,inflated_scope,Implemented database solutions with Microsoft SQL Server 2012
+none-2057,none,B,25,fragment,Performed data modeling
+none-2057,none,B,26,fragment,Performed stored‑procedure development
+none-2057,none,B,38,other_duty,Used scripting languages for system integration tasks
+none-2057,none,B,39,other_duty,Utilized Cadence tools for HDL/HVL design
+none-2057,none,B,42,other_duty,Utilized Synopsys tools for simulation
+none-2057,none,B,45,fragment,Refining user stories
+none-2057,none,B,46,fragment,Delivered high‑quality software
+none-2057,none,B,47,other_duty,Delivered high‑quality software with automated unit tests
+none-2057,none,B,48,other_duty,Delivered high‑quality software with automated integration tests
+none-2057,none,B,49,fragment,Managed project deliverables
+none-2057,none,C,14,fragment,Over six months
+none-2057,none,C,22,other_duty,Developed software using C++
+none-2057,none,C,23,other_duty,Developed software using C#
+none-2057,none,D,3,self_praise,"Applied C# skills across Windows, Linux, and Unix platforms"
+none-2688,none,A,6,invented_tool,"Consequently, the skill set does not align with the requirements for a Senior Lead Software Engineer in the clean‑tech automotive domain"
+none-2688,none,B,7,fragment,completed in 2005
+none-2688,none,B,9,fragment,completed in 2008
+none-2688,none,B,10,fragment,more than five years of experience as a software engineer
+none-2688,none,C,2,fragment,more than five years of experience as a software engineer
+none-596,none,A,2,fragment,"designing, building, and managing complex testing and automation pipelines"
+none-596,none,A,6,fragment,"ability to translate business requirements into scalable, data‑driven solutions"
+none-596,none,A,11,fragment,designed data pipelines
+none-596,none,A,15,other_duty,Developed extensive SQL queries for performance reporting
+none-596,none,A,21,fragment,integrated them with version control
+none-596,none,A,22,fragment,integrated them with CI/CD tools
+none-596,none,A,23,fragment,improving test coverage
+none-596,none,A,24,fragment,improving release velocity
+none-596,none,A,28,fragment,delivered high‑quality software
+none-596,none,A,29,fragment,Agile schedules
+none-596,none,A,31,fragment,consistently meeting project milestones
+none-596,none,A,41,fragment,ensuring timely resolution
+none-596,none,A,42,fragment,continuous improvement
+none-596,none,A,44,other_duty,Conducted load testing using QT Pro
+none-596,none,A,46,fragment,recommended infrastructure enhancements
+none-596,none,A,49,other_duty,Prepared budget impact analyses
+none-596,none,A,55,fragment,validated complex business logic
+none-596,none,A,56,fragment,across multiple environments
+none-596,none,A,59,fragment,continuous learning
+none-596,none,A,61,fragment,efficiency gains
+none-596,none,B,21,fragment,Enhanced test coverage
+none-596,none,B,23,fragment,Facilitated walkthroughs
+none-596,none,B,25,fragment,Improved testing quality
+none-596,none,C,13,inflated_scope,Implemented automated testing frameworks using TestComplete
+none-596,none,C,17,inflated_scope,Designed data‑driven test cases using VBScript
+none-596,none,C,18,inflated_scope,Designed data‑driven test cases using shell scripts
+none-596,none,C,19,other_duty,Executed data‑driven test cases using VBScript
+none-596,none,C,20,other_duty,Executed data‑driven test cases using shell scripts
+none-596,none,D,15,fragment,Facilitated walkthroughs
+none-2170,none,A,8,fragment,"cross-browser testing across Windows, macOS, and iOS platforms"
+none-2170,none,A,9,inflated_scope,Led end-to-end test strategy for multiple web applications
+none-2170,none,A,19,fragment,reducing maintenance effort
+none-2170,none,A,34,fragment,in Oracle
+none-2170,none,A,35,fragment,in MySQL
+none-2170,none,A,43,other_duty,Collaborated closely with QA peers
+none-2170,none,A,47,fragment,to refine requirements
+none-2170,none,A,48,fragment,to refine deliverables
+none-2170,none,A,51,fragment,providing detailed reproduction steps
+none-2170,none,A,52,fragment,providing detailed logs
+none-2170,none,A,54,fragment,for rapid resolution
+none-2170,none,A,55,other_duty,Automated data preparation scripts for large datasets
+none-2170,none,A,56,other_duty,Automated data validation scripts for large datasets
+none-2170,none,A,57,fragment,supporting data migration projects
+none-2170,none,A,58,fragment,supporting integration projects
+none-2170,none,C,32,fragment,Performed code reviews
+none-764,none,A,8,inflated_scope,Led security configuration for high‑volume payer web portals
+none-764,none,A,17,fragment,Coordinated cross‑functional teams
+none-764,none,A,18,fragment,Delivered on‑time solutions
+none-764,none,A,19,fragment,Delivered on‑budget solutions
+none-764,none,A,21,other_duty,Applied deep knowledge of OSI model
+none-764,none,A,22,other_duty,Applied deep knowledge of TCP/IP
+none-764,none,A,23,other_duty,Applied deep knowledge of LAN/WAN
+none-764,none,A,24,other_duty,Applied deep knowledge of firewall technologies
+none-764,none,A,25,other_duty,Applied deep knowledge of IDS technologies
+none-764,none,A,26,other_duty,Applied deep knowledge of IPS technologies
+none-764,none,A,27,fragment,Secured network infrastructure
+none-764,none,A,28,fragment,Optimized network infrastructure
+none-764,none,A,32,self_praise,Utilized advanced troubleshooting skills with Windows
+none-764,none,A,34,self_praise,Utilized advanced troubleshooting skills with network equipment
+none-764,none,A,38,fragment,Enhanced knowledge transfer
+none-764,none,A,40,inflated_scope,"Implemented secure communication interfaces (e.g., SSL/TLS)"
+none-764,none,A,41,inflated_scope,Managed cryptographic key infrastructure for sensitive data exchanges
+none-764,none,A,42,inflated_scope,Oversaw configuration of critical enterprise applications (EPIC)
+none-764,none,A,43,inflated_scope,Oversaw configuration of critical enterprise applications (Lawson)
+none-764,none,A,44,inflated_scope,Oversaw configuration of critical enterprise applications (Micro Strategy)
+none-764,none,A,47,inflated_scope,Oversaw maintenance of critical enterprise applications (Micro Strategy)
+none-764,none,A,48,inflated_scope,Ensured high availability of critical enterprise applications
+none-764,none,B,0,other_duty,Unable to provide a tailored resume
+none-1538,none,A,5,self_praise,Proven ability to streamline processes
+none-1538,none,A,6,self_praise,Proven ability to deliver accurate financial reporting in fast‑paced environments
+none-1538,none,A,9,fragment,Ensured on‑budget delivery
+none-1538,none,A,11,other_duty,Used rigorous financial controls
+none-1538,none,A,13,inflated_scope,Led financial planning for multiple solar and hybrid power projects
+none-1538,none,A,14,inflated_scope,Led cost analysis for multiple solar and hybrid power projects
+none-1538,none,A,19,other_duty,Consistently met budget targets
+none-1538,none,A,20,other_duty,Consistently exceeded budget targets
+none-1538,none,A,21,other_duty,Prepared detailed project financial statements
+none-1538,none,A,22,fragment,Prepared profit‑and‑loss analyses
+none-1538,none,A,23,fragment,Prepared cash‑flow projections
+none-1538,none,A,24,fragment,Prepared variance reports
+none-1538,none,A,25,invented_tool,Reports were for senior stakeholders
+none-1538,none,A,26,other_duty,Reports were for external auditors
+none-1538,none,A,27,fragment,Coordinated audit requests
+none-1538,none,A,28,other_duty,Coordinated reconciliations for project accounts
+none-1538,none,A,29,fragment,Maintained accurate records
+none-1538,none,A,30,other_duty,Supported timely audit closures
+none-1538,none,A,31,fragment,Implemented contingency budgeting
+none-1538,none,A,32,fragment,Implemented cost‑control measures
+none-1538,none,A,33,other_duty,Reduced overruns by 48% on tendered projects
+none-1538,none,A,35,fragment,Oversaw vendor invoicing
+none-1538,none,A,36,inflated_scope,Ensured compliance with contractual terms
+none-1538,none,A,37,inflated_scope,Ensured accurate accrual management
+none-1538,none,A,38,other_duty,Developed comprehensive project financial models
+none-1538,none,A,39,other_duty,Maintained comprehensive project financial models
+none-1538,none,A,40,other_duty,Developed dashboards for real‑time monitoring of budget vs. actual performance
+none-1538,none,A,41,other_duty,Maintained dashboards for real‑time monitoring of budget vs. actual performance
+none-1538,none,A,42,other_duty,Collaborated with cross‑functional teams
+none-1538,none,A,43,other_duty,Aligned project schedules with financial reporting cycles
+none-1538,none,A,44,inflated_scope,Ensured seamless monthly close processes
+none-1538,none,A,47,other_duty,Translated technical data into financial impact assessments
+none-1538,none,A,48,other_duty,Used assessments for cost control
+none-1538,none,B,0,other_duty,Unable to provide a tailored resume
+none-1538,none,B,1,fragment,due to lack of relevant evidence
+none-609,none,A,29,fragment,ensuring timely delivery
+none-609,none,A,31,fragment,in fast‑paced environments
+none-609,none,A,47,fragment,facilitating clear documentation
+none-609,none,B,40,inflated_scope,Managed large data repositories using corporate tools
+none-609,none,B,41,inflated_scope,Managed large data repositories using dashboards
+none-609,none,C,17,fragment,For mobility technologies
+none-609,none,C,18,fragment,For IoT technologies
+none-3055,none,A,0,self_praise,Seasoned embedded software engineer
+none-3055,none,A,3,other_duty,Strong foundation in Agile V‑model processes
+none-3055,none,A,6,fragment,To contribute to Oracle’s scalable cloud infrastructure solutions
+none-3055,none,A,11,fragment,Ensured high reliability
+none-3055,none,A,12,inflated_scope,Ensured performance in resource‑constrained environments
+none-3055,none,A,14,other_duty,Applied version control best practices using IBM Synergy
+none-3055,none,A,17,fragment,Conducted performance tuning
+none-3055,none,A,19,other_duty,Met stringent safety and quality standards
+none-3055,none,A,21,fragment,Authored design reviews
+none-3055,none,A,22,fragment,Authored test reports
+none-3055,none,A,23,other_duty,Supported transparent stakeholder communication
+none-3055,none,A,24,other_duty,Engaged in Agile development practices
+none-3055,none,A,25,fragment,Delivered incremental features
+none-3055,none,A,26,other_duty,Responded to evolving requirements
+none-3055,none,A,27,other_duty,Utilized MATLAB/Simulink for simulation
+none-3055,none,A,28,other_duty,Utilized MATLAB/Simulink for validation of embedded control algorithms
+none-3055,none,A,30,inflated_scope,Ensured robust real‑time operation
+none-3055,none,A,32,other_duty,Collaborated with hardware and software teams to optimize system performance
+none-3055,none,A,33,self_praise,Demonstrated strong problem‑solving skills
+none-3055,none,A,34,self_praise,Demonstrated proactive approach to continuous improvement
+none-3055,none,A,35,self_praise,Demonstrated in fast‑paced environments
+none-3055,none,B,0,self_praise,Seasoned software engineer with a strong foundation in embedded systems
+none-3055,none,B,1,self_praise,Seasoned software engineer with a strong foundation in automotive electronics
+none-3055,none,B,15,other_duty,Applied comprehensive knowledge of AUTOSAR architecture
+none-3055,none,B,20,other_duty,Refine system behavior during development cycles
+none-3055,none,B,25,fragment,Enhancing performance insights
+none-3055,none,B,31,other_duty,Improving overall product reliability
+none-3055,none,C,10,self_praise,Demonstrated strong knowledge of MATLAB
+none-3055,none,C,19,self_praise,Strong knowledge of AUTOSAR architecture
+none-3055,none,C,21,self_praise,Strong knowledge of SVN
+none-3055,none,C,22,self_praise,Strong knowledge of IBM Synergy
+none-3055,none,C,23,self_praise,Strong knowledge of ClearCase
+none-3055,none,D,0,self_praise,Seasoned automotive embedded software engineer
+none-3055,none,D,18,fragment,utilized basic AUTOSAR architecture
+none-653,none,A,3,fragment,adept at process design
+none-653,none,A,5,fragment,adept at cross‑functional collaboration
+none-653,none,A,6,self_praise,Proven ability to streamline data workflows
+none-653,none,A,9,fragment,ready to transition those skills to ERP configuration
+none-653,none,A,10,fragment,ready to transition those skills to product lifecycle management
+none-653,none,A,11,inflated_scope,Managed large‑scale data entry
+none-653,none,A,12,inflated_scope,Managed quality assurance for complex systems
+none-653,none,A,15,inflated_scope,Designed standardized data processing procedures
+none-653,none,A,16,inflated_scope,Implemented standardized data processing procedures
+none-653,none,A,17,invented_number,Reducing errors by 25%
+none-653,none,A,18,fragment,Improving turnaround times
+none-653,none,A,19,inflated_scope,Led cross‑departmental training sessions
+none-653,none,A,20,other_duty,Training sessions on data handling
+none-653,none,A,24,fragment,Coordinated with IT
+none-653,none,A,25,fragment,Coordinated with operations
+none-653,none,A,26,fragment,Troubleshoot system issues
+none-653,none,A,27,fragment,Providing timely solutions
+none-653,none,A,29,other_duty,Developed comprehensive documentation for data workflows
+none-653,none,A,30,other_duty,Developed comprehensive documentation for SOPs
+none-653,none,A,31,fragment,Facilitating knowledge transfer
+none-653,none,A,33,inflated_scope,Oversaw confidential information handling
+none-653,none,A,34,inflated_scope,Oversaw data security protocols
+none-653,none,A,36,fragment,Analyzed process gaps
+none-653,none,A,37,fragment,Recommended improvements
+none-653,none,A,39,fragment,Collaborated with stakeholders
+none-653,none,A,40,fragment,Gather requirements
+none-653,none,A,41,other_duty,Translate business needs into actionable data solutions
+none-653,none,A,45,fragment,Internal audits
+none-653,none,A,48,fragment,Fast‑paced environments
+none-653,none,B,1,fragment,Strong Excel proficiency
+none-653,none,B,3,self_praise,Adept at building and maintaining structured processes
+none-653,none,B,5,other_duty,Leading teams to achieve operational excellence
+none-653,none,B,8,invented_tool,Proficient in advanced Excel functions
+none-653,none,B,9,other_duty,Enabling efficient data management and analysis across multiple projects
+none-653,none,B,16,fragment,Enhancing confidence
+none-653,none,B,21,fragment,Driving productivity
+none-653,none,B,24,fragment,Supporting decision‑making
+none-653,none,B,25,fragment,Supporting operational transparency
+none-653,none,B,26,other_duty,Utilized government relations knowledge
+none-653,none,B,28,other_duty,Navigating complex stakeholder interactions
+none-653,none,B,29,fragment,Delivered sound decision‑making
+none-653,none,B,31,fragment,Influencing cross‑functional initiatives
+none-653,none,B,32,fragment,Guiding cross‑functional initiatives
+none-653,none,D,18,fragment,Tested employees
+none-2585,none,A,0,invented_number,Seasoned accountant with over 12 years of progressive experience in financial reporting
+none-2585,none,A,1,invented_number,Seasoned accountant with over 12 years of progressive experience in budgeting
+none-2585,none,A,2,invented_number,Seasoned accountant with over 12 years of progressive experience in audit support
+none-2585,none,A,5,other_duty,Experience across nonprofit sectors
+none-2585,none,A,7,self_praise,Proven ability to deliver variance analysis
+none-2585,none,A,9,other_duty,Strategic financial insights drive operational efficiency
+none-2585,none,A,10,other_duty,Strategic financial insights drive compliance with GAAP
+none-2585,none,A,11,other_duty,Strategic financial insights drive compliance with federal regulations
+none-2585,none,A,12,inflated_scope,Led month‑end closing processes
+none-2585,none,A,13,inflated_scope,Led year‑end closing processes
+none-2585,none,A,14,fragment,Led journal entries
+none-2585,none,A,15,fragment,Led accruals
+none-2585,none,A,16,fragment,Led reconciliations
+none-2585,none,A,21,other_duty,Prepared detailed financial statements
+none-2585,none,A,22,fragment,Prepared variance analyses
+none-2585,none,A,23,fragment,Identifying cost‑saving opportunities
+none-2585,none,A,24,other_duty,Ensuring compliance with GAAP
+none-2585,none,A,25,other_duty,Ensuring compliance with Uniform Guidance
+none-2585,none,A,31,other_duty,Conducted comprehensive audits of vendor invoices
+none-2585,none,A,33,fragment,Reducing discrepancies
+none-2585,none,A,43,other_duty,Coordinated with program directors
+none-2585,none,A,44,fragment,Analyzed budget-to-actual variances
+none-2585,none,A,45,other_duty,Providing actionable recommendations for program adjustments
+none-2585,none,A,46,other_duty,Prepared monthly financial reports
+none-2585,none,A,47,fragment,Prepared forecasts
+none-2585,none,A,48,invented_tool,Presented monthly financial reports to senior leadership
+none-2585,none,A,49,invented_tool,Presented forecasts to senior leadership
+none-2585,none,A,50,fragment,Supporting strategic decision‑making
+none-2585,none,A,52,inflated_scope,Implemented process improvements in cash‑flow management
+none-2585,none,A,53,fragment,Enhancing efficiency
+none-2585,none,A,54,fragment,Reducing cycle times
+none-2585,none,A,55,invented_tool,Demonstrated strong Excel skills for financial modeling
+none-2585,none,A,56,invented_tool,Demonstrated strong Excel skills for scenario planning
+none-2585,none,A,57,invented_tool,Demonstrated strong Excel skills for data analysis
+none-2585,none,B,2,other_duty,Extensive variance analysis experience
+none-2585,none,B,3,self_praise,Proven track record in nonprofit settings
+none-2585,none,B,4,self_praise,Proven track record in corporate settings
+none-2585,none,B,5,self_praise,Adept at GAAP compliance
+none-2585,none,B,6,fragment,Advanced Excel skills
+none-2585,none,B,7,self_praise,Financial statement preparation skills
+none-2585,none,B,17,fragment,Prepared financial statements
+none-2585,none,B,18,fragment,Conducted variance analysis
+none-2585,none,B,19,fragment,Supported decision‑making
+none-2585,none,B,26,fragment,Enhanced reporting accuracy
+none-2585,none,B,27,invented_tool,Utilized advanced Excel skills
+none-2585,none,B,28,fragment,Utilized Word skills
+none-2585,none,B,29,fragment,Utilized Outlook skills
+none-2585,none,B,31,fragment,Created detailed reports
+none-2585,none,B,32,fragment,Performed financial analysis
+none-2585,none,B,33,fragment,Maintained GAAP compliance
+none-2585,none,B,35,other_duty,Documented processes across multiple departments
+none-2585,none,B,36,other_duty,Coordinated with nonprofit stakeholders
+none-2585,none,B,41,fragment,Supported forecasting activities
+none-2585,none,B,42,inflated_scope,Ensured alignment with organizational cost structures
+none-2585,none,B,43,inflated_scope,Ensured alignment with funding streams
+none-2585,none,B,45,inflated_scope,Trained on monitoring procedures
+none-2585,none,B,46,inflated_scope,Trained on store reconciliation techniques
+none-2585,none,B,48,other_duty,Collaborated with foreign partners
+none-2585,none,C,1,other_duty,Reconciled balance sheets for entities such as The Southern Company and the Department of the Interior
+none-2585,none,C,15,fragment,Oversaw accounts payable
+none-2585,none,C,16,inflated_scope,Oversaw purchasing card audits
+none-2585,none,C,20,fragment,Reconciled inventory records
+none-2585,none,D,5,fragment,Prepared financial statements
+none-2585,none,D,6,fragment,Conducted variance analysis
+none-2585,none,D,21,inflated_scope,Trained on monitoring procedures
+none-2585,none,D,22,inflated_scope,Trained on store reconciliation techniques
+none-2585,none,D,26,fragment,Processed related fees
