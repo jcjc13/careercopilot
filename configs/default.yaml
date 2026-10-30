@@ -39,7 +39,7 @@ drafter:                   # a DIFFERENT model family that drafts the hard E2 te
   api_key_env: GROQ_API_KEY
   temperature: 0.3
   reasoning_effort: none
-  price_in: 0.0
+  price_in: 0.0so w
   price_out: 0.0
 
 retrieval:
