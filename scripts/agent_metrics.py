@@ -9,7 +9,7 @@ Per task:
   success          completed AND no unsupported claim AND no introduced tool/number (needs e3_per_resume.csv)
   format_validity  share of the structured outputs that were well formed (the pipeline does not log individual
                    tool calls, so this is the closest derivable "tool-call accuracy"): the requirements list has
-                   the expected length; the output has a summary and bullets; for grounded variants every line
+                   the expected length; the output has a summary and bullets (a summary the verifier removed is not a format error; see summary_removed); for grounded variants every line
                    cites evidence ids and every cited id exists among the evidence shown (E1..En)
   steps            LLM calls (+ verifier calls when the verifier is the LLM judge)
   step_efficiency  minimal steps for the variant / steps used (1.0 = no wasted calls)
@@ -30,11 +30,17 @@ def pct(xs, q):
     return xs[min(len(xs) - 1, int(q * len(xs)))] if xs else None
 
 
+def summary_removed(r):
+    return any(x.startswith("Summary: ") for x in r["removed_lines"])
+
+
 def format_checks(r, n_req):
     """List of booleans, one per structured output the task produced."""
     checks = [len(r["requirements"]) == n_req] if r["variant"] != "A" else []
     lines = r["lines"]
-    checks.append(bool(lines) and lines[0].startswith("Summary: ") and len(lines) > 1)
+    # a summary the verifier removed is a verification outcome (counted in summary_removed), not a format error
+    has_summary = bool(lines) and (lines[0].startswith("Summary: ") or summary_removed(r))
+    checks.append(has_summary and len(lines) > 1)
     if r["variant"] in ("B", "D"):   # grounded: every bullet must cite existing evidence ids
         n_ev = len({b for bs in (r.get("evidence") or {}).values() for b in bs})
         valid = {f"E{i}" for i in range(1, n_ev + 1)}
@@ -72,6 +78,7 @@ def main(config, mock=False, limit=None):
             "format_validity": round(sum(checks) / len(checks), 3) if checks else "",
             "steps": steps, "step_efficiency": round(min(1.0, minimal / steps), 3) if minimal and steps else "",
             "regenerations": r["regenerations"], "removed_lines": len(r["removed_lines"]),
+            "summary_removed": int(summary_removed(r)),
             "loop_resolved": int(r["regenerations"] > 0 and not r["removed_lines"]) if agentic else "",
             "tokens": u["tokens_in"] + u["tokens_out"], "latency_s": round(u["latency_s"], 3),
             "cost_usd": round(u["cost_usd"], 6)})
@@ -92,6 +99,7 @@ def main(config, mock=False, limit=None):
             "tasks": len(rs), "completed": statistics.mean(num(rs, "completed")),
             "success": statistics.mean(ok) if ok else None,
             "format_validity": statistics.mean(num(rs, "format_validity")) if num(rs, "format_validity") else None,
+            "summary_removed_rate": statistics.mean(num(rs, "summary_removed")),
             "steps_mean": statistics.mean(num(rs, "steps")),
             "step_efficiency": statistics.mean(num(rs, "step_efficiency")) if num(rs, "step_efficiency") else None,
             "regenerations_mean": statistics.mean(num(rs, "regenerations")),

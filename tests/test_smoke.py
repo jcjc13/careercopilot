@@ -41,6 +41,8 @@ def _cfg(tmp: Path) -> Path:
     cfg["paths"]["labels_dir"] = str(tmp / "labels")
     cfg["paths"]["verifier_data"] = str(tmp / "verifier")
     cfg["retrieval"]["embedding_model"] = None   # forces bag-of-words similarity offline
+    cfg["retrieval"]["method"] = "bm25"          # the default (hybrid) needs embedding + re-ranker models
+    cfg["verifier"]["method"] = "rule"           # the default (finetuned_nli) needs the trained model files
     p = tmp / "cfg.yaml"
     p.write_text(yaml.safe_dump(cfg))
     return p
@@ -103,6 +105,15 @@ def test_embedding_retriever_caches_resume_embeddings(monkeypatch):
 
     assert first == second == [(0, 1.0)]
     assert model.calls == [("alpha",), ("alpha", "beta"), ("alpha",)]
+
+
+def test_parse_tailored_salvages_malformed_json():
+    from careercopilot.generation import _parse_tailored
+    broken = ('{"summary":"Data analyst.","bullets":[ "Built dashboards for 12 managers. [E1]",'
+              '" Wrote SQL reports. [E2, E3]"}')      # closing bracket missing, as the model sometimes writes it
+    lines, cites = _parse_tailored(broken)
+    assert lines == ["Summary: Data analyst.", "Built dashboards for 12 managers.", "Wrote SQL reports."]
+    assert cites == [[], ["E1"], ["E2", "E3"]]
 
 
 def test_rule_verifier():

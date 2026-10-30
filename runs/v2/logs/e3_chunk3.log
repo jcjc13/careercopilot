@@ -1,0 +1,9 @@
+# command: run_e3_tailoring.py --variants A,B,C,D --limit 36 (resume after chunk 2 hit the 2h limit)
+# started: Mon Oct 26 15:21:34 +08 2026
+The tokenizer you are loading from '/Users/javanchok/Documents/GitHub/careercopilot/models/verifier-nli-ft' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+retriever=hybrid verifier=finetuned_nli model=openai/gpt-oss-20b
+pairs:   0%|          | 0/36 [00:00<?, ?it/s]pairs:  61%|██████    | 22/36 [07:58<05:04, 21.77s/it]pairs:  64%|██████▍   | 23/36 [10:05<06:05, 28.14s/it]pairs:  67%|██████▋   | 24/36 [14:36<09:31, 47.66s/it]pairs:  69%|██████▉   | 25/36 [30:04<25:18, 138.01s/it]pairs:  72%|███████▏  | 26/36 [49:05<44:23, 266.39s/it]pairs:  75%|███████▌  | 27/36 [57:30<45:29, 303.29s/it]pairs:  78%|███████▊  | 28/36 [1:00:07<36:55, 276.88s/it]pairs:  81%|████████  | 29/36 [1:11:39<42:13, 361.96s/it]pairs:  83%|████████▎ | 30/36 [1:20:49<40:28, 404.73s/it]pairs:  86%|████████▌ | 31/36 [1:24:13<29:37, 355.49s/it]pairs:  89%|████████▉ | 32/36 [1:26:55<20:21, 305.42s/it]pairs:  92%|█████████▏| 33/36 [1:32:07<15:21, 307.30s/it]pairs:  94%|█████████▍| 34/36 [1:40:38<12:08, 364.00s/it][llm] APIConnectionError: retrying in 3s
+[llm] APIConnectionError: retrying in 6s
+pairs:  97%|█████████▋| 35/36 [1:49:04<06:44, 404.45s/it]pairs: 100%|██████████| 36/36 [1:54:55<00:00, 388.79s/it]pairs: 100%|██████████| 36/36 [1:54:55<00:00, 191.53s/it]
+wrote /Users/javanchok/Documents/GitHub/careercopilot/runs/v2/e3_outputs.jsonl
+# exit: 0 finished: Mon Oct 26 17:16:45 +08 2026

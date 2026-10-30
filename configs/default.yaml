@@ -50,7 +50,7 @@ retrieval:
   reranker_model: cross-encoder/ms-marco-MiniLM-L-6-v2     # used by hybrid; falls back to rank fusion if missing
 
 verifier:
-  method: rule             # rule | nli | finetuned | finetuned_nli | llm  (set to the E2 winner before E3)
+  method: finetuned_nli    # rule | nli | finetuned | finetuned_nli | llm  (E2 run v2 winner: best score-based model on both sets)
   nli_model: cross-encoder/nli-deberta-v3-small
   # thresholds below: run v2, tuned on the silver validation set (run_e2_verifiers.py, default --tune silver)
   nli_threshold: 0.2

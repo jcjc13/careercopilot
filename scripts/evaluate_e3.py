@@ -18,14 +18,16 @@
   -> runs/<run>/e3_judged.jsonl, e3_pairwise.jsonl   cached judge outputs (re-runs are cheap)
   -> runs/<run>/e3_per_resume.csv                    one row per pair x variant
   -> runs/<run>/e3_summary.csv, e3_tests.json        means by variant x fit level, paired tests
-  -> data/labels/e3_human_sample.csv                 200 claims to label (supported yes/no)
-  -> data/labels/e3_preference.csv                   30 blind comparisons to rate
+  -> data/labels/e3_human_sample.csv                 200 claims to label (supported yes/no), blind, with the resume
+  -> data/labels/e3_preference.csv                   30 blind comparisons to rate, with the job and resume
+  -> data/labels/e3_human_key.csv, e3_preference_key.csv   answer keys (variants); do not open while labelling
 """
 import csv
 import json
 import random
 from collections import defaultdict
 from itertools import combinations
+from pathlib import Path
 
 from _common import build_llm, load_config, load_pairs_or_exit, parser, resolve, run_dir, tqdm
 
@@ -217,32 +219,48 @@ def main(config, mock=False, human_labels=None, human_pref=None, pairwise=False,
     labels_dir.mkdir(parents=True, exist_ok=True)
     rng = random.Random(cfg["seed"])
     sample_path = labels_dir / "e3_human_sample.csv"
+    key_path = labels_dir / "e3_human_key.csv"
     if not sample_path.exists():
         all_claims = [(k, i, c) for k, j in judged.items() for i, c in enumerate(j["claims"])]
-        pick = rng.sample(all_claims, min(n_human, len(all_claims)))
-        with open(sample_path, "w", newline="", encoding="utf-8") as f:
-            w = csv.writer(f)
-            w.writerow(["item", "pair_id", "variant", "claim_idx", "claim", "supported_yes_no", "labeller"])
+        pick = sorted(rng.sample(all_claims, min(n_human, len(all_claims))), key=lambda x: (x[0][0], rng.random()))
+        with open(sample_path, "w", newline="", encoding="utf-8") as f, \
+                open(key_path, "w", newline="", encoding="utf-8") as kf:
+            w, kw = csv.writer(f), csv.writer(kf)
+            w.writerow(["item", "pair_id", "original_resume", "output_line", "claim", "supported_yes_no", "labeller"])
+            kw.writerow(["item", "pair_id", "variant", "claim_idx"])
+            by_key = {(r.pair_id, r.variant): r for r in results}
             for n, ((pid, v), i, c) in enumerate(pick):
-                w.writerow([n, pid, v, i, c["text"], "", ""])
-        print(f"\nwrote {sample_path}: label each claim against its resume (hide the variant column)")
+                lines = by_key[(pid, v)].lines
+                line = lines[c["line_idx"]] if 0 <= c["line_idx"] < len(lines) else ""
+                w.writerow([n, pid, pairs[pid].resume, line, c["text"], "", ""])
+                kw.writerow([n, pid, v, i])
+        print(f"\nwrote {sample_path} (blind: no variant; rows grouped by resume) and the answer key {key_path}; "
+              f"label supported_yes_no = does the original_resume support the claim")
     pref_path = labels_dir / "e3_preference.csv"
+    pkey_path = labels_dir / "e3_preference_key.csv"
     if not pref_path.exists():
         outs = {(r.pair_id, r.variant): r for r in results if not r.error}
         combos = [(pid, a, b) for pid in sorted({k[0] for k in outs})
                   for a, b in combinations(sorted(v for (p, v) in outs if p == pid), 2)]
-        with open(pref_path, "w", newline="", encoding="utf-8") as f:
-            w = csv.writer(f)
-            w.writerow(["item", "pair_id", "left_variant", "right_variant", "left", "right",
+        with open(pref_path, "w", newline="", encoding="utf-8") as f, \
+                open(pkey_path, "w", newline="", encoding="utf-8") as kf:
+            w, kw = csv.writer(f), csv.writer(kf)
+            w.writerow(["item", "pair_id", "job", "original_resume", "left", "right",
                         "winner_left_right_tie", "rater"])
+            kw.writerow(["item", "pair_id", "left_variant", "right_variant"])
             for n, (pid, a, b) in enumerate(rng.sample(combos, min(n_pref, len(combos)))):
                 l, r = (a, b) if rng.random() < 0.5 else (b, a)
-                w.writerow([n, pid, l, r, "\n".join(outs[(pid, l)].lines), "\n".join(outs[(pid, r)].lines), "", ""])
-        print(f"wrote {pref_path}: hide the *_variant columns, pick the version you'd rather receive")
+                w.writerow([n, pid, pairs[pid].job, pairs[pid].resume,
+                            "\n".join(outs[(pid, l)].lines), "\n".join(outs[(pid, r)].lines), "", ""])
+                kw.writerow([n, pid, l, r])
+        print(f"wrote {pref_path} (blind) and the answer key {pkey_path}; "
+              f"winner_left_right_tie = the version you'd rather receive for that job")
 
     # ---- validate the judges against people ----
     if human_labels:
-        hl = [r for r in csv.DictReader(open(human_labels, encoding="utf-8")) if r["supported_yes_no"].strip()]
+        key = {r["item"]: r for r in csv.DictReader(open(Path(human_labels).with_name("e3_human_key.csv"), encoding="utf-8"))}
+        hl = [{**r, **key[r["item"]]} for r in csv.DictReader(open(human_labels, encoding="utf-8"))
+              if r["supported_yes_no"].strip()]
         human = [r["supported_yes_no"].strip().lower().startswith("y") for r in hl]
         judge = [judged[(r["pair_id"], r["variant"])]["claims"][int(r["claim_idx"])]["supported"] for r in hl]
         agree = sum(h == j for h, j in zip(human, judge)) / len(hl)
@@ -250,7 +268,9 @@ def main(config, mock=False, human_labels=None, human_pref=None, pairwise=False,
               f"Cohen's kappa {cohen_kappa(human, judge):.2f}")
     if human_pref and pw:
         pwmap = {(r["pair_id"], r["a"], r["b"]): r["winner"] for r in pw}
-        hp = [r for r in csv.DictReader(open(human_pref, encoding="utf-8")) if r["winner_left_right_tie"].strip()]
+        pkey = {r["item"]: r for r in csv.DictReader(open(Path(human_pref).with_name("e3_preference_key.csv"), encoding="utf-8"))}
+        hp = [{**r, **pkey[r["item"]]} for r in csv.DictReader(open(human_pref, encoding="utf-8"))
+              if r["winner_left_right_tie"].strip()]
         h, j = [], []
         for r in hp:
             a, b = sorted([r["left_variant"], r["right_variant"]])

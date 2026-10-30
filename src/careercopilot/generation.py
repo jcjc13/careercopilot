@@ -21,14 +21,32 @@ def extract_requirements(llm, job: str, n: int = 8) -> tuple[list[str], Usage]:
 _CITE = re.compile(r"\s*\[(E\d+(?:\s*,\s*E\d+)*)\]\s*$")
 
 
+_STR = r'"((?:[^"\\]|\\.)*)"'
+
+
+def _salvage_json(out: str):
+    """The model sometimes writes almost-valid JSON (e.g. a missing closing bracket). Pull the summary and
+    the bullet strings out by pattern so one stray character does not turn the whole reply into a summary."""
+    m = re.search(r'"summary"\s*:\s*' + _STR, out)
+    b = re.search(r'"bullets"\s*:\s*\[', out)
+    if not m or not b:
+        return None
+    bullets = [x.strip() for x in re.findall(_STR, out[b.end():]) if x.strip()]
+    return (m.group(1).strip(), bullets) if bullets else None
+
+
 def _parse_tailored(out: str) -> tuple[list[str], list[list[str]]]:
     """Returns (lines, citations); line 0 is the summary."""
     try:
         d = parse_json(out)
         summary, bullets = str(d.get("summary", "")).strip(), [str(b) for b in d.get("bullets", [])]
     except (ValueError, AttributeError):
-        rows = [l.strip(" -•*") for l in out.splitlines() if l.strip()]
-        summary, bullets = (rows[0] if rows else ""), rows[1:]
+        salvaged = _salvage_json(out)
+        if salvaged:
+            summary, bullets = salvaged
+        else:
+            rows = [l.strip(" -•*") for l in out.splitlines() if l.strip()]
+            summary, bullets = (rows[0] if rows else ""), rows[1:]
     lines, cites = ["Summary: " + summary], [[]]
     for b in bullets:
         m = _CITE.search(b)
@@ -37,10 +55,23 @@ def _parse_tailored(out: str) -> tuple[list[str], list[list[str]]]:
     return lines, cites
 
 
+def _tailor_call(llm, sys: str, user: str, retries: int = 1):
+    """One tailoring call. If the reply parses to a summary and no bullets (unusable), ask again once; the
+    usage of every attempt is counted, so the retry shows up in the cost and call counts."""
+    usage = Usage()
+    for _ in range(retries + 1):
+        out, u = llm.chat(sys, user, max_tokens=1200)
+        usage.add(u)
+        lines, cites = _parse_tailored(out)
+        if len(lines) > 1:
+            break
+    return lines, cites, usage
+
+
 def tailor_unrestricted(llm, resume: str, job: str, max_bullets: int = 10):
     sys = prompts.TAILOR_UNRESTRICTED.format(max_bullets=max_bullets)
-    out, u = llm.chat(sys, f"<resume>\n{resume}\n</resume>\n\n<job>\n{job}\n</job>", max_tokens=1200)
-    lines, cites = _parse_tailored(out)
+    user = f"<resume>\n{resume}\n</resume>\n\n<job>\n{job}\n</job>"
+    lines, cites, u = _tailor_call(llm, sys, user)
     return lines, cites, u
 
 
@@ -63,8 +94,7 @@ def format_evidence(requirements: list[str], evidence: dict, bullets: list[str])
 def tailor_grounded(llm, requirements, evidence, bullets, job: str, max_bullets: int = 10):
     block, id_map = format_evidence(requirements, evidence, bullets)
     sys = prompts.TAILOR_GROUNDED.format(max_bullets=max_bullets)
-    out, u = llm.chat(sys, f"<job>\n{job}\n</job>\n\n{block}", max_tokens=1200)
-    lines, cites = _parse_tailored(out)
+    lines, cites, u = _tailor_call(llm, sys, f"<job>\n{job}\n</job>\n\n{block}")
     return lines, cites, id_map, u
 
 
