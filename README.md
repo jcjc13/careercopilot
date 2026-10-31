@@ -8,7 +8,7 @@ job requirement (RAG), rewrites the resume from it, and verifies every claim.
 resume + job ─► anonymise + split into bullets ─► extract 8 requirements ─► retrieve evidence (E1)
                                                                                 │
 tailored resume ◄── verify claims (E2) ◄── split into claims ◄── tailor (E3: A/B/C/D)
-                        └── unsupported: regenerate (step budget 2), then drop ──┘
+                        └── unsupported: C regenerates (budget 2) then drops; D uses a bounded controller ──┘
 ```
 
 | Variant | Grounded in retrieved evidence | Verify + regenerate |
@@ -16,7 +16,7 @@ tailored resume ◄── verify claims (E2) ◄── split into claims ◄─�
 | A (baseline) | no | no |
 | B | yes | no |
 | C | no | yes |
-| D (full) | yes | yes |
+| D (full) | yes | yes, with a controller (run v3; the earlier fixed loop is run v2) |
 
 ## Where each IS469 topic is used
 
@@ -28,7 +28,7 @@ tailored resume ◄── verify claims (E2) ◄── split into claims ◄─�
 | 4 Efficient fine-tuning | distillation: a teacher LLM writes part of the training data; LoRA as future work |
 | 5 Inference | temperature 0 for reproducibility; reasoning-effort dial; optional local model via Ollama |
 | 6 Evaluation | programmatic checks → LLM judge → humans; judge validated (kappa); pairwise judge in both orders |
-| 7 Agents | verify-and-regenerate loop with a step budget; trajectory counts (regenerations, removals) |
+| 7 Agents | variant D's bounded controller (`controller.py`): rewrite / retrieve more / reuse original / drop / escalate, limits enforced in Python, per-line trace; trajectory and controller metrics |
 | 8 RAG | BM25, hybrid + cross-encoder re-ranking, contextual retrieval, grounded generation with citations |
 | 9 Ethics | prompt-injection and name-swap bias probes; PII stripping; fabrication as the core risk |
 
@@ -67,11 +67,11 @@ python scripts/run_e2_verifiers.py                               # rule, nli, fi
                                                                  # (CPU: ~2 h; run one method at a time with --methods X --merge)
 
 # E3 tailoring (both) -- first set retrieval.method / verifier.method to the E1/E2 winners
-python scripts/run_e3_tailoring.py --variants A,B,C,D
+python scripts/run_e3_tailoring.py --variants A,B,C,D           # D uses the controller (tailoring.controller in the config; mode: llm|rule)
 python scripts/evaluate_e3.py --pairwise                         # then label the two sheets it writes
 python scripts/evaluate_e3.py --human-labels data/labels/e3_human_sample.csv \
                               --human-preference data/labels/e3_preference.csv
-python scripts/agent_metrics.py                                  # per-task success, steps, cost, latency (variants C/D loop)
+python scripts/agent_metrics.py                                  # per-task success, steps, cost, latency (C loop; D controller metrics: recovery success, escalation rate, actions by fit)
 python scripts/analyse_e3_failures.py                            # qualitative failure categories -> runs/<run>/e3_failures.csv
 python scripts/make_e3_figure.py                                 # main exhibit -> runs/<run>/figures/e3_tradeoff.svg
 
@@ -129,6 +129,17 @@ model family from the one that wrote the training data. Any OpenAI-compatible en
 - E2 results are reported per set (standard / hard) with F1 at the tuned threshold and at 0.5, ROC-AUC,
   false-flag rates and McNemar tests. Run v2 is in `runs/v2/` (console logs and environment in `runs/v2/logs/`).
 - All user text is wrapped in tags and every prompt says it is data, not instructions.
+
+## Controller (variant D, run v3)
+
+`src/careercopilot/controller.py` replaces D's fixed regenerate-then-drop loop. For each line the verifier
+rejects, the model proposes a JSON decision (ACCEPT, REWRITE_CONSERVATIVELY, RETRIEVE_MORE, USE_ORIGINAL, DROP,
+HUMAN_REVIEW); Python enforces allowed actions, per-line limits (`tailoring.controller` in `configs/default.yaml`),
+acceptance only when the verifier supports every claim, HUMAN_REVIEW only near the verifier threshold, and a
+rule-based router as override/fallback. The controller was tuned on 9 development pairs (`configs/dev.yaml`,
+`data/dev/`, runs `v3dev*`), disjoint from the 36 test pairs. Run v3 reuses A to C from run v2 and re-runs only D.
+Result: no better than the fixed loop on faithfulness or coverage; the gain is bounded, logged recovery
+(see `CareerCopilot — Process Record` 3.16). The old D outputs stay in `runs/v2/`.
 
 ## Dataset
 

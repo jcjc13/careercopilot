@@ -1,0 +1,31 @@
+branch: controller
+commit: 5ca3705c
+ M configs/default.yaml
+ M scripts/agent_metrics.py
+ M scripts/analyse_e3_failures.py
+ M scripts/evaluate_e3.py
+ M src/careercopilot/config.py
+ M src/careercopilot/data.py
+ M src/careercopilot/generation.py
+ M src/careercopilot/llm.py
+ M src/careercopilot/pipeline.py
+ M src/careercopilot/prompts.py
+ M src/careercopilot/schema.py
+ M tests/test_smoke.py
+?? configs/dev.yaml
+?? configs/dev_run1.yaml
+?? data/dev/
+?? data/labels/dev/
+?? data/labels/dev_run1/
+?? runs/v3/
+?? runs/v3dev/
+?? runs/v3dev_run1/
+?? src/careercopilot/controller.py
+
+Python 3.12.1
+datasets==3.6.0
+numpy==1.26.4
+openai==3.35.1
+sentence-transformers==4.1.0
+torch==2.2.2
+transformers==4.57.6

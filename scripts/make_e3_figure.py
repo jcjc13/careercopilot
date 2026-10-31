@@ -54,7 +54,7 @@ def main(config):
         svg.append(f'<circle cx="{lx}" cy="{H - 56}" r="6" fill="{COLORS[v]}"/>'
                    f'<text x="{lx + 12}" y="{H - 52}">{NAMES[v]}</text>')
         lx += 210
-    svg.append(f'<text x="60" y="{H - 28}" fill="#666">Source: runs/v2/e3_summary.csv. Unsupported claims judged by gpt-oss-120b '
+    svg.append(f'<text x="60" y="{H - 28}" fill="#666">Source: runs/{cfg["run_name"]}/e3_summary.csv. Unsupported claims judged by gpt-oss-120b '
                '(agreement with human labels 0.90, kappa 0.74).</text>')
     svg.append(f'<text x="60" y="{H - 12}" fill="#666">Coverage = share of the 8 job requirements addressed by a supported claim.</text>')
     svg.append("</svg>")

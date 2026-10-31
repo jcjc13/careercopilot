@@ -1,0 +1,41 @@
+# evaluate_e3.py --pairwise (run v3) Sat Oct 31 14:22:28 +08 2026
+claim judge:   0%|          | 0/144 [00:00<?, ?it/s]claim judge:  76%|███████▌  | 109/144 [00:10<00:03, 10.08it/s]claim judge:  76%|███████▌  | 109/144 [00:30<00:03, 10.08it/s]claim judge:  76%|███████▋  | 110/144 [00:58<00:24,  1.40it/s]claim judge:  77%|███████▋  | 111/144 [01:12<00:31,  1.05it/s]claim judge:  78%|███████▊  | 112/144 [01:42<00:53,  1.68s/it]claim judge:  78%|███████▊  | 113/144 [02:05<01:15,  2.43s/it]claim judge:  79%|███████▉  | 114/144 [02:29<01:43,  3.45s/it]claim judge:  80%|███████▉  | 115/144 [02:51<02:14,  4.63s/it]claim judge:  81%|████████  | 116/144 [03:30<03:29,  7.47s/it]claim judge:  81%|████████▏ | 117/144 [03:48<03:54,  8.67s/it]claim judge:  82%|████████▏ | 118/144 [03:58<03:47,  8.74s/it]claim judge:  83%|████████▎ | 119/144 [03:58<03:04,  7.40s/it]claim judge:  83%|████████▎ | 120/144 [04:46<05:59, 14.99s/it]claim judge:  84%|████████▍ | 121/144 [04:58<05:27, 14.25s/it]claim judge:  85%|████████▍ | 122/144 [05:24<06:15, 17.08s/it]claim judge:  85%|████████▌ | 123/144 [05:32<05:06, 14.62s/it]claim judge:  86%|████████▌ | 124/144 [05:55<05:37, 16.88s/it]claim judge:  87%|████████▋ | 125/144 [06:18<05:54, 18.68s/it]claim judge:  88%|████████▊ | 126/144 [06:59<07:26, 24.82s/it]claim judge:  88%|████████▊ | 127/144 [07:13<06:08, 21.69s/it]claim judge:  89%|████████▉ | 128/144 [07:44<06:30, 24.38s/it]claim judge:  90%|████████▉ | 129/144 [07:52<04:55, 19.73s/it]claim judge:  90%|█████████ | 130/144 [08:36<06:14, 26.76s/it]claim judge:  91%|█████████ | 131/144 [09:25<07:12, 33.25s/it]claim judge:  92%|█████████▏| 132/144 [09:38<05:27, 27.28s/it]claim judge:  92%|█████████▏| 133/144 [10:22<05:55, 32.31s/it]claim judge:  93%|█████████▎| 134/144 [10:22<03:47, 22.78s/it]claim judge:  94%|█████████▍| 135/144 [10:58<04:00, 26.73s/it]claim judge:  94%|█████████▍| 136/144 [11:37<04:02, 30.29s/it]claim judge:  95%|█████████▌| 137/144 [11:56<03:08, 26.93s/it]claim judge:  96%|█████████▌| 138/144 [12:32<02:58, 29.76s/it]claim judge:  97%|█████████▋| 139/144 [12:33<01:44, 20.95s/it]claim judge:  97%|█████████▋| 140/144 [12:33<00:59, 14.77s/it]claim judge:  98%|█████████▊| 141/144 [13:02<00:56, 18.97s/it]claim judge:  99%|█████████▊| 142/144 [13:26<00:41, 20.53s/it]claim judge:  99%|█████████▉| 143/144 [13:52<00:22, 22.07s/it]claim judge: 100%|██████████| 144/144 [14:10<00:00, 20.87s/it]claim judge: 100%|██████████| 144/144 [14:10<00:00,  5.90s/it]
+
+similarity = embedding:sentence-transformers/all-MiniLM-L6-v2
+var fit         n introd%  unsup%  cover%  simgain removed  calls  $/resume
+A   all        36      78    47.1    26.4    0.013     0.0    1.1    0.0004
+A   good       12      75    57.9    24.0    0.045     0.0    1.1    0.0004
+A   none       12      92    40.9    19.8   -0.001     0.0    1.1    0.0004
+A   potential  12      67    42.5    35.4   -0.004     0.0    1.0    0.0003
+B   all        36      44    26.6    33.0    0.007     0.0    2.1    0.0004
+B   good       12      42    16.3    28.1    0.040     0.0    2.0    0.0004
+B   none       12      50    35.5    22.9   -0.063     0.0    2.2    0.0005
+B   potential  12      42    27.9    47.9    0.046     0.0    2.0    0.0004
+C   all        36      19     6.4    20.5   -0.069     3.1   20.0    0.0049
+C   good       12      25     4.1    16.7   -0.061     2.9   20.9    0.0055
+C   none       12      17     9.9    15.6   -0.082     2.8   18.7    0.0047
+C   potential  12      17     5.3    29.2   -0.063     3.5   20.4    0.0046
+D   all        36      17     4.8    22.9   -0.064     2.3   25.3    0.0041
+D   good       12      25     5.5    21.9   -0.018     2.0   26.2    0.0042
+D   none       12       8     3.6    15.6   -0.121     2.2   21.0    0.0034
+D   potential  12      17     5.3    31.2   -0.052     2.8   28.8    0.0046
+  introd% = resumes with a tool or number not in the original (programmatic check)
+
+paired tests vs A, unsupported_rate (Wilcoxon p):
+  B_vs_A/good            n=12  p=0.000
+  B_vs_A/potential       n=12  p=0.009
+  B_vs_A/none            n=12  p=0.339
+  B_vs_A/all             n=36  p=0.000
+  C_vs_A/good            n=12  p=0.000
+  C_vs_A/potential       n=12  p=0.000
+  C_vs_A/none            n=12  p=0.003
+  C_vs_A/all             n=36  p=0.000
+  D_vs_A/good            n=12  p=0.000
+  D_vs_A/potential       n=12  p=0.000
+  D_vs_A/none            n=12  p=0.000
+  D_vs_A/all             n=36  p=0.000
+pairwise judge:   0%|          | 0/36 [00:00<?, ?it/s]pairwise judge:   3%|▎         | 1/36 [00:02<01:43,  2.96s/it]pairwise judge:   6%|▌         | 2/36 [00:06<01:44,  3.08s/it]pairwise judge:   8%|▊         | 3/36 [00:09<01:43,  3.14s/it]pairwise judge:  11%|█         | 4/36 [00:11<01:32,  2.90s/it]pairwise judge:  14%|█▍        | 5/36 [00:18<02:14,  4.34s/it]pairwise judge:  17%|█▋        | 6/36 [00:21<01:57,  3.93s/it]pairwise judge:  19%|█▉        | 7/36 [00:25<01:47,  3.72s/it]pairwise judge:  22%|██▏       | 8/36 [00:29<01:48,  3.87s/it]pairwise judge:  25%|██▌       | 9/36 [00:33<01:46,  3.94s/it]pairwise judge:  28%|██▊       | 10/36 [00:37<01:42,  3.93s/it]pairwise judge:  31%|███       | 11/36 [00:41<01:36,  3.85s/it]pairwise judge:  33%|███▎      | 12/36 [00:44<01:26,  3.62s/it]pairwise judge:  36%|███▌      | 13/36 [00:49<01:35,  4.13s/it]pairwise judge:  39%|███▉      | 14/36 [00:53<01:27,  3.97s/it]pairwise judge:  42%|████▏     | 15/36 [00:56<01:21,  3.88s/it]pairwise judge:  44%|████▍     | 16/36 [01:05<01:46,  5.33s/it]pairwise judge:  47%|████▋     | 17/36 [01:07<01:25,  4.48s/it]pairwise judge:  50%|█████     | 18/36 [01:12<01:22,  4.59s/it]pairwise judge:  53%|█████▎    | 19/36 [01:16<01:11,  4.23s/it]pairwise judge:  56%|█████▌    | 20/36 [01:19<01:01,  3.83s/it]pairwise judge:  58%|█████▊    | 21/36 [01:23<00:59,  3.97s/it]pairwise judge:  61%|██████    | 22/36 [01:26<00:52,  3.73s/it]pairwise judge:  64%|██████▍   | 23/36 [01:29<00:44,  3.45s/it]pairwise judge:  67%|██████▋   | 24/36 [01:31<00:36,  3.05s/it]pairwise judge:  69%|██████▉   | 25/36 [01:35<00:38,  3.46s/it]pairwise judge:  72%|███████▏  | 26/36 [01:42<00:43,  4.31s/it]pairwise judge:  75%|███████▌  | 27/36 [01:45<00:36,  4.02s/it]pairwise judge:  78%|███████▊  | 28/36 [01:48<00:30,  3.76s/it]pairwise judge:  81%|████████  | 29/36 [01:51<00:24,  3.57s/it]pairwise judge:  83%|████████▎ | 30/36 [01:54<00:20,  3.34s/it]pairwise judge:  86%|████████▌ | 31/36 [01:57<00:16,  3.32s/it]pairwise judge:  89%|████████▉ | 32/36 [02:02<00:14,  3.62s/it]pairwise judge:  92%|█████████▏| 33/36 [02:06<00:11,  3.69s/it]pairwise judge:  94%|█████████▍| 34/36 [02:10<00:08,  4.07s/it]pairwise judge:  97%|█████████▋| 35/36 [02:16<00:04,  4.60s/it]pairwise judge: 100%|██████████| 36/36 [02:19<00:00,  4.04s/it]pairwise judge: 100%|██████████| 36/36 [02:19<00:00,  3.88s/it]
+
+pairwise judge on 216 comparisons: consistent 162, tie both ways 18, FLIPPED with order 20, mixed 16; first-shown wins 0.51 of non-tie verdicts (0.5 = no position bias)
+win rate (consistent wins / comparisons): A 0.76, B 0.46, C 0.19, D 0.08
+# exit 0

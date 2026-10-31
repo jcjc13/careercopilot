@@ -60,6 +60,10 @@ class TailorResult:
     regenerations: int = 0
     usage: Usage = field(default_factory=Usage)
     error: str | None = None
+    # variant D (controller): lines sent to a person instead of output, the per-line decision trace, and counts
+    escalated_lines: list[str] = field(default_factory=list)
+    trace: list[dict] = field(default_factory=list)
+    actions: dict = field(default_factory=dict)
 
 
 # ---------- JSONL helpers ----------

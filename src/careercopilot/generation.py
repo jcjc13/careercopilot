@@ -106,6 +106,16 @@ def regenerate_line(llm, line: str, unsupported: list[str], evidence_text: str) 
     return out.strip().strip('"'), u
 
 
+def rewrite_conservatively(llm, line: str, unsupported: list[str], evidence_text: str,
+                           instructions: str | None = None) -> tuple[str, Usage]:
+    """Variant D's rewrite: fix only the flagged wording, following the controller's instructions."""
+    user = (f"<line>\n{line}\n</line>\n\nUnsupported claims:\n" + "\n".join(f"- {c}" for c in unsupported) +
+            (f"\n\nController instructions: {instructions}" if instructions else "") +
+            f"\n\n<evidence>\n{evidence_text}\n</evidence>")
+    out, u = llm.chat(prompts.REWRITE_CONSERVATIVE, user, max_tokens=200)
+    return out.strip().strip('"'), u
+
+
 def split_claims(llm, lines: list[str], mode: str = "llm") -> tuple[list[Claim], Usage]:
     """Atomic claims for each output line. mode='line' treats each line as one claim (no LLM)."""
     if mode == "line" or llm is None:

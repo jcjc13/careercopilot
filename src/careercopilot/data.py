@@ -39,6 +39,23 @@ def _pick(columns, *keys):
     raise KeyError(f"none of {keys} in columns {columns}")
 
 
+def excluded_indices(cfg: dict) -> set[int]:
+    """Dataset rows that must not be sampled: the pairs in the files listed under data.exclude_pairs, and the
+    resumes of the verifier's training set (data.exclude_train_ids, a jsonl with a resume_id like 'train-123')."""
+    import json
+    from .config import resolve
+    d, out = cfg["data"], set()
+    for f in d.get("exclude_pairs", []):
+        path = resolve(f)
+        if path.exists():
+            out |= {int(p.pair_id.rsplit("-", 1)[1]) for p in load_pairs(path)}
+    f = d.get("exclude_train_ids")
+    if f and resolve(f).exists():
+        with open(resolve(f), encoding="utf-8") as fh:
+            out |= {int(json.loads(l)["resume_id"].rsplit("-", 1)[1]) for l in fh if l.strip()}
+    return out
+
+
 def sample_from_hf(cfg: dict) -> list[Pair]:
     """Sample `per_label` pairs per fit level from the Hugging Face dataset."""
     from datasets import load_dataset
@@ -55,9 +72,11 @@ def sample_from_hf(cfg: dict) -> list[Pair]:
         f = _norm_label(v, names)
         if f:
             by_fit[f].append(i)
+    exclude = excluded_indices(cfg)
     rng = random.Random(cfg["seed"])
     pairs = []
     for fit, idxs in by_fit.items():
+        idxs = [i for i in idxs if i not in exclude]
         rng.shuffle(idxs)
         taken = 0
         for i in idxs:

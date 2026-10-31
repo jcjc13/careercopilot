@@ -163,6 +163,7 @@ def main(config, mock=False, human_labels=None, human_pref=None, pairwise=False,
                      "coverage": j["coverage"],
                      "similarity_gain": sim(text, p.job) - sim(p.resume, p.job),
                      "lines": len(res.lines), "removed_lines": len(res.removed_lines),
+                     "escalated_lines": len(res.escalated_lines),
                      "regenerations": res.regenerations, "llm_calls": res.usage.llm_calls,
                      "tokens": res.usage.tokens_in + res.usage.tokens_out,
                      "latency_s": res.usage.latency_s, "cost_usd": res.usage.cost_usd,
@@ -175,7 +176,7 @@ def main(config, mock=False, human_labels=None, human_pref=None, pairwise=False,
 
     # ---- summary by variant x fit ----
     metrics = ["any_introduced", "new_tools", "new_numbers", "unsupported_rate", "faithfulness", "coverage",
-               "similarity_gain", "removed_lines", "llm_calls", "cost_usd", "latency_s"]
+               "similarity_gain", "removed_lines", "escalated_lines", "llm_calls", "cost_usd", "latency_s"]
     groups = defaultdict(list)
     for r in rows:
         groups[(r["variant"], r["fit"])].append(r)
