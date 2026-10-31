@@ -175,11 +175,38 @@ def test_all_scripts_end_to_end():
         assert (tmp / "labels/e3_preference.csv").exists()
         am = _script("agent_metrics").main(cfg, mock=True)
         assert {"A", "B", "C", "D"} <= set(am) and am["D"]["steps_mean"] >= am["A"]["steps_mean"]
+        _script("analyse_e3_failures").main(cfg)
+        _script("make_e3_figure").main(cfg)
+        assert list((tmp / "runs").rglob("e3_tradeoff.svg"))
         pr = _script("run_probes")
         pr.main(cfg, "injection", ["A", "D"], n=3, mock=True)
         pr.main(cfg, "bias", ["A"], n=2, mock=True)
     finally:
         shutil.rmtree(tmp)
+
+
+def test_app_runs_offline():
+    """The Streamlit app starts, tailors a sample with the offline mock and renders all three tabs."""
+    try:
+        from streamlit.testing.v1 import AppTest
+    except ImportError:
+        return   # streamlit not installed: skip
+    at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120).run()
+    assert not at.exception
+    for sb in at.selectbox:
+        if sb.label == "Load a sample":
+            sb.select(next(o for o in sb.options if o != "(none)"))
+        if sb.label == "Retriever":
+            sb.select("bm25")
+        if sb.label == "Verifier":
+            sb.select("rule")
+    for cb in at.checkbox:
+        if cb.label == "Offline mock LLM":
+            cb.check()
+    at.run()
+    at.button[0].click().run()
+    assert not at.exception and not at.error
+    assert any(c.label == "keep" for c in at.checkbox)   # one accept box per tailored line
 
 
 if __name__ == "__main__":

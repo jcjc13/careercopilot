@@ -49,7 +49,7 @@ python scripts/prepare_data.py
 
 # try the system on one pair
 python scripts/tailor_one.py --pair <pair_id> --variant D
-streamlit run app.py
+streamlit run app.py                                             # three tabs: tailor (live), saved E3 results, experiment tables
 
 # E1 retrieval (Member A)
 python scripts/run_e1_retrieval.py --make-template --pairs 12    # then label data/labels/e1_labels.csv
@@ -72,6 +72,8 @@ python scripts/evaluate_e3.py --pairwise                         # then label th
 python scripts/evaluate_e3.py --human-labels data/labels/e3_human_sample.csv \
                               --human-preference data/labels/e3_preference.csv
 python scripts/agent_metrics.py                                  # per-task success, steps, cost, latency (variants C/D loop)
+python scripts/analyse_e3_failures.py                            # qualitative failure categories -> runs/<run>/e3_failures.csv
+python scripts/make_e3_figure.py                                 # main exhibit -> runs/<run>/figures/e3_tradeoff.svg
 
 # Topic 9 probes
 python scripts/run_probes.py --probe injection --variants A,B,C,D
@@ -108,8 +110,9 @@ model family from the one that wrote the training data. Any OpenAI-compatible en
 | `src/careercopilot/pipeline.py` | variants A-D | A |
 | `src/careercopilot/verifiers.py`, `corrupt.py` | rule, NLI, fine-tuned, LLM verifiers; corruptions | B |
 | `src/careercopilot/metrics.py` | all metrics and tests | B |
-| `scripts/run_e1_*`, `tailor_one`, `run_probes`, `app.py` | E1, probes, demo | A |
-| `scripts/make_fabrications`, `make_date_fabrications`, `make_hard_claims`, `make_verifier_train`, `train_verifier`, `run_e2_*`, `evaluate_e3`, `agent_metrics`, `export_session_log` | E2, E3 scoring, process records | B |
+| `scripts/run_e1_*`, `tailor_one`, `run_probes` | E1, probes | A |
+| `app.py` | demo app (built by B on the `app` branch) | B |
+| `scripts/make_fabrications`, `make_date_fabrications`, `make_hard_claims`, `make_verifier_train`, `train_verifier`, `run_e2_*`, `evaluate_e3`, `agent_metrics`, `analyse_e3_failures`, `make_e3_figure`, `export_session_log` | E2, E3 scoring, process records | B |
 | `configs/default.yaml` | every setting + seed | both |
 | `data/labels/` | your hand labels (commit these) | both |
 
