@@ -1,0 +1,158 @@
+{
+  "unsupported_by_variant_and_category": {
+    "A": {
+      "other_duty": 297,
+      "invented_tool": 31,
+      "self_praise": 49,
+      "inflated_scope": 136,
+      "invented_number": 15,
+      "fragment": 315
+    },
+    "B": {
+      "invented_tool": 8,
+      "other_duty": 83,
+      "fragment": 114,
+      "self_praise": 39,
+      "inflated_scope": 39,
+      "invented_number": 3
+    },
+    "C": {
+      "fragment": 26,
+      "other_duty": 20,
+      "inflated_scope": 8,
+      "self_praise": 5
+    },
+    "D": {
+      "self_praise": 2,
+      "fragment": 26,
+      "inflated_scope": 7,
+      "other_duty": 11
+    }
+  },
+  "unsupported_total": {
+    "A": 843,
+    "B": 286,
+    "C": 59,
+    "D": 46
+  },
+  "fragments": {
+    "A": {
+      "claims": 1825,
+      "fragments": 705,
+      "unsupported_rate_all": 0.462,
+      "unsupported_rate_without_fragments": 0.471
+    },
+    "B": {
+      "claims": 1313,
+      "fragments": 509,
+      "unsupported_rate_all": 0.218,
+      "unsupported_rate_without_fragments": 0.214
+    },
+    "C": {
+      "claims": 1045,
+      "fragments": 461,
+      "unsupported_rate_all": 0.056,
+      "unsupported_rate_without_fragments": 0.057
+    },
+    "D": {
+      "claims": 856,
+      "fragments": 423,
+      "unsupported_rate_all": 0.054,
+      "unsupported_rate_without_fragments": 0.046
+    }
+  },
+  "verifier_removed_lines": {
+    "C": {
+      "summary": 25,
+      "bullet": 86
+    },
+    "D": {
+      "bullet": 70,
+      "summary": 14,
+      "escalated_bullet": 2,
+      "escalated_summary": 1
+    }
+  },
+  "judge_errors_vs_human": {
+    "judge_missed_unsupported": {
+      "n": 14,
+      "examples": [
+        {
+          "variant": "B",
+          "claim": "Skilled in National Instruments PXI for IC testing and simulation",
+          "line": "Skilled in MATLAB/SIMULINK, Code Composer Studio, and National Instruments PXI for IC testing and simulation."
+        },
+        {
+          "variant": "A",
+          "claim": "Included clustering in the data warehouse solutions",
+          "line": "Directed the planning, documentation, and implementation of enterprise‑wide data warehouse and business intelligence solutions, including clustering and virtualization (Hyper‑V, VMware)."
+        },
+        {
+          "variant": "A",
+          "claim": "Implemented rigorous testing processes for automated batch processes",
+          "line": "Implemented rigorous testing, integration, and performance validation processes for automated batch and background processes."
+        },
+        {
+          "variant": "B",
+          "claim": "Strong communication capabilities",
+          "line": "Summary: Seasoned systems analyst with over a decade of experience translating complex business requirements into robust technical specifications and leading cross‑functional teams in enterprise data "
+        },
+        {
+          "variant": "B",
+          "claim": "Seasoned data analyst with over five years of experience in customer experience analytics",
+          "line": "Summary: Seasoned data analyst with over five years of experience in SQL, data handling, and visualization, complemented by a strong background in systems engineering and customer experience analytics"
+        },
+        {
+          "variant": "A",
+          "claim": "Used Teradata for complex supply‑chain projects",
+          "line": "Led requirement gathering, functional specifications, and data dictionary creation for complex supply‑chain and marketing analytics projects using Oracle, Teradata, and SQL Server."
+        },
+        {
+          "variant": "C",
+          "claim": "Designed and implemented SQL Server 2008 solutions",
+          "line": "Designed and implemented SQL Server 2005/2008 solutions, including Analysis, Integration, and Reporting Services, and optimized database performance."
+        },
+        {
+          "variant": "B",
+          "claim": "Documented financial processes",
+          "line": "Maintained GAAP compliance and documented financial processes across multiple departments"
+        }
+      ]
+    },
+    "judge_false_alarm": {
+      "n": 6,
+      "examples": [
+        {
+          "variant": "B",
+          "claim": "reinforcing advanced engineering competencies",
+          "line": "Completed a Master of Science in Electrical Engineering with a 3.9/4.0 GPA, reinforcing advanced engineering competencies."
+        },
+        {
+          "variant": "A",
+          "claim": "ensuring performance",
+          "line": "Managed database migration from PostgreSQL to MySQL and built a data warehouse for reporting modules, ensuring seamless integration and performance."
+        },
+        {
+          "variant": "A",
+          "claim": "Conducted comprehensive requirements gathering for ITSM product CloudPlus",
+          "line": "Conducted comprehensive requirements gathering and system analysis for ITSM product CloudPlus, delivering KPI reports and enhancing team structure."
+        },
+        {
+          "variant": "C",
+          "claim": "for reporting",
+          "line": "Created ER diagrams and data flow diagrams using MS Visio and Erwin, and performed SQL, PL/SQL, and T‑SQL development for data modeling and reporting."
+        },
+        {
+          "variant": "A",
+          "claim": "Proven ability to deliver variance analysis",
+          "line": "Summary: Seasoned accountant with over 12 years of progressive experience in financial reporting, budgeting, and audit support across public, private, and nonprofit sectors. Proven ability to deliver "
+        },
+        {
+          "variant": "B",
+          "claim": "Leveraged SOAP integration",
+          "line": "Designed and implemented high‑performance microservices using Java and Python, leveraging Jersey for RESTful services and SOAP integration."
+        }
+      ]
+    }
+  }
+}

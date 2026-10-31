@@ -1,0 +1,13 @@
+# Development pairs for tuning the E3 controller (variant D): 3 pairs per fit level, drawn from the dataset's
+# train split with a different seed and NEVER overlapping the 36 test pairs or the verifier's training resumes.
+# Everything else is inherited from default.yaml. Nothing tuned here is evaluated on the test pairs' labels.
+base: configs/default.yaml
+run_name: v3dev
+seed: 470
+data:
+  per_label: 3
+  out_dir: data/dev
+  exclude_pairs: [data/processed/pairs.jsonl]
+  exclude_train_ids: data/verifier/raw.jsonl
+paths:
+  labels_dir: data/labels/dev

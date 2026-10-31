@@ -128,6 +128,17 @@ class MockLLM:
     def _regenerate(self, user):
         return self._section(user, "line").replace("Tableau", "Power BI").replace(" used by 500 stakeholders", "")
 
+    def _rewrite_conservative(self, user):
+        return self._regenerate(user)
+
+    def _controller(self, user):
+        """Mock controller: rewrite while allowed, else drop (so the loop and its limits are exercised offline)."""
+        m = re.search(r'"allowed_actions":\s*\[(.*?)\]', user, re.S)
+        allowed = re.findall(r'"(\w+)"', m.group(1)) if m else []
+        action = next((a for a in ("REWRITE_CONSERVATIVELY", "DROP") if a in allowed), "HUMAN_REVIEW")
+        return json.dumps({"action": action, "failure_type": "unsupported_embellishment", "reason": "mock",
+                           "instructions": "remove unsupported details", "recovery_query": None, "confidence": 0.5})
+
     def _split_claims(self, user):
         lines = re.findall(r"^\[(\d+)\] (.+)$", self._section(user, "lines"), re.M)
         return json.dumps([{"line": int(i), "claim": t} for i, t in lines])

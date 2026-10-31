@@ -1,0 +1,4 @@
+base: configs/dev.yaml
+run_name: v3dev_run1
+paths:
+  labels_dir: data/labels/dev_run1

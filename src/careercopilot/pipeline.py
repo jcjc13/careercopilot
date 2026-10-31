@@ -3,14 +3,15 @@
     A  unrestricted rewrite                    (baseline)
     B  grounded rewrite from retrieved evidence
     C  unrestricted rewrite + verify/regenerate loop
-    D  grounded rewrite + verify/regenerate loop   (full system)
+    D  grounded rewrite + verify + bounded controller   (full system; run v2 used the fixed loop, run v3 the controller)
 
 Requirements are extracted ONCE per pair and shared by all variants (so all variants are
 judged against the same list); their cost is charged to the variants that use them (B, D).
 """
 from __future__ import annotations
 
-from .generation import (extract_requirements, regenerate_line, split_claims,
+from . import controller
+from .generation import (extract_requirements, format_evidence, regenerate_line, rewrite_conservatively, split_claims,
                          tailor_grounded, tailor_unrestricted)
 from .schema import Pair, TailorResult, Usage
 
@@ -18,7 +19,7 @@ VARIANTS = {
     "A": {"grounded": False, "verify": False},
     "B": {"grounded": True, "verify": False},
     "C": {"grounded": False, "verify": True},
-    "D": {"grounded": True, "verify": True},
+    "D": {"grounded": True, "verify": True, "controller": True},
 }
 
 
@@ -61,6 +62,15 @@ def run_variant(pair: Pair, variant: str, llm, retriever, verifier, cfg: dict,
         evidence_text = "\n".join(f"- {b}" for b in pair.bullets)
         claims, u = verify_lines(lines, pair.bullets, llm, verifier, t["claim_split"])
         usage.add(u)
+    if spec["verify"] and spec.get("controller"):
+        _, id_map = format_evidence(requirements, res.evidence, pair.bullets)
+        (lines, cites, claims, res.removed_lines, res.escalated_lines, res.trace, res.actions,
+         res.regenerations) = controller.run_controller_loop(
+            lines=lines, cites=cites, claims=claims, pair=pair, requirements=requirements, evidence=res.evidence,
+            id_map=id_map, llm=llm, retriever=retriever, verifier=verifier, cfg=cfg, verify_lines=verify_lines,
+            regenerate=rewrite_conservatively, usage=usage)
+        res.pipeline_claims = claims
+    elif spec["verify"]:
         for _ in range(t["max_regen"]):
             bad = sorted({c.line_idx for c in claims if not c.supported and 0 <= c.line_idx < len(lines)})
             if not bad:

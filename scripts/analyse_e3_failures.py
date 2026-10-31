@@ -87,6 +87,8 @@ def main(config):
         if v in removed:
             for line in o["removed_lines"]:
                 removed[v]["summary" if line.startswith("Summary: ") else "bullet"] += 1
+            for line in o.get("escalated_lines") or []:
+                removed[v]["escalated_summary" if line.startswith("Summary: ") else "escalated_bullet"] += 1
     # judge errors against the human labels
     errs = {"judge_missed_unsupported": [], "judge_false_alarm": []}
     sample = labels_dir = resolve(cfg["paths"]["labels_dir"])
@@ -97,6 +99,8 @@ def main(config):
             if not r["supported_yes_no"].strip():
                 continue
             k = key[r["item"]]
+            if k["variant"] == "D" and cfg.get("run_name") != "v2":
+                continue  # human labels cover the run-v2 D outputs; the controller D has different claims
             j = judged[(k["pair_id"], k["variant"])]["claims"][int(k["claim_idx"])]["supported"]
             h = r["supported_yes_no"].strip().lower().startswith("y")
             if j and not h:
