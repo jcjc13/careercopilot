@@ -1,0 +1,7 @@
+# command: run_e3_tailoring.py --config configs/dev.yaml --variants D  (controller, dev pairs)
+# started: Sat Oct 31 09:47:36 +08 2026
+The tokenizer you are loading from '/Users/javanchok/Documents/GitHub/careercopilot/models/verifier-nli-ft' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+retriever=hybrid verifier=finetuned_nli model=openai/gpt-oss-20b
+pairs:   0%|          | 0/9 [00:00<?, ?it/s]pairs:  11%|█         | 1/9 [02:08<17:05, 128.20s/it]pairs:  22%|██▏       | 2/9 [08:50<33:44, 289.23s/it]pairs:  33%|███▎      | 3/9 [11:27<22:54, 229.09s/it]pairs:  44%|████▍     | 4/9 [14:04<16:42, 200.53s/it]pairs:  56%|█████▌    | 5/9 [16:09<11:33, 173.47s/it]pairs:  67%|██████▋   | 6/9 [21:52<11:33, 231.14s/it]pairs:  78%|███████▊  | 7/9 [22:07<05:20, 160.32s/it]pairs:  89%|████████▉ | 8/9 [35:25<06:03, 363.18s/it]pairs: 100%|██████████| 9/9 [44:16<00:00, 415.72s/it]pairs: 100%|██████████| 9/9 [44:16<00:00, 295.14s/it]
+wrote /Users/javanchok/Documents/GitHub/careercopilot/runs/v3dev/e3_outputs.jsonl
+# exit: 0 finished: Sat Oct 31 10:32:09 +08 2026

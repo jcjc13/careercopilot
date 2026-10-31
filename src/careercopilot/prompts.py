@@ -89,3 +89,44 @@ FABRICATION_KINDS = {
     "tool": "a different tool or technology in place of one that is mentioned",
     "number": "an inflated or invented number (team size, users, percentage, money)",
 }
+
+REWRITE_CONSERVATIVE = (
+    "Task: rewrite-conservative.\n"
+    "A resume line contains wording that its evidence does not support. Rewrite ONLY what is unsupported: remove "
+    "or soften the flagged wording and keep every supported fact, tool, number and duty exactly as stated in the "
+    "evidence. Add nothing new. Follow the controller's instructions when they are consistent with the evidence. "
+    f"{DATA_RULE}\n"
+    "Reply with the rewritten line only.")
+
+CONTROLLER = (
+    "Task: controller.\n"
+    "You are the controller of a resume-tailoring pipeline. A generated resume line failed verification: at least one "
+    "claim in it is not supported by the candidate's real resume. Diagnose why, then choose ONE action from "
+    "allowed_actions. You never write resume text yourself and you never invent facts.\n"
+    "Failure types and the action that usually fits:\n"
+    "- unsupported_embellishment: the evidence supports the activity but not the seniority, scale, impact or "
+    "ownership (led, managed, enterprise, 30%). Action: REWRITE_CONSERVATIVELY, with instructions naming the "
+    "wording to remove.\n"
+    "- retrieval_miss: the requirement is plausible from the resume but the cited evidence is weak or off-topic. "
+    "Action: RETRIEVE_MORE, with a short recovery_query made only of words a resume bullet would contain.\n"
+    "- no_evidence: no resume bullet supports the line, even after retrieval. Action: DROP.\n"
+    "- unnecessary_rewriting: a cited original bullet already says what the line should say and rewrites keep adding "
+    "risk. Action: USE_ORIGINAL.\n"
+    "- ambiguous_entailment: the verifier score is close to its threshold or the evidence is ambiguous or "
+    "contradictory. Action: HUMAN_REVIEW.\n"
+    "- formatting_only: the content is supported and only the style is wrong. Action: REWRITE_CONSERVATIVELY.\n"
+    "How to choose:\n"
+    "- If the evidence supports the core activity, tool or duty of the line and only extra wording is unsupported "
+    "(a leadership verb, scale, impact, a result), choose REWRITE_CONSERVATIVELY and say which wording to remove.\n"
+    "- Choose DROP only when the evidence does not support the core of the line, or after a rewrite still fails.\n"
+    "- A summary line (is_summary true) cites no evidence. Do not drop it at once: choose REWRITE_CONSERVATIVELY and "
+    "tell the generator to keep only facts stated in the resume (role, tools, years only if stated) and to remove "
+    "adjectives such as seasoned, proven or extensive. DROP the summary only if a rewrite still fails.\n"
+    "- USE_ORIGINAL copies a cited resume bullet as it stands; use it when the line only restates that bullet and "
+    "rewrites keep failing. It cannot fabricate and needs no model call.\n"
+    "- Never guess: DROP is better than keeping an unsupported claim. Do not choose an action that is not in "
+    "allowed_actions. "
+    f"{DATA_RULE}\n"
+    'Reply with ONLY JSON: {"action": "<one of allowed_actions>", "failure_type": "<failure type>", '
+    '"reason": "<one sentence>", "instructions": "<what to remove or keep, for REWRITE_CONSERVATIVELY, else null>", '
+    '"recovery_query": "<query for RETRIEVE_MORE, else null>", "confidence": <0 to 1>}.')

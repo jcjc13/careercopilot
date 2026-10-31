@@ -1,6 +1,6 @@
 # Shared experiment config. Changing `llm`, `retrieval`, `verifier` or `tailoring`
 # invalidates cached runs -- bump `run_name` when you do.
-run_name: v2
+run_name: v3
 seed: 469
 
 data:
@@ -72,6 +72,13 @@ tailoring:
   max_bullets: 10
   max_regen: 2             # regeneration attempts per unsupported line = the loop's step budget (C, D)
   claim_split: llm         # llm | line   (line = treat each output line as one claim; cheaper)
+  controller:              # variant D's bounded controller (src/careercopilot/controller.py); C keeps the fixed loop
+    mode: llm              # llm | rule   (rule = the deterministic router, the baseline controller)
+    max_total: 4           # corrective actions per failing line
+    max_retrieve: 2        # RETRIEVE_MORE per line
+    max_rewrite: 2         # REWRITE_CONSERVATIVELY per line
+    retrieve_k: 5          # bullets returned by a recovery retrieval
+    review_band: 0.1       # a failing line whose best claim score is within this of the threshold is flagged near_threshold
 
 paths:
   runs_dir: runs

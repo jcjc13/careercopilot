@@ -1,0 +1,38 @@
+# evaluate dev run 2 then dev run 1 (claim judge only)
+# started: Sat Oct 31 11:22:39 +08 2026
+
+similarity = embedding:sentence-transformers/all-MiniLM-L6-v2
+var fit         n introd%  unsup%  cover%  simgain removed  calls  $/resume
+D   all         9      44     2.6    15.3   -0.028     2.4   30.2    0.0046
+D   good        3      33     0.0    12.5    0.011     3.3   35.3    0.0054
+D   none        3      33     2.4     8.3   -0.080     1.0   25.7    0.0036
+D   potential   3      67     5.3    25.0   -0.016     3.0   29.7    0.0048
+  introd% = resumes with a tool or number not in the original (programmatic check)
+
+paired tests vs A, unsupported_rate (Wilcoxon p):
+  D_vs_A/good            n=0   p=1.000
+  D_vs_A/potential       n=0   p=1.000
+  D_vs_A/none            n=0   p=1.000
+  D_vs_A/all             n=0   p=1.000
+
+wrote /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev/e3_human_sample.csv (blind: no variant; rows grouped by resume) and the answer key /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev/e3_human_key.csv; label supported_yes_no = does the original_resume support the claim
+wrote /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev/e3_preference.csv (blind) and the answer key /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev/e3_preference_key.csv; winner_left_right_tie = the version you'd rather receive for that job
+# run2 done Sat Oct 31 11:24:25 +08 2026
+
+similarity = embedding:sentence-transformers/all-MiniLM-L6-v2
+var fit         n introd%  unsup%  cover%  simgain removed  calls  $/resume
+D   all         9      33     7.6    13.9   -0.037     3.3   22.3    0.0033
+D   good        3      33     7.5     8.3   -0.011     3.7   22.3    0.0035
+D   none        3      33     2.2     8.3   -0.086     2.0   20.3    0.0028
+D   potential   3      33    13.1    25.0   -0.015     4.3   24.3    0.0037
+  introd% = resumes with a tool or number not in the original (programmatic check)
+
+paired tests vs A, unsupported_rate (Wilcoxon p):
+  D_vs_A/good            n=0   p=1.000
+  D_vs_A/potential       n=0   p=1.000
+  D_vs_A/none            n=0   p=1.000
+  D_vs_A/all             n=0   p=1.000
+
+wrote /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev_run1/e3_human_sample.csv (blind: no variant; rows grouped by resume) and the answer key /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev_run1/e3_human_key.csv; label supported_yes_no = does the original_resume support the claim
+wrote /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev_run1/e3_preference.csv (blind) and the answer key /Users/javanchok/Documents/GitHub/careercopilot/data/labels/dev_run1/e3_preference_key.csv; winner_left_right_tie = the version you'd rather receive for that job
+# finished Sat Oct 31 11:26:18 +08 2026

@@ -18,6 +18,7 @@ Per task:
 """
 import csv
 import json
+import re
 import statistics
 
 from _common import load_config, run_dir, parser
@@ -31,7 +32,8 @@ def pct(xs, q):
 
 
 def summary_removed(r):
-    return any(x.startswith("Summary: ") for x in r["removed_lines"])
+    """The summary line was not output (dropped by the verifier loop, or sent to a person by the controller)."""
+    return any(x.startswith("Summary: ") for x in list(r["removed_lines"]) + list(r.get("escalated_lines") or []))
 
 
 def format_checks(r, n_req):
@@ -44,9 +46,40 @@ def format_checks(r, n_req):
     if r["variant"] in ("B", "D"):   # grounded: every bullet must cite existing evidence ids
         n_ev = len({b for bs in (r.get("evidence") or {}).values() for b in bs})
         valid = {f"E{i}" for i in range(1, n_ev + 1)}
+        n_b = len(r.get("bullets_n") or []) or 10 ** 6   # R<k> = resume bullet k, added by the controller's RETRIEVE_MORE
         for cites in r["citations"][1:]:
-            checks.append(bool(cites) and all(c in valid for c in cites))
+            checks.append(bool(cites) and all(c in valid or (re.fullmatch(r"R\d+", c) and int(c[1:]) < n_b) for c in cites))
     return checks
+
+
+def controller_metrics(tasks):
+    """Agent-specific diagnostics for variant D's controller, from the per-line traces (empty if D has no traces)."""
+    traces = [(t["fit"], tr) for t in tasks for tr in t["trace"]]
+    if not traces:
+        return {}
+    n_lines = sum(len(t["lines"]) + len(t["removed_lines"]) + len(t.get("escalated_lines") or []) for t in tasks)
+    out_ = [tr["outcome"] for _, tr in traces]
+    steps = [s for _, tr in traces for s in tr["steps"] if s["tool"] == "controller"]
+    by_fit = {}
+    for fit, tr in traces:
+        for s in tr["steps"]:
+            if s["tool"] == "controller":
+                by_fit.setdefault(fit, {}).setdefault(s["action"], 0)
+                by_fit[fit][s["action"]] += 1
+    accepted = [tr for _, tr in traces if tr["outcome"] == "accepted"]
+    n = len(traces)
+    return {"lines_generated": n_lines, "lines_needing_recovery": n,
+            "recovery_success_rate": out_.count("accepted") / n,
+            "escalation_rate": out_.count("escalated") / n_lines,
+            "automation_rate": 1 - out_.count("escalated") / n_lines,
+            "dropped_rate": (out_.count("dropped") + out_.count("loop_limit")) / n,
+            "loop_limit_hit_rate": out_.count("loop_limit") / n,
+            "actions_per_recovered_line": (sum(tr["attempts"]["total"] for tr in accepted) / len(accepted)) if accepted else None,
+            "controller_calls": len(steps),
+            "override_rate": sum(1 for s in steps if s["source"] == "override") / max(1, len(steps)),
+            "fallback_rate": sum(1 for s in steps if s["source"] == "fallback") / max(1, len(steps)),
+            "action_counts": {a: sum(1 for s in steps if s["action"] == a) for a in sorted({s["action"] for s in steps})},
+            "actions_by_fit": by_fit}
 
 
 def main(config, mock=False, limit=None):
@@ -78,8 +111,11 @@ def main(config, mock=False, limit=None):
             "format_validity": round(sum(checks) / len(checks), 3) if checks else "",
             "steps": steps, "step_efficiency": round(min(1.0, minimal / steps), 3) if minimal and steps else "",
             "regenerations": r["regenerations"], "removed_lines": len(r["removed_lines"]),
+            "escalated_lines": len(r.get("escalated_lines") or []),
             "summary_removed": int(summary_removed(r)),
-            "loop_resolved": int(r["regenerations"] > 0 and not r["removed_lines"]) if agentic else "",
+            "needs_recovery": int(bool(r["regenerations"] > 0 or r.get("trace") or r["removed_lines"])) if agentic else "",
+            "loop_resolved": int(bool(r["regenerations"] > 0 or r.get("trace")) and not r["removed_lines"]
+                                 and not r.get("escalated_lines")) if agentic else "",
             "tokens": u["tokens_in"] + u["tokens_out"], "latency_s": round(u["latency_s"], 3),
             "cost_usd": round(u["cost_usd"], 6)})
     with open(out / "agent_metrics_per_task.csv", "w", newline="", encoding="utf-8") as fh:
@@ -94,7 +130,7 @@ def main(config, mock=False, limit=None):
         rs = [x for x in rows if x["variant"] == v]
         ok = num(rs, "success")
         cost = sum(num(rs, "cost_usd"))
-        regen = [x for x in rs if x["regenerations"] > 0]
+        regen = [x for x in rs if x["needs_recovery"] == 1] if v in ("C", "D") else []
         summary[v] = {
             "tasks": len(rs), "completed": statistics.mean(num(rs, "completed")),
             "success": statistics.mean(ok) if ok else None,
@@ -108,6 +144,9 @@ def main(config, mock=False, limit=None):
             "tokens_mean": statistics.mean(num(rs, "tokens")),
             "latency_mean_s": statistics.mean(num(rs, "latency_s")), "latency_p95_s": pct(num(rs, "latency_s"), 0.95),
             "cost_mean_usd": cost / len(rs), "cost_per_success_usd": cost / sum(ok) if ok and sum(ok) else None}
+    ctl = controller_metrics([r for r in results[:limit] if r["variant"] == "D" and r.get("trace") is not None])
+    if ctl and "D" in summary:
+        summary["D"]["controller"] = ctl
     json.dump(summary, open(out / "agent_metrics_summary.json", "w"), indent=2)
 
     def f2(x, w=8):
@@ -119,6 +158,12 @@ def main(config, mock=False, limit=None):
               f"{f2(s['steps_mean'], 7)}{f2(s['step_efficiency'], 7)}{f2(s['regenerations_mean'], 7)}"
               f"{f2(s['loop_resolved_rate'], 10)}{f2(s['latency_mean_s'])}{f2(s['latency_p95_s'])}"
               f"{s['cost_mean_usd']:>9.4f}{f2(s['cost_per_success_usd'], 11)}")
+    if "controller" in summary.get("D", {}):
+        c = summary["D"]["controller"]
+        print(f"\ncontroller (variant D): {c['lines_needing_recovery']} of {c['lines_generated']} lines needed recovery; "
+              f"recovery success {c['recovery_success_rate']:.2f}, escalation rate {c['escalation_rate']:.3f}, "
+              f"loop-limit hits {c['loop_limit_hit_rate']:.2f}, overrides {c['override_rate']:.2f}, fallbacks {c['fallback_rate']:.2f}")
+        print("  actions:", c["action_counts"], "\n  by fit:", c["actions_by_fit"])
     print(f"wrote {out / 'agent_metrics_per_task.csv'} and agent_metrics_summary.json")
     return summary
 

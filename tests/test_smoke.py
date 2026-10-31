@@ -182,6 +182,113 @@ def test_all_scripts_end_to_end():
         shutil.rmtree(tmp)
 
 
+class _ScriptedLLM:
+    """Replies to the controller from a fixed list; rewrites return a clean line. For testing the loop's rules."""
+    model = "scripted"
+
+    def __init__(self, decisions, rewrite_out="Built reports in SQL"):
+        self.decisions, self.rewrite_out, self.calls = list(decisions), rewrite_out, []
+
+    def chat(self, system, user, max_tokens=800):
+        from careercopilot.llm import task_of
+        from careercopilot.schema import Usage
+        task = task_of(system)
+        self.calls.append(task)
+        out = self.decisions.pop(0) if task == "controller" else self.rewrite_out
+        return out, Usage(llm_calls=1)
+
+
+class _FlagBad:
+    """Verifier stub: a claim containing 'BAD' is unsupported (score 0.2); everything else supported (0.9)."""
+    name, threshold = "flagbad", 0.7
+
+    def verify(self, claim, evidence):
+        from careercopilot.schema import Usage
+        bad = "BAD" in claim
+        return (not bad), (0.2 if bad else 0.9), Usage()
+
+
+def _controller_run(decisions, bad_line="Led BAD enterprise reporting [E1]", mode="llm", max_total=4,
+                    rewrite_out="Built reports in SQL", review_band=0.1):
+    from careercopilot import controller
+    from careercopilot.generation import format_evidence
+    from careercopilot.pipeline import verify_lines
+    from careercopilot.generation import rewrite_conservatively
+    from careercopilot.schema import Claim, Pair, Usage
+    cfg = yaml.safe_load((ROOT / "configs/default.yaml").read_text())
+    cfg["tailoring"]["claim_split"] = "line"
+    cfg["tailoring"]["controller"].update(mode=mode, max_total=max_total, review_band=review_band)
+    bullets = ["Built reports in SQL for the finance team", "Managed a small team of analysts", "Used Tableau dashboards"]
+    pair = Pair("t", "\n".join(bullets), "job", "good", bullets, ["", "", ""])
+    evidence = {0: [0, 1]}
+    _, id_map = format_evidence(["SQL reporting"], evidence, bullets)
+    lines = ["Summary: Analyst", "Built reports in SQL", bad_line.replace(" [E1]", "")]
+    cites = [[], ["E1"], ["E1"]]
+    llm, usage = _ScriptedLLM(decisions, rewrite_out), Usage()
+    claims, _ = verify_lines(lines, bullets, llm, _FlagBad(), "line")
+    out = controller.run_controller_loop(
+        lines=lines, cites=cites, claims=claims, pair=pair, requirements=["SQL reporting"], evidence=evidence,
+        id_map=id_map, llm=llm, retriever=BM25Retriever(), verifier=_FlagBad(), cfg=cfg, verify_lines=verify_lines,
+        regenerate=rewrite_conservatively, usage=usage)
+    return out, llm
+
+
+def test_controller_decisions_and_limits():
+    from careercopilot import controller
+    d = controller.parse_decision('{"action": "drop", "failure_type": "no_evidence", "reason": "x", "confidence": "0.8"}')
+    assert d.action == "DROP" and d.confidence == 0.8
+    for bad in ('{"action": "FABRICATE"}', "no json here", "[1, 2]"):
+        try:
+            controller.parse_decision(bad)
+            raise AssertionError(f"accepted {bad!r}")
+        except ValueError:
+            pass
+    st = controller.LineState(0, "x", False, [], [{"id": "E1", "text": "t"}], [], [], 0.7,
+                              attempts={"retrieval": 2, "rewrite": 2, "total": 4},
+                              limits={"total": 4, "retrieval": 2, "rewrite": 2})
+    assert st.allowed_actions() == ["DROP"]                    # every corrective budget is spent; no claim is near the threshold
+    st.unsupported = [{"claim": "c", "score": 0.65}]           # 0.65 is within 0.1 of the 0.7 threshold
+    assert st.allowed_actions() == ["DROP", "HUMAN_REVIEW"]
+    long = controller.LineState(0, "x", False, [], [{"id": "E1", "text": "word " * 60}], [], [], 0.7,
+                                limits={"total": 4, "retrieval": 2, "rewrite": 2})
+    assert "USE_ORIGINAL" not in long.allowed_actions()        # a 60-word 'bullet' is a skills block, not a bullet
+
+
+def test_controller_loop_actions():
+    fix = '{"action": "REWRITE_CONSERVATIVELY", "failure_type": "unsupported_embellishment", "reason": "r", "instructions": "remove BAD"}'
+    (lines, cites, claims, removed, escalated, trace, actions, regens), _ = _controller_run([fix])
+    assert lines[-1] == "Built reports in SQL" and not removed and not escalated and regens == 1
+    assert trace[0]["outcome"] == "accepted" and all(c.supported for c in claims)
+
+    (lines, _, _, removed, escalated, trace, actions, _), _ = _controller_run(
+        ['{"action": "USE_ORIGINAL", "failure_type": "unnecessary_rewriting", "reason": "r"}'])
+    assert lines[-1] in ("Built reports in SQL for the finance team", "Managed a small team of analysts")
+    assert trace[0]["outcome"] == "accepted" and actions == {"USE_ORIGINAL": 1}
+
+    hr = '{"action": "HUMAN_REVIEW", "failure_type": "ambiguous_entailment", "reason": "r"}'
+    (lines, _, _, removed, escalated, trace, actions, _), _ = _controller_run([hr], review_band=0.6)   # 0.2 is "near" 0.7
+    assert escalated and not removed and len(lines) == 2
+    # the same request with a score far from the threshold is not allowed: the rule router takes over
+    (_, _, _, _, escalated, trace, _, _), _ = _controller_run([hr])
+    assert not escalated and trace[0]["steps"][0]["source"] == "override"
+
+    (lines, _, _, removed, escalated, trace, _, _), _ = _controller_run(['{"action": "DROP", "reason": "r"}'])
+    assert removed and not escalated and len(lines) == 2
+
+    # an action the state does not allow (ACCEPT) is replaced by the rule router and logged
+    (lines, _, _, _, _, trace, _, _), _ = _controller_run(['{"action": "ACCEPT", "reason": "r"}'])
+    assert trace[0]["steps"][0]["source"] == "override" and trace[0]["steps"][0]["overridden_from"] == "ACCEPT"
+
+    # a reply that never parses ends in HUMAN_REVIEW, not a guess
+    (_, _, _, _, escalated, trace, _, _), llm = _controller_run(["nonsense", "still nonsense"])
+    assert escalated and trace[0]["steps"][0]["source"] == "fallback" and llm.calls.count("controller") == 2
+
+    # loop limit: rewrites that keep failing are dropped once the total budget is spent
+    rw = '{"action": "REWRITE_CONSERVATIVELY", "reason": "r"}'
+    (lines, _, _, removed, escalated, trace, actions, _), _ = _controller_run([rw, rw], max_total=2, rewrite_out="still BAD")
+    assert removed and trace[0]["outcome"] == "loop_limit" and actions["LOOP_LIMIT"] == 1 and len(lines) == 2
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):
