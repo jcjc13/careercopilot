@@ -53,6 +53,18 @@ def test_text_and_metrics():
     b = split_bullets("SKILLS\n- Built Power BI dashboards for 12 managers\n• Wrote SQL in PostgreSQL daily\nshort")
     assert b == ["Built Power BI dashboards for 12 managers", "Wrote SQL in PostgreSQL daily"]
     b, _ = split_with_context(
+        "- Built weekly dashboards for sales leaders. Presented the results to senior stakeholders."
+    )
+    assert b == ["Built weekly dashboards for sales leaders. Presented the results to senior stakeholders."]
+    sentence_chunks, _ = split_with_context(
+        "- Built weekly dashboards for sales leaders. Presented the results to senior stakeholders.",
+        split_sentences=True,
+    )
+    assert sentence_chunks == [
+        "Built weekly dashboards for sales leaders.",
+        "Presented the results to senior stakeholders.",
+    ]
+    b, _ = split_with_context(
         "SummaryHighly organized and detail-oriented professional. "
         "Career OverviewSenior data analyst with experience. "
         "Work ExperienceManaged supply chain reporting.Automated new dashboards for regional teams. "
