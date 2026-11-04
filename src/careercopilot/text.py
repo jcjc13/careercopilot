@@ -66,11 +66,17 @@ def _is_header(line: str) -> bool:
     return bool(_YEAR.search(line)) and len(line.split()) <= 12
 
 
-def split_with_context(resume: str, min_words: int = 4, max_chars: int = 300) -> tuple[list[str], list[str]]:
+def split_with_context(
+    resume: str,
+    min_words: int = 4,
+    max_chars: int = 300,
+    split_sentences: bool = False,
+) -> tuple[list[str], list[str]]:
     """Split a resume into short evidence units, each with its context line.
 
-    Uses line breaks and bullet characters first; long lines (e.g. resumes stored as one
-    blob of text) are further split into sentences. Very short lines are dropped.
+    Uses line breaks and bullet characters as boundaries, keeping normal bullets intact
+    even when they contain multiple sentences. Oversized bullets are split at sentence
+    boundaries and then at word boundaries if needed. Very short lines are dropped.
     The context of a bullet is the most recent role/company line above it (a short line
     with a year) -- prepended at retrieval time for contextual RAG (Topic 8): 'Built
     dashboards' alone loses the job it was done in. Deterministic, so ids are stable.
@@ -87,8 +93,9 @@ def split_with_context(resume: str, min_words: int = 4, max_chars: int = 300) ->
             part = (part or "").strip(" \t" + _BULLET_CHARS)
             if not part:
                 continue
-            for sentence in _sentences(part):
-                pieces.extend((chunk, ctx) for chunk in _limit_chars(sentence, max_chars))
+            segments = _sentences(part) if split_sentences or len(part) > max_chars else [part]
+            for segment in segments:
+                pieces.extend((chunk, ctx) for chunk in _limit_chars(segment, max_chars))
     bullets, contexts, seen = [], [], set()
     for p, c in pieces:
         p = re.sub(r"\s+", " ", p).strip()
