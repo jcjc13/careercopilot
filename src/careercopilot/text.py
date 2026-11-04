@@ -74,7 +74,7 @@ def split_with_context(resume: str, min_words: int = 4, max_chars: int = 300) ->
     Uses line breaks and bullet characters first; long lines (e.g. resumes stored as one
     blob of text) are further split into sentences. Very short lines are dropped.
     The context of a bullet is the most recent role/company line above it (a short line
-    with a year) -- prepended at retrieval time for contextual RAG (Topic 8): 'Built
+    with a year) -- prepended at retrieval time for contextual retrieval: 'Built
     dashboards' alone loses the job it was done in. Deterministic, so ids are stable.
     """
     pieces, ctx = [], ""

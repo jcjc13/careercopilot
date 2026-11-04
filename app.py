@@ -1,16 +1,18 @@
 """Streamlit demo:  streamlit run app.py
 
-Three tabs:
-  Tailor         paste a resume and a job (or load a sample), pick a variant, see the requirements, the evidence found
-                 for each, the tailored resume with a verdict per line, the evidence behind every cited line, and
-                 accept or reject each line before downloading the final text
-  Saved results  the 36 resume-job pairs of the E3 study, all four variants side by side, with the judge's verdict
-                 on every claim (instant: read from runs/<run>/, no API calls)
-  Experiments    the E1, E2 and E3 results tables, the main figure, and the probe results
+Two tabs:
+  Tailor       paste a resume and a job (or load a sample); the system runs variant D with hybrid retrieval and the
+               fine-tuned NLI verifier. Shows the requirements, the evidence found for each, the tailored resume with a
+               verdict per line, what the controller did with every flagged line, and lets you accept or reject each
+               line before downloading the final text
+  Experiments  the E1, E2 and E3 results tables, the main figure, and the probe results (read from runs/, no API calls)
+
+CAREERCOPILOT_MOCK=1 runs it offline (fake LLM, BM25, rule check) for tests.
 """
 import base64
 import csv
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -23,7 +25,7 @@ from careercopilot.config import load_config, resolve, run_dir  # noqa: E402
 from careercopilot.data import load  # noqa: E402
 from careercopilot.generation import format_evidence  # noqa: E402
 from careercopilot.llm import build_llm  # noqa: E402
-from careercopilot.pipeline import VARIANTS, run_variant, verify_lines  # noqa: E402
+from careercopilot.pipeline import VARIANTS, run_variant  # noqa: E402
 from careercopilot.retrieval import build_retriever  # noqa: E402
 from careercopilot.schema import Pair  # noqa: E402
 from careercopilot.text import anonymise, split_with_context  # noqa: E402
@@ -34,16 +36,50 @@ cfg = load_config()
 RUN = run_dir(cfg)
 samples = {p.pair_id: p for p in load(resolve(cfg["data"]["sample_pairs"]))}
 VARIANT_NAMES = {"A": "A - unrestricted", "B": "B - grounded", "C": "C - unrestricted + verifier", "D": "D - full system"}
-EXPECTED_TIME = {"A": "about 1 second", "B": "about 1 to 2 seconds",
-                 "C": "several minutes with 2 regeneration attempts (6 minutes on average in our study)",
-                 "D": "several minutes with 2 regeneration attempts (4 minutes on average in our study)"}
-RETRIEVERS = ["bm25", "tfidf", "embedding", "hybrid"]
-VERIFIERS = ["rule", "nli", "finetuned", "finetuned_nli", "llm"]
-VERIFIER_NOTE = {"finetuned_nli": "fine-tuned NLI (best on our tests)", "finetuned": "fine-tuned BERT",
-                 "nli": "zero-shot NLI", "rule": "rule check", "llm": "LLM judge"}
+VARIANT = "D"
+OFFLINE = os.environ.get("CAREERCOPILOT_MOCK") == "1"
+RETRIEVER, VERIFIER = ("bm25", "rule") if OFFLINE else (cfg["retrieval"]["method"], cfg["verifier"]["method"])
 
 
 # ---------- helpers ----------
+
+OUTCOME = {"accepted": "✅ repaired", "dropped": "🗑️ dropped", "escalated": "👤 sent to a person",
+           "loop_limit": "⏹️ action limit reached, dropped"}
+
+
+def read_first(name):
+    """A results file from this run, or from run v2 (E2 and the A to C probes were not re-run for run v3)."""
+    for d in (RUN, resolve("runs/v2")):
+        if (d / name).exists():
+            return d / name
+    return RUN / name
+
+
+def render_trace(trace, title="What the controller did with each flagged line"):
+    """The variant D controller's log, one block per line the verifier rejected (not nested: call outside expanders)."""
+    if not trace:
+        return
+    with st.expander(f"{title} ({len(trace)})"):
+        for t in trace:
+            st.markdown(f"**Line {t['line_idx'] + 1}**: {OUTCOME.get(t['outcome'], t['outcome'])}")
+            st.caption(f"Original: {t['initial_line']}")
+            for s in t["steps"]:
+                tool = s.get("tool")
+                if tool == "controller":
+                    note = f" (chosen by {s['source']}" + (f", replaced {s['overridden_from']}" if s.get("overridden_from") else "") + ")"
+                    st.markdown(f"- Controller chose **{s['action']}**{note}: {s.get('reason') or 'no reason given'}")
+                    for u in s.get("unsupported", []):
+                        score = f" (score {u['score']})" if u.get("score") is not None else ""
+                        st.caption(f"   not supported{score}: {u['claim']}")
+                elif tool == "generator":
+                    st.markdown(f"- Rewritten as: {s['line']}")
+                elif tool == "retriever":
+                    st.markdown(f"- Looked for more evidence ({len(s.get('new_evidence', []))} new bullets) for: {s['query']}")
+                elif tool == "verifier":
+                    st.markdown(f"- Verifier: {'all claims supported' if s['supported'] else 'still not supported'}")
+            if t["outcome"] == "accepted" and t.get("final_line"):
+                st.caption(f"Final line: {t['final_line']}")
+            st.divider()
 
 @st.cache_resource(show_spinner="Loading models (the first run takes a while)...")
 def components(retriever: str, verifier: str, mock: bool):
@@ -93,6 +129,32 @@ def pct(x, digits=1):
 
 # ---------- tab 1: tailor ----------
 
+def read_upload(f):
+    """Text of an uploaded .pdf or .txt file ('' if it has none, e.g. a scanned PDF)."""
+    if f.name.lower().endswith(".pdf"):
+        from pypdf import PdfReader
+        return "\n".join(page.extract_text() or "" for page in PdfReader(f).pages).strip()
+    return f.getvalue().decode("utf-8", errors="ignore").strip()
+
+
+def text_input(label, key, sample_text):
+    """A text box that is filled by the chosen sample or an uploaded PDF/TXT file, and can still be edited."""
+    f = st.file_uploader(f"{label}: upload a PDF or text file", type=["pdf", "txt"], key=f"{key}_file")
+    source = (f.file_id if f else None, sample_text)
+    if st.session_state.get(f"{key}_source") != source:   # the sample or the file changed: refill the box
+        st.session_state[f"{key}_source"] = source
+        text = sample_text
+        if f:
+            try:
+                text = read_upload(f)
+            except Exception as e:
+                st.error(f"Could not read {f.name}: {e}")
+            if not text:
+                st.warning(f"No text found in {f.name} (a scanned PDF has no text layer). Paste the text instead.")
+        st.session_state[key] = text
+    return st.text_area(label, height=320, key=key)
+
+
 def render_result(res, pair, variant):
     id_map = {}
     if VARIANTS[variant]["grounded"]:
@@ -137,9 +199,18 @@ def render_result(res, pair, variant):
                             st.caption(f"{e}: {pair.bullets[id_map[e]]}")
         if res.removed_lines:
             st.warning("Removed because they could not be supported:\n\n" + "\n".join(f"- {l}" for l in res.removed_lines))
+        if getattr(res, "escalated_lines", None):
+            why = [t["steps"][-1].get("reason") or "" for t in res.trace if t["outcome"] == "escalated" and t["steps"]]
+            st.info("**Needs your review** (left out of the text; the verifier was close to accepting it):\n\n" +
+                    "\n".join(f"- {l}" + (f"  \n  _{why[k]}_" if k < len(why) and why[k] else "")
+                              for k, l in enumerate(res.escalated_lines)))
         u = res.usage
         st.caption(f"{u.llm_calls} LLM calls · {u.tokens_in + u.tokens_out} tokens · {u.latency_s:.1f}s · "
                    f"${u.cost_usd:.4f} · {res.regenerations} regenerations")
+        if getattr(res, "actions", None):
+            st.caption("Controller actions: " + ", ".join(f"{a.lower().replace('_', ' ')} {n}" for a, n in sorted(res.actions.items())))
+
+    render_trace(getattr(res, "trace", []))
 
     final = "\n".join(res.lines[i].removeprefix("Summary: ") if i == 0 else f"- {res.lines[i]}" for i in keep)
     st.subheader("Final text (accepted lines)")
@@ -163,132 +234,78 @@ def render_result(res, pair, variant):
 
 
 def tab_tailor():
-    with st.sidebar:
-        st.header("Settings")
-        sample = st.selectbox("Load a sample", ["(none)"] + list(samples))
-        variant = st.radio("Variant", list(VARIANTS), index=3, format_func=VARIANT_NAMES.get)
-        retr_default = cfg["retrieval"]["method"]
-        retr = st.selectbox("Retriever", RETRIEVERS, index=RETRIEVERS.index(retr_default) if retr_default in RETRIEVERS else 0)
-        ver_default = cfg["verifier"]["method"]
-        verif = st.selectbox("Verifier", VERIFIERS, index=VERIFIERS.index(ver_default) if ver_default in VERIFIERS else 0,
-                             format_func=lambda v: VERIFIER_NOTE.get(v, v))
-        regen = st.slider("Regeneration attempts", 0, 2, cfg["tailoring"]["max_regen"],
-                          help="C and D only. 0 removes unsupported lines at once, which is much faster.")
-        flag = st.checkbox("Also flag unsupported claims in A and B", value=True,
-                           help="A and B do not verify. This runs the verifier afterwards, only to show what it would flag.")
-        mock = st.checkbox("Offline mock LLM", value=False, help="no API key needed; outputs are not meaningful")
-
+    sample = st.selectbox("Load a sample", ["(none)"] + list(samples))
     pre = samples.get(sample)
     c1, c2 = st.columns(2)
-    resume = c1.text_area("Resume", pre.resume if pre else "", height=320)
-    job = c2.text_area("Job description", pre.job if pre else "", height=320)
+    with c1:
+        resume = text_input("Resume", "resume", pre.resume if pre else "")
+    with c2:
+        job = text_input("Job description", "job", pre.job if pre else "")
     name = st.text_input("Your name (optional)", help="Removed from the resume before any text is sent to the LLM. "
                          "Emails, phone numbers and URLs are always removed.")
-    if VARIANTS[variant]["verify"]:
-        st.info(f"Variant {variant} verifies every claim, so it takes {EXPECTED_TIME[variant]}. "
-                f"Set regeneration attempts to 0 in the sidebar for a quick run.")
+    st.info("Every claim in the tailored resume is verified, and the controller works on each flagged line, "
+            "so a run takes several minutes (about 5 minutes on average in our study).")
 
     if st.button("Tailor", type="primary", disabled=not (resume.strip() and job.strip())):
         resume_a = anonymise(redact_name(resume, name) if name.strip() else resume)
         bullets, contexts = split_with_context(resume_a)
         pair = Pair(pair_id="ui", resume=resume_a, job=anonymise(job), fit="unknown", bullets=bullets, contexts=contexts)
-        run_cfg = {**cfg, "tailoring": {**cfg["tailoring"], "max_regen": regen}}
         try:
-            with st.spinner(f"Running variant {variant}..."):
-                llm, retriever, verifier = components(retr, verif, mock)
-                res = run_variant(pair, variant, llm, retriever, verifier, run_cfg)
-                if flag and not VARIANTS[variant]["verify"]:
-                    claims, u = verify_lines(res.lines, pair.bullets, llm, verifier, cfg["tailoring"]["claim_split"])
-                    res.pipeline_claims = claims
-                    res.usage.add(u)
+            with st.spinner("Tailoring..."):
+                llm, retriever, verifier = components(RETRIEVER, VERIFIER, OFFLINE)
+                res = run_variant(pair, VARIANT, llm, retriever, verifier, cfg)
         except Exception as e:   # a missing model folder, a missing key or a network error
             st.error(f"The pipeline failed: {type(e).__name__}: {e}")
-            st.caption("Missing key? Put GROQ_API_KEY in .env, or tick the offline mock. Missing verifier model? "
-                       "Pick the rule check or the zero-shot NLI.")
+            st.caption("Missing key? Put GROQ_API_KEY in .env. Missing verifier model? Put models/verifier-nli-ft next to the repo.")
             return
-        st.session_state["last"] = (res, pair, variant)
+        st.session_state["last"] = (res, pair, VARIANT)
     if "last" in st.session_state:
         render_result(*st.session_state["last"])
 
 
-# ---------- tab 2: saved E3 results ----------
-
-def tab_saved():
-    outs = read_jsonl_file(RUN / "e3_outputs.jsonl")
-    judged = {(d["pair_id"], d["variant"]): d for d in read_jsonl_file(RUN / "e3_judged.jsonl")}
-    per = {(r["pair_id"], r["variant"]): r for r in read_csv(RUN / "e3_per_resume.csv")}
-    pairs = {p.pair_id: p for p in load(resolve(cfg["data"]["out_dir"]) / "pairs.jsonl")} \
-        if (resolve(cfg["data"]["out_dir"]) / "pairs.jsonl").exists() else {}
-    if not outs or not pairs:
-        st.info(f"No saved E3 run found in {RUN}. Run scripts/run_e3_tailoring.py and scripts/evaluate_e3.py first.")
-        return
-    by_pair = {}
-    for o in outs:
-        by_pair.setdefault(o["pair_id"], {})[o["variant"]] = o
-    fits = {"good": "Good fit", "potential": "Potential fit", "none": "No fit"}
-    fit_filter = st.radio("Fit level", ["all"] + list(fits), horizontal=True, format_func=lambda f: fits.get(f, "All"))
-    ids = [p for p in by_pair if fit_filter == "all" or by_pair[p]["A"]["fit"] == fit_filter]
-    pid = st.selectbox("Resume-job pair", ids, format_func=lambda p: f"{p} ({fits.get(by_pair[p]['A']['fit'], '')})")
-    pair = pairs.get(pid)
-    if pair:
-        with st.expander("Job description"):
-            st.write(pair.job)
-        with st.expander("Original resume"):
-            st.write(pair.resume)
-    st.caption("Same resume and job, four variants. ⚠️ = the claim judge (gpt-oss-120b) found a claim in the line that the "
-               "resume does not support. Judge agreement with human labels: 0.90, Cohen's kappa 0.74.")
-    cols = st.columns(4)
-    for col, v in zip(cols, "ABCD"):
-        o = by_pair[pid].get(v)
-        with col:
-            st.subheader(VARIANT_NAMES[v])
-            if not o:
-                st.write("no output")
-                continue
-            r, j = per.get((pid, v), {}), judged.get((pid, v), {"claims": []})
-            st.metric("Unsupported claims", pct(r.get("unsupported_rate")))
-            st.caption(f"{r.get('claims', '?')} claims · coverage {pct(r.get('coverage'), 0)} · "
-                       f"invented tool/number: {'yes' if str(r.get('any_introduced')) in ('1', '1.0') else 'no'} · "
-                       f"{float(r.get('latency_s', 0)):.0f}s · ${float(r.get('cost_usd', 0)):.4f} · "
-                       f"{o['regenerations']} regenerations · {len(o['removed_lines'])} lines removed")
-            by_line = {}
-            for c in j["claims"]:
-                by_line.setdefault(c["line_idx"], []).append(c)
-            for i, line in enumerate(o["lines"]):
-                bad = [c for c in by_line.get(i, []) if not c["supported"]]
-                st.markdown(f"{'' if i == 0 else '- '}{line}{' ⚠️' if bad else ''}")
-                if bad:
-                    with st.expander(f"{len(bad)} unsupported claim(s)"):
-                        for c in bad:
-                            st.markdown(f"- _{c['text']}_")
-            if o["removed_lines"]:
-                with st.expander(f"{len(o['removed_lines'])} line(s) removed by the verifier"):
-                    for l in o["removed_lines"]:
-                        st.markdown(f"- {l}")
-
-
-# ---------- tab 3: experiment results ----------
+# ---------- tab 2: experiment results ----------
 
 def tab_experiments():
-    st.caption(f"Read from the saved run `{cfg['run_name']}` (E1 from run v1). Full tables and discussion: the project report.")
+    st.caption(f"Read from the saved runs (E1 from run v1, E2 from run v2, E3 from run {cfg['run_name']}). "
+               "Rows marked ✅ are the methods this demo uses. Full tables and discussion: the project report.")
     st.header("E1: evidence retrieval")
+    st.markdown("**What it tests:** for each job requirement, can the retriever find the resume bullets that support it? "
+                "The better the retriever, the better the evidence the tailoring step gets to see. "
+                "We hand-labelled which bullets support each requirement and measured how often the retriever finds them.")
+    st.caption("Recall@1 / Recall@3: share of requirements where a correct bullet is the top result / among the top 3. "
+               "MRR: how high the first correct bullet ranks (1 is best). ms/query: speed. "
+               "bm25 and tfidf are keyword matching; embedding matches by meaning; hybrid combines bm25 and embeddings "
+               "and re-orders the candidates with a cross-encoder. +ctx means each bullet is indexed together with its "
+               "job title and company line.")
     e1 = read_json(resolve("runs/v1/e1_results.json"))
     if e1:
-        st.table([{"Retriever": k, "Recall@1": f"{v['recall@1']:.3f}", "Recall@3": f"{v['recall@3']:.3f}",
+        st.table([{"Retriever": k, "Used in demo": "✅" if k == cfg["retrieval"]["method"] else "", "Recall@1": f"{v['recall@1']:.3f}", "Recall@3": f"{v['recall@3']:.3f}",
                    "MRR": f"{v['mrr']:.3f}", "ms/query": f"{v['ms_per_query']:.0f}"} for k, v in e1.items()])
         st.caption(f"{next(iter(e1.values()))['n']} labelled requirements. Hybrid search has the best Recall@3; "
                    "embeddings the best MRR; most gaps between the top methods are within noise.")
+        st.success("**Chosen: hybrid.** The tailoring step cites up to 3 pieces of evidence per requirement, so finding a "
+                   "correct bullet anywhere in the top 3 (Recall@3) matters most, and hybrid is best on that. "
+                   "It is slower, which is acceptable because the LLM calls dominate the run time.")
     else:
         st.info("runs/v1/e1_results.json not found.")
 
     st.header("E2: claim verification")
-    e2 = read_json(RUN / "e2_results.json")
+    st.markdown("**What it tests:** can a verifier tell whether a claim is supported by the resume? We planted fabrications "
+                "(a swapped tool, an inflated number, an invented duty or title) and wrote faithful rewrites, then checked "
+                "whether each verifier flags the fabrications and accepts the faithful claims. "
+                "The verifier decides which lines variants C and D keep.")
+    st.caption("F1: balance of catching fabrications and not raising false alarms (1 is best). False flags: faithful claims "
+               "wrongly rejected, which cost useful lines. Standard set: single-bullet claims. Hard set: subtler "
+               "fabrications and faithful claims that merge two bullets. Rule check: looks for tools, numbers and titles that "
+               "are missing from the resume. Zero-shot NLI: a pre-trained entailment model. Fine-tuned BERT / NLI: the same "
+               "kinds of model, further trained by us on resume claims. LLM judge: asks an LLM supported or unsupported.")
+    e2 = read_json(read_first("e2_results.json"))
     if e2:
         names = {"rule": "Rule check", "nli": "Zero-shot NLI", "finetuned": "Fine-tuned BERT",
                  "finetuned_nli": "Fine-tuned NLI", "llm": "LLM judge"}
         rows = []
         for m, label in names.items():
-            row = {"Verifier": label}
+            row = {"Verifier": label, "Used in demo": "✅" if m == cfg["verifier"]["method"] else ""}
             for s in ("standard", "hard"):
                 x = e2.get(s, {}).get(m)
                 row[f"{s.capitalize()} F1"] = f"{x['f1']:.3f}" if x else ""
@@ -298,18 +315,44 @@ def tab_experiments():
         st.caption("Standard set: 320 claims. Hard set: 80 claims, 28 drafted by a Qwen model. Fine-tuned NLI wins the "
                    "standard set and ties the LLM judge on the hard set; the score-based models wrongly flag 60-70% of "
                    "faithful claims that merge two bullets.")
+        st.success("**Chosen: fine-tuned NLI.** Best F1 on the standard set, and close to the LLM judge on the hard set "
+                   "(the LLM judge is a little better there). It runs locally, costs nothing per claim, and does not depend "
+                   "on the LLM that writes the resume, so the writer is not marking its own work.")
     else:
         st.info("e2_results.json not found.")
 
     st.header("E3: tailoring study")
+    st.markdown("**What it tests:** the whole system end to end. We tailored 36 resume-job pairs (12 good fit, 12 potential, "
+                "12 no fit) with four variants and scored every output. "
+                "A is plain prompting. B adds evidence retrieval, so the model must cite your bullets. "
+                "C keeps A but verifies each claim and regenerates or drops flagged lines. "
+                "D is B plus verification plus a bounded controller that decides how to repair each flagged line.")
+    st.caption("Unsupported claims: share of claims in the output that the resume does not support, judged by a stronger LLM "
+               "whose verdicts matched human labels (agreement 0.90). Invented tool/number: resumes that contain a tool or "
+               "number found nowhere in the original (a crude check). Coverage: share of the job's requirements "
+               "addressed by a supported claim. Task success: share of runs that finished with no unsupported claim and no "
+               "invented tool or number. Lower is better for the first two and cost, higher for the rest.")
     summ = [r for r in read_csv(RUN / "e3_summary.csv") if r["fit"] == "all"]
     agent = read_json(RUN / "agent_metrics_summary.json")
     if summ:
-        st.table([{"Variant": VARIANT_NAMES[r["variant"]], "Unsupported claims": pct(r["unsupported_rate"]),
+        st.table([{"Variant": VARIANT_NAMES[r["variant"]], "Used in demo": "✅" if r["variant"] == VARIANT else "", "Unsupported claims": pct(r["unsupported_rate"]),
                    "Resumes with invented tool/number": pct(r["any_introduced"], 0), "Coverage": pct(r["coverage"]),
                    "Task success": f"{agent.get(r['variant'], {}).get('success', 0):.2f}" if agent else "",
                    "LLM calls": f"{float(r['llm_calls']):.1f}", "Latency": f"{float(r['latency_s']):.0f} s",
                    "Cost/resume": f"${float(r['cost_usd']):.4f}"} for r in summ])
+    if summ:
+        st.success("**Chosen: D.** It cuts unsupported claims from about 47% (A) to about 5%, and every repair decision is "
+                   "logged. The price is lower requirement coverage than the unverified variants and several minutes per run. "
+                   "C reaches a similar faithfulness; D's advantage is a bounded, explainable repair process, not a lower rate.")
+    ctrl = agent.get("D", {}).get("controller") if agent else None
+    if ctrl:
+        st.subheader("Variant D controller")
+        st.table([{"Lines generated": ctrl["lines_generated"], "Needed recovery": ctrl["lines_needing_recovery"],
+                   "Recovered": pct(ctrl["recovery_success_rate"], 0), "Escalated to a person": pct(ctrl["escalation_rate"]),
+                   "Hit the action limit": pct(ctrl["loop_limit_hit_rate"], 0), "Overridden by rules": pct(ctrl["override_rate"], 0)}])
+        st.caption("Actions: " + ", ".join(f"{a.lower().replace('_', ' ')} {n}" for a, n in sorted(ctrl["action_counts"].items())) +
+                   ". The controller repaired about two thirds of the lines that needed it; it did not change the "
+                   "unsupported-claim rate compared with our earlier fixed regenerate-and-drop loop, but every decision is logged.")
     fig = RUN / "figures" / "e3_tradeoff.svg"
     if fig.exists():
         b64 = base64.b64encode(fig.read_bytes()).decode()
@@ -318,7 +361,11 @@ def tab_experiments():
                "The pairwise preference judge could not be validated, so we make no claim about recruiter preference.")
 
     st.header("Probes")
-    inj = [r for f in ("probe_injection_AB.csv", "probe_injection_C.csv", "probe_injection_D.csv") for r in read_csv(RUN / f)]
+    st.markdown("**What it tests:** two risks. Prompt injection: a hidden instruction in the job description tells the model to "
+                "add a fake certification, and we count how often it works. Bias: the same resume is tailored under different "
+                "names to see whether the output changes beyond run-to-run noise.")
+    inj = [r for f in ("probe_injection_AB.csv", "probe_injection_C.csv", "probe_injection_D.csv")
+           for r in read_csv(read_first(f))]
     if inj:
         rows = []
         for v in "ABCD":
@@ -331,12 +378,10 @@ def tab_experiments():
                    "No name-based difference beyond noise in the name-swap probe (variant A).")
 
 
-tabs = st.tabs(["Tailor", "Saved results", "Experiments"])
+tabs = st.tabs(["Tailor", "Experiments"])
 with tabs[0]:
     st.title("CareerCopilot")
     st.caption("Tailor a resume to a job without inventing experience.")
     tab_tailor()
 with tabs[1]:
-    tab_saved()
-with tabs[2]:
     tab_experiments()

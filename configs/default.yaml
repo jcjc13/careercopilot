@@ -11,9 +11,9 @@ data:
   sample_pairs: data/sample/pairs.jsonl   # 3 hand-written pairs; used by --sample and the demo
   verifier_train_resumes: 300             # OTHER resumes used only to build the fine-tuning set
 
-# Models are reached through any OpenAI-compatible API. Defaults follow the class labs:
+# Models are reached through any OpenAI-compatible API. Defaults:
 # Groq (free tier), a weaker/faster model inside the pipeline and a stronger one as judge.
-# Key: GROQ_API_KEY in .env. For a local model via Ollama (Topic 5), use
+# Key: GROQ_API_KEY in .env. For a local model via Ollama, use
 #   base_url: http://localhost:11434/v1, api_key_env: OLLAMA_API_KEY (any value), model: qwen3:4b
 llm:                       # the model INSIDE the pipeline (tailoring, requirements, LLM verifier)
   model: openai/gpt-oss-20b
@@ -46,7 +46,7 @@ retrieval:
   method: hybrid             # tfidf | bm25 | embedding | hybrid  (set to the E1 winner before E3)
   top_k: 3
   contextual: false        # prepend each bullet's role/company line before indexing (contextual RAG)
-  embedding_model: sentence-transformers/all-MiniLM-L6-v2   # the class labs' model; try BAAI/bge-small-en-v1.5
+  embedding_model: sentence-transformers/all-MiniLM-L6-v2   # try BAAI/bge-small-en-v1.5
   reranker_model: cross-encoder/ms-marco-MiniLM-L-6-v2     # used by hybrid; falls back to rank fusion if missing
 
 verifier:
@@ -59,7 +59,7 @@ verifier:
   finetuned_nli_path: models/verifier-nli-ft      # the NLI model above, fine-tuned on our silver data
   finetuned_nli_threshold: 0.7
 
-finetune:                  # Topic 3 recipe (HF Trainer), see scripts/train_verifier.py
+finetune:                  # HF Trainer, see scripts/train_verifier.py
   base_model: google-bert/bert-base-cased
   epochs: 3
   learning_rate: 2.0e-5

@@ -44,7 +44,7 @@ def cohen_kappa(a: list, b: list) -> float:
 # ---------- E3: tailoring ----------
 
 def introduced_facts(output: str, resume: str, terms: list[str]) -> dict:
-    """Programmatic fabrication check (Topic 6: verify in code before using a judge):
+    """Programmatic fabrication check (verify in code before using a judge):
     tools/technologies and numbers that appear in the tailored output but nowhere in the resume."""
     from .text import find_numbers, find_terms
     res_terms = {t.lower() for t in find_terms(resume, terms)}
