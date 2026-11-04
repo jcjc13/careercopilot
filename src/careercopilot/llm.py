@@ -1,7 +1,7 @@
 """OpenAI-compatible chat client that records tokens, latency and cost, plus a
 deterministic MockLLM so every script can be dry-run offline with --mock.
 
-Works with Groq (the class labs' provider), OpenAI, OpenRouter, Together, vLLM and a local
+Works with Groq, OpenAI, OpenRouter, Together, vLLM and a local
 Ollama server -- set base_url / api_key_env per model in the config.
 """
 from __future__ import annotations

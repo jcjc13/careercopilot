@@ -1,6 +1,6 @@
-"""E1: compare evidence retrievers -- TF-IDF (Topic 1) vs BM25 vs embeddings (Topics 2, 8) vs
-hybrid + cross-encoder re-ranker (Topic 8); add `+ctx` to a method for contextual retrieval
-(each bullet indexed with its role/company line, Topic 8 contextual RAG).
+"""E1: compare evidence retrievers -- TF-IDF vs BM25 vs embeddings vs
+hybrid + cross-encoder re-ranker; add `+ctx` to a method for contextual retrieval
+(each bullet indexed with its role/company line, contextual retrieval).
 
 Step 1 -- make the labelling sheet (extracts each job's requirements with the LLM):
     python scripts/run_e1_retrieval.py --make-template --pairs 12

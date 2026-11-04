@@ -80,7 +80,7 @@ def split_with_context(
     even when they contain multiple sentences. Oversized bullets are split at sentence
     boundaries and then at word boundaries if needed. Very short lines are dropped.
     The context of a bullet is the most recent role/company line above it (a short line
-    with a year) -- prepended at retrieval time for contextual RAG (Topic 8): 'Built
+    with a year) -- prepended at retrieval time for contextual retrieval: 'Built
     dashboards' alone loses the job it was done in. Deterministic, so ids are stable.
     """
     pieces, ctx = [], ""

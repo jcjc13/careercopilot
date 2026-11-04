@@ -5,10 +5,10 @@ returns (supported, score, usage). score is a confidence in [0, 1] that the clai
                 in the resume. Free and fast; blind to invented duties phrased in new words.
 - NLIVerifier   a zero-shot cross-encoder NLI model; supported if max P(entailment) over the
                 resume's bullets >= threshold (tuned on the silver validation set in E2).
-- FinetunedVerifier  a BERT-family cross-encoder fine-tuned on our silver data (Topic 3); used for
+- FinetunedVerifier  a BERT-family cross-encoder fine-tuned on our silver data; used for
                 both the fine-tuned BERT ("finetuned") and the fine-tuned NLI model ("finetuned_nli").
 - LLMVerifier   asks an LLM SUPPORTED / UNSUPPORTED.
-This is the Topic 6 ladder in one file: programmatic check -> trained classifier -> LLM judge.
+Ordered from cheapest to dearest: programmatic check -> trained classifier -> LLM judge.
 """
 from __future__ import annotations
 
@@ -71,7 +71,7 @@ class NLIVerifier:
 
 
 class FinetunedVerifier:
-    """The BERT-family cross-encoder fine-tuned by scripts/train_verifier.py (Topic 3 recipe).
+    """The BERT-family cross-encoder fine-tuned by scripts/train_verifier.py.
     Scores (bullet, claim) for every resume bullet; supported if max P(supported) >= threshold."""
     name = "finetuned"
 

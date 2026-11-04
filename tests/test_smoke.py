@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import csv
 import importlib.util
+import os
 import shutil
 import sys
 import tempfile
@@ -187,11 +188,31 @@ def test_all_scripts_end_to_end():
         assert (tmp / "labels/e3_preference.csv").exists()
         am = _script("agent_metrics").main(cfg, mock=True)
         assert {"A", "B", "C", "D"} <= set(am) and am["D"]["steps_mean"] >= am["A"]["steps_mean"]
+        _script("analyse_e3_failures").main(cfg)
+        _script("make_e3_figure").main(cfg)
+        assert list((tmp / "runs").rglob("e3_tradeoff.svg"))
         pr = _script("run_probes")
         pr.main(cfg, "injection", ["A", "D"], n=3, mock=True)
         pr.main(cfg, "bias", ["A"], n=2, mock=True)
     finally:
         shutil.rmtree(tmp)
+
+
+def test_app_runs_offline():
+    """The Streamlit app starts, tailors a sample with the offline mock and renders both tabs."""
+    try:
+        from streamlit.testing.v1 import AppTest
+    except ImportError:
+        return   # streamlit not installed: skip
+    os.environ["CAREERCOPILOT_MOCK"] = "1"
+    at = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120).run()
+    assert not at.exception
+    at.selectbox[0].select(next(o for o in at.selectbox[0].options if o != "(none)")).run()
+    at.button[0].click().run()
+    assert not at.exception and not at.error
+    assert any(c.label == "keep" for c in at.checkbox)   # one accept box per tailored line
+    assert at.session_state["last"][2] == "D"   # the app always runs variant D
+    assert len(at.tabs) == 2
 
 
 class _ScriptedLLM:

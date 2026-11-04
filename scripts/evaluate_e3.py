@@ -1,4 +1,4 @@
-"""E3 step 2: score every tailored resume, cheapest valid method first (the Topic 6 ladder):
+"""E3 step 2: score every tailored resume, cheapest valid method first:
 
   1. programmatic checks  tools and numbers in the output that appear nowhere in the resume
   2. LLM judge            each atomic claim supported / unsupported by the resume
@@ -89,7 +89,7 @@ def pairwise_once(judge_llm, pair, first, second):
 
 
 def pairwise_all(cfg, results, pairs, judge_llm):
-    """Every pair of variants for every resume, judged in both orders (Topic 6 lab, Part 4)."""
+    """Every pair of variants for every resume, judged in both orders."""
     path = run_dir(cfg) / "e3_pairwise.jsonl"
     cache = {(r["pair_id"], r["a"], r["b"]): r for r in read_jsonl(path)}
     outs = {(r.pair_id, r.variant): r for r in results if not r.error}

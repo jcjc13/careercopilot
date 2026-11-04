@@ -6,7 +6,7 @@ Each example is (premise = a real resume bullet, hypothesis = a claim, label):
   unsupported (0): a swapped tool / inflated number / added seniority (scripted), a teacher-LLM
                    invented duty or changed title/date, or a claim from ANOTHER resume paired
                    with this resume's closest bullet (BM25)
-The teacher-LLM part is distillation (Topic 4): a model writes training data, no human labels.
+The teacher-LLM part is distillation: a model writes training data, no human labels.
 Only the E2 TEST sets (make_fabrications.py, make_hard_claims.py) are human-reviewed. The held-out
 validation split (val.jsonl) is also what run_e2_verifiers.py uses to tune the verifier thresholds.
 

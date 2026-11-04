@@ -1,11 +1,11 @@
 """Evidence retrieval (E1). Each retriever ranks one resume's bullets against one job
 requirement and returns [(bullet_idx, score), ...] best first.
 
-- TfidfRetriever       TF-IDF vectors + cosine similarity (Topic 1 lab)
-- BM25Retriever        TF-IDF with document-length normalisation (Topic 8), no dependencies
-- EmbeddingRetriever   sentence-transformers bi-encoder + cosine (Topics 2 and 8)
+- TfidfRetriever       TF-IDF vectors + cosine similarity
+- BM25Retriever        TF-IDF with document-length normalisation, no dependencies
+- EmbeddingRetriever   sentence-transformers bi-encoder + cosine
 - HybridRetriever      BM25 + embedding candidates, re-ordered by a cross-encoder re-ranker
-                       (Topic 8 two-phase retrieval), or reciprocal-rank fusion if it can't load
+                       (two-phase retrieval), or reciprocal-rank fusion if it can't load
 """
 from __future__ import annotations
 
@@ -50,7 +50,7 @@ def _top(scores, k, positive_only=False):
 
 
 class TfidfRetriever:
-    """Fitted per resume (the bullets are the corpus), as in the Topic 1 lab."""
+    """Fitted per resume (the bullets are the corpus)."""
     name = "tfidf"
 
     def rank(self, query: str, bullets: list[str], k: int):

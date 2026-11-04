@@ -18,20 +18,6 @@ tailored resume ◄── verify claims (E2) ◄── split into claims ◄─�
 | C | no | yes |
 | D (full) | yes | yes, with a controller (run v3; the earlier fixed loop is run v2) |
 
-## Where each IS469 topic is used
-
-| Topic | In this project |
-|---|---|
-| 1 Text processing | TF-IDF retriever baseline (`retrieval.py`), tokenising |
-| 2 Transformers / BERT | sentence-embedding retriever, cross-encoders (NLI verifier, re-ranker) |
-| 3 Training | fine-tuned BERT verifier with the lab's Trainer recipe (`train_verifier.py`) |
-| 4 Efficient fine-tuning | distillation: a teacher LLM writes part of the training data; LoRA as future work |
-| 5 Inference | temperature 0 for reproducibility; reasoning-effort dial; optional local model via Ollama |
-| 6 Evaluation | programmatic checks → LLM judge → humans; judge validated (kappa); pairwise judge in both orders |
-| 7 Agents | variant D's bounded controller (`controller.py`): rewrite / retrieve more / reuse original / drop / escalate, limits enforced in Python, per-line trace; trajectory and controller metrics |
-| 8 RAG | BM25, hybrid + cross-encoder re-ranking, contextual retrieval, grounded generation with citations |
-| 9 Ethics | prompt-injection and name-swap bias probes; PII stripping; fabrication as the core risk |
-
 ## Setup
 
 ```bash
@@ -49,7 +35,7 @@ python scripts/prepare_data.py
 
 # try the system on one pair
 python scripts/tailor_one.py --pair <pair_id> --variant D
-streamlit run app.py
+streamlit run app.py                                             # two tabs: tailor (variant D, hybrid retrieval, fine-tuned NLI verifier) and experiment results
 
 # E1 retrieval (Member A)
 python scripts/run_e1_retrieval.py --make-template --pairs 12    # then label data/labels/e1_labels.csv
@@ -72,8 +58,10 @@ python scripts/evaluate_e3.py --pairwise                         # then label th
 python scripts/evaluate_e3.py --human-labels data/labels/e3_human_sample.csv \
                               --human-preference data/labels/e3_preference.csv
 python scripts/agent_metrics.py                                  # per-task success, steps, cost, latency (C loop; D controller metrics: recovery success, escalation rate, actions by fit)
+python scripts/analyse_e3_failures.py                            # qualitative failure categories -> runs/<run>/e3_failures.csv
+python scripts/make_e3_figure.py                                 # main exhibit -> runs/<run>/figures/e3_tradeoff.svg
 
-# Topic 9 probes
+# responsible-AI probes
 python scripts/run_probes.py --probe injection --variants A,B,C,D
 python scripts/run_probes.py --probe bias --variants A,D
 ```
@@ -89,29 +77,15 @@ Upload the repo (or `git clone` it), then in a GPU runtime:
 ```
 Download `models/verifier/` (and `models/verifier-nli-ft/` for the NLI model) and keep them next to the repo;
 `verifier.finetuned_path` and `verifier.finetuned_nli_path` point to them. `models/` is gitignored.
+`notebooks/BERT_Verifier.ipynb` and `notebooks/NLI_Verifier(fine_tuned).ipynb` are the Colab runs of these two training commands.
 
 ## Models
 
-Defaults follow the class labs: Groq's `openai/gpt-oss-20b` inside the pipeline and the stronger
+Defaults: Groq's `openai/gpt-oss-20b` inside the pipeline and the stronger
 `openai/gpt-oss-120b` as evaluation judge (a different, stronger model, so variant D is not graded
 by its own checker). The hard E2 test set is drafted by `drafter` (`qwen/qwen3.8-27b` on Groq), a different
 model family from the one that wrote the training data. Any OpenAI-compatible endpoint works: set `base_url`, `api_key_env` and
 `model` per role in `configs/default.yaml` -- e.g. a local `qwen3:4b` through Ollama.
-
-## Layout
-
-| Path | What | Owner |
-|---|---|---|
-| `src/careercopilot/text.py` | anonymisation, bullet + context splitting, tokenising | A |
-| `src/careercopilot/retrieval.py` | TF-IDF, BM25, embedding, hybrid + re-ranker | A |
-| `src/careercopilot/generation.py`, `prompts.py` | requirements, tailoring, regeneration, claim splitting | A (prompts reviewed by both) |
-| `src/careercopilot/pipeline.py` | variants A-D | A |
-| `src/careercopilot/verifiers.py`, `corrupt.py` | rule, NLI, fine-tuned, LLM verifiers; corruptions | B |
-| `src/careercopilot/metrics.py` | all metrics and tests | B |
-| `scripts/run_e1_*`, `tailor_one`, `run_probes`, `app.py` | E1, probes, demo | A |
-| `scripts/make_fabrications`, `make_date_fabrications`, `make_hard_claims`, `make_verifier_train`, `train_verifier`, `run_e2_*`, `evaluate_e3`, `agent_metrics`, `export_session_log` | E2, E3 scoring, process records | B |
-| `configs/default.yaml` | every setting + seed | both |
-| `data/labels/` | your hand labels (commit these) | both |
 
 ## Reproducibility and fairness rules
 

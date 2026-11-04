@@ -1,6 +1,6 @@
 """E2: compare claim verifiers on the human-reviewed planted-fabrication sets: a programmatic
 rule check, a zero-shot NLI cross-encoder, the fine-tuned BERT and NLI verifiers (train_verifier.py)
-and an LLM judge -- the Topic 6 ladder from cheapest to dearest.
+and an LLM judge, from cheapest to dearest.
 
     python scripts/run_e2_verifiers.py --methods rule,nli,finetuned,finetuned_nli,llm
     python scripts/run_e2_verifiers.py --methods rule --include-unreviewed   # early dry run

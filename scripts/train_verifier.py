@@ -1,4 +1,4 @@
-"""Fine-tune a BERT-family cross-encoder as the claim verifier -- the Topic 3 lab recipe
+"""Fine-tune a BERT-family cross-encoder as the claim verifier
 (AutoModelForSequenceClassification + Trainer + DataCollatorWithPadding, evaluate per epoch on a
 held-out validation set, then inspect predictions qualitatively).
 
