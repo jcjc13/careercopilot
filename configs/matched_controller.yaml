@@ -1,0 +1,12 @@
+base: configs/default.yaml
+run_name: matched-controller
+
+retrieval:
+  contextual: false
+
+tailoring:
+  max_regen: 2
+  controller:
+    max_total: 2
+    max_retrieve: 0
+    max_rewrite: 2

@@ -61,6 +61,15 @@ python scripts/agent_metrics.py                                  # per-task succ
 python scripts/analyse_e3_failures.py                            # qualitative failure categories -> runs/<run>/e3_failures.csv
 python scripts/make_e3_figure.py                                 # main exhibit -> runs/<run>/figures/e3_tradeoff.svg
 
+# matched controller ablation: D (grounded controller) vs E (grounded fixed loop),
+# same 36 pairs, cached requirements, retrieval settings and verifier; two recovery actions each
+python scripts/run_e3_tailoring.py --config configs/matched_controller.yaml --variants D,E
+python scripts/evaluate_e3.py --config configs/matched_controller.yaml
+python scripts/bootstrap_e3.py --config configs/matched_controller.yaml --baseline D --variants E
+
+# pair-level bootstrap CIs for existing E3 comparisons (variant minus A)
+python scripts/bootstrap_e3.py --config configs/default.yaml --baseline A
+
 # responsible-AI probes
 python scripts/run_probes.py --probe injection --variants A,B,C,D
 python scripts/run_probes.py --probe bias --variants A,D
@@ -69,6 +78,17 @@ python scripts/run_probes.py --probe bias --variants A,D
 # removed labelled-support conditions; use the same pairs across variants
 python scripts/run_evidence_sufficiency.py --variants A,B,C,D
 ```
+
+The matched run requires the configured verifier checkpoint at `models/verifier-nli-ft`;
+if unavailable, obtain it as described in the training section before running. Generate D and E
+together under the matched config; do not compare a newly generated E against an older D run.
+The controller gets at most two recovery actions with retrieval disabled, matching the fixed
+loop's two regeneration attempts. Bootstrap intervals resample paired resume-job cases (not
+individual claims); they reflect case-sampling uncertainty, not judge/label error or model-run
+variability.
+
+Variant E is an evaluation arm, not an additional app mode: it uses the same grounded generator
+and verifier as D, but replaces D's controller with the fixed two-attempt regenerate/drop loop.
 
 Every script accepts `--mock` (offline fake LLM, outputs not meaningful) and `--limit N`.
 Run scripts resume where they stopped; outputs go to `runs/<run_name>/`.

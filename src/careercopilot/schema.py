@@ -49,7 +49,7 @@ class Claim:
 @dataclass
 class TailorResult:
     pair_id: str
-    variant: str                  # A | B | C | D
+    variant: str                  # A | B | C | D | E
     fit: str
     lines: list[str]              # final tailored output, line 0 = summary
     requirements: list[str]

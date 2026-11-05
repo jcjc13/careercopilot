@@ -1,12 +1,13 @@
-"""The tailoring pipeline and its four E3 variants.
+"""The tailoring pipeline and its E3 variants.
 
     A  unrestricted rewrite                    (baseline)
     B  grounded rewrite from retrieved evidence
     C  unrestricted rewrite + verify/regenerate loop
     D  grounded rewrite + verify + bounded controller   (full system; run v2 used the fixed loop, run v3 the controller)
+    E  grounded rewrite + fixed verify/regenerate loop   (matched non-controller comparison for D)
 
 Requirements are extracted ONCE per pair and shared by all variants (so all variants are
-judged against the same list); their cost is charged to the variants that use them (B, D).
+judged against the same list); their cost is charged to grounded variants (B, D, E).
 """
 from __future__ import annotations
 
@@ -20,6 +21,7 @@ VARIANTS = {
     "B": {"grounded": True, "verify": False},
     "C": {"grounded": False, "verify": True},
     "D": {"grounded": True, "verify": True, "controller": True},
+    "E": {"grounded": True, "verify": True},
 }
 
 

@@ -49,7 +49,7 @@ def main(config, pair_id, variant, mock=False, retriever=None, verifier=None):
 if __name__ == "__main__":
     p = parser(__doc__)
     p.add_argument("--pair", default="sample-potential")
-    p.add_argument("--variant", default="D", choices=list("ABCD"))
+    p.add_argument("--variant", default="D", choices=list("ABCDE"))
     p.add_argument("--retriever", default=None, help="override config: bm25 | embedding | hybrid")
     p.add_argument("--verifier", default=None, help="override config: rule | nli | llm")
     a = p.parse_args()

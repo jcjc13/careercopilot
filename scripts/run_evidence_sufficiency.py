@@ -122,8 +122,8 @@ def main(config="configs/default.yaml", variants=None, limit=None, mock=False, v
     labelled = _read_labelled_rows(cfg, pairs)
     if limit is not None:
         labelled = labelled[:limit]
-    variants = variants or ["A", "B", "C", "D"]
-    invalid = sorted(set(variants) - {"A", "B", "C", "D"})
+    variants = variants or ["A", "B", "C", "D", "E"]
+    invalid = sorted(set(variants) - {"A", "B", "C", "D", "E"})
     if invalid:
         raise ValueError(f"unknown variants: {', '.join(invalid)}")
 
@@ -231,7 +231,7 @@ def main(config="configs/default.yaml", variants=None, limit=None, mock=False, v
 
 if __name__ == "__main__":
     cli = parser(__doc__)
-    cli.add_argument("--variants", default="A,B,C,D")
+    cli.add_argument("--variants", default="A,B,C,D,E")
     cli.add_argument("--verifier", choices=["rule", "nli", "finetuned", "finetuned_nli", "llm"],
                      help="override verifier.method from the config")
     cli.add_argument("--resume", action="store_true", help="skip condition/variant rows already saved")

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import random
 import re
 from collections import Counter
 
@@ -110,6 +111,45 @@ def wilcoxon_signed_rank(x: list[float], y: list[float]) -> dict:
     z = (w_plus - mean) / sd if sd else 0.0
     p = math.erfc(abs(z) / math.sqrt(2))
     return {"n": n, "statistic": w_plus, "p": p}
+
+
+def paired_bootstrap_mean_ci(differences: list[float], replicates: int = 10000, seed: int = 469,
+                             confidence: float = 0.95) -> dict:
+    """Percentile CI for a paired mean difference, resampling independent pair-level differences."""
+    if not differences:
+        raise ValueError("at least one paired difference is required")
+    if replicates < 1:
+        raise ValueError("replicates must be positive")
+    if not 0 < confidence < 1:
+        raise ValueError("confidence must be between 0 and 1")
+
+    n = len(differences)
+    observed = sum(differences) / n
+    rng = random.Random(seed)
+    estimates = sorted(
+        sum(differences[rng.randrange(n)] for _ in range(n)) / n
+        for _ in range(replicates)
+    )
+
+    def percentile(q):
+        index = (len(estimates) - 1) * q
+        lower = math.floor(index)
+        upper = math.ceil(index)
+        if lower == upper:
+            return estimates[lower]
+        weight = index - lower
+        return estimates[lower] * (1 - weight) + estimates[upper] * weight
+
+    alpha = (1 - confidence) / 2
+    return {
+        "n_pairs": n,
+        "mean_difference": observed,
+        "ci_lower": percentile(alpha),
+        "ci_upper": percentile(1 - alpha),
+        "confidence": confidence,
+        "replicates": replicates,
+        "seed": seed,
+    }
 
 
 def roc_auc(y_true: list[bool], score: list[float]) -> float:
