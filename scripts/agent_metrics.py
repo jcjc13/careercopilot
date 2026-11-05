@@ -1,5 +1,6 @@
 """Agent-style metrics per task for E3 (read-only: needs no change to the pipeline). A task = one resume x
-one variant. Variants C and D are the agentic ones: generate -> verify -> regenerate loop with a step budget.
+one variant. Variants C, D and E use bounded recovery: C/E use the fixed regenerate/drop loop and D uses
+the adaptive controller.
 
     python scripts/agent_metrics.py          # after run_e3_tailoring.py and evaluate_e3.py
   -> runs/<run>/agent_metrics_per_task.csv, runs/<run>/agent_metrics_summary.json
@@ -43,7 +44,7 @@ def format_checks(r, n_req):
     # a summary the verifier removed is a verification outcome (counted in summary_removed), not a format error
     has_summary = bool(lines) and (lines[0].startswith("Summary: ") or summary_removed(r))
     checks.append(has_summary and len(lines) > 1)
-    if r["variant"] in ("B", "D"):   # grounded: every bullet must cite existing evidence ids
+    if r["variant"] in ("B", "D", "E"):   # grounded: every bullet must cite existing evidence ids
         n_ev = len({b for bs in (r.get("evidence") or {}).values() for b in bs})
         valid = {f"E{i}" for i in range(1, n_ev + 1)}
         n_b = len(r.get("bullets_n") or []) or 10 ** 6   # R<k> = resume bullet k, added by the controller's RETRIEVE_MORE
@@ -101,9 +102,9 @@ def main(config, mock=False, limit=None):
         completed = not r.get("error") and len(r["lines"]) > 1
         success = None if j is None else bool(completed and float(j["unsupported"]) == 0 and not int(float(j["any_introduced"])))
         checks = format_checks(r, n_req)
-        agentic = v in ("C", "D")
+        agentic = v in ("C", "D", "E")
         # minimal calls: A tailor(1); B requirements + tailor(2); C/D add one claim-split call (+ one verify call per claim if LLM)
-        minimal = {"A": 1, "B": 2, "C": 2, "D": 3}[v] if not agentic or not llm_verifier else None
+        minimal = {"A": 1, "B": 2, "C": 2, "D": 3, "E": 3}[v] if not agentic or not llm_verifier else None
         steps = u["llm_calls"]
         rows.append({
             "pair_id": r["pair_id"], "variant": v, "fit": r["fit"], "agentic": int(agentic),
@@ -130,7 +131,7 @@ def main(config, mock=False, limit=None):
         rs = [x for x in rows if x["variant"] == v]
         ok = num(rs, "success")
         cost = sum(num(rs, "cost_usd"))
-        regen = [x for x in rs if x["needs_recovery"] == 1] if v in ("C", "D") else []
+        regen = [x for x in rs if x["needs_recovery"] == 1] if v in ("C", "D", "E") else []
         summary[v] = {
             "tasks": len(rs), "completed": statistics.mean(num(rs, "completed")),
             "success": statistics.mean(ok) if ok else None,
@@ -140,7 +141,8 @@ def main(config, mock=False, limit=None):
             "step_efficiency": statistics.mean(num(rs, "step_efficiency")) if num(rs, "step_efficiency") else None,
             "regenerations_mean": statistics.mean(num(rs, "regenerations")),
             "tasks_needing_regen": len(regen),
-            "loop_resolved_rate": (statistics.mean(num(regen, "loop_resolved")) if regen and v in ("C", "D") else None),
+            "loop_resolved_rate": (statistics.mean(num(regen, "loop_resolved"))
+                                   if regen and v in ("C", "D", "E") else None),
             "tokens_mean": statistics.mean(num(rs, "tokens")),
             "latency_mean_s": statistics.mean(num(rs, "latency_s")), "latency_p95_s": pct(num(rs, "latency_s"), 0.95),
             "cost_mean_usd": cost / len(rs), "cost_per_success_usd": cost / sum(ok) if ok and sum(ok) else None}

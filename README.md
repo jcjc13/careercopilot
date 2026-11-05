@@ -61,13 +61,47 @@ python scripts/agent_metrics.py                                  # per-task succ
 python scripts/analyse_e3_failures.py                            # qualitative failure categories -> runs/<run>/e3_failures.csv
 python scripts/make_e3_figure.py                                 # main exhibit -> runs/<run>/figures/e3_tradeoff.svg
 
+# matched controller ablation: D (grounded controller) vs E (grounded fixed loop),
+# same 36 pairs, cached requirements, retrieval settings and verifier; two recovery actions each
+python scripts/run_e3_tailoring.py --config configs/matched_controller.yaml --variants D,E
+python scripts/evaluate_e3.py --config configs/matched_controller.yaml
+python scripts/bootstrap_e3.py --config configs/matched_controller.yaml --baseline D --variants E
+
+# pair-level bootstrap CIs for existing E3 comparisons (variant minus A)
+python scripts/bootstrap_e3.py --config configs/default.yaml --baseline A
+
 # responsible-AI probes
 python scripts/run_probes.py --probe injection --variants A,B,C,D
 python scripts/run_probes.py --probe bias --variants A,D
+
+# evidence sufficiency: E1-labelled requirements under intact / partially removed /
+# removed labelled-support conditions; use the same pairs across variants
+python scripts/run_evidence_sufficiency.py --variants A,B,C,D
 ```
+
+The matched run requires the configured verifier checkpoint at `models/verifier-nli-ft`;
+if unavailable, obtain it as described in the training section before running. Generate D and E
+together under the matched config; do not compare a newly generated E against an older D run.
+The controller gets at most two recovery actions with retrieval disabled, matching the fixed
+loop's two regeneration attempts. Bootstrap intervals resample paired resume-job cases (not
+individual claims); they reflect case-sampling uncertainty, not judge/label error or model-run
+variability.
+
+Variant E is an evaluation arm, not an additional app mode: it uses the same grounded generator
+and verifier as D, but replaces D's controller with the fixed two-attempt regenerate/drop loop.
 
 Every script accepts `--mock` (offline fake LLM, outputs not meaningful) and `--limit N`.
 Run scripts resume where they stopped; outputs go to `runs/<run_name>/`.
+The evidence-sufficiency probe also accepts `--verifier METHOD` to override the configured
+verifier; record that choice when comparing results, since it changes the system under test.
+Completed requirement rows are checkpointed to CSV; `--resume` skips rows already saved after
+an interrupted or rate-limited run.
+The evidence-sufficiency probe requires manually labelled `gold_bullet_ids` in
+`data/labels/e1_labels.csv`. It records verifier-based unsupported-claim rate, coverage of the
+target requirement by supported output, and abstention/removal/review behavior. “Removed” means
+the E1-labelled supporting bullets were removed from the resume; it does not prove that the
+remaining resume contains no equivalent evidence. Treat these paired stress-test results as
+pilot evidence, not an independent generalization test.
 
 ### Training on Colab
 Upload the repo (or `git clone` it), then in a GPU runtime:

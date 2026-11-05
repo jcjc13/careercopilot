@@ -1,7 +1,8 @@
-"""E3 step 1: run tailoring variants A-D on every pair. Resumable (skips pair/variant combos
+"""E3 step 1: run tailoring variants A-E on every pair. Resumable (skips pair/variant combos
 already in the output), so a crash or rate limit doesn't lose work.
 
     python scripts/run_e3_tailoring.py --variants A,B,C,D
+    python scripts/run_e3_tailoring.py --variants D,E  # matched controller / fixed-loop comparison
   -> runs/<run>/requirements.jsonl   requirements per pair (shared by all variants)
   -> runs/<run>/e3_outputs.jsonl     one TailorResult per pair x variant
 Set retrieval.method and verifier.method in the config to the E1/E2 winners first.

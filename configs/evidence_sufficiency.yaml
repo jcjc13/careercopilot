@@ -1,0 +1,5 @@
+base: configs/default.yaml
+run_name: evidence-sufficiency-llm-verifier
+
+verifier:
+  method: llm

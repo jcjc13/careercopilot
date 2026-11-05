@@ -21,7 +21,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from careercopilot.data import load  # noqa: E402
 from careercopilot.llm import MockLLM, parse_json  # noqa: E402
-from careercopilot.metrics import cohen_kappa, prf, wilcoxon_signed_rank  # noqa: E402
+from careercopilot.metrics import (cohen_kappa, paired_bootstrap_mean_ci, prf,
+                                   wilcoxon_signed_rank)  # noqa: E402
 from careercopilot.pipeline import run_variant  # noqa: E402
 from careercopilot.retrieval import BM25Retriever  # noqa: E402
 from careercopilot.text import anonymise, split_bullets, split_with_context  # noqa: E402
@@ -148,6 +149,58 @@ def test_pipeline_variants():
     assert d.evidence and all(d.citations[1:])           # grounded lines cite evidence
     c = run_variant(pair, "C", llm, BM25Retriever(), verifier, cfg, requirements=a.requirements)
     assert c.regenerations >= 1 and not any("Tableau" in l for l in c.lines)
+    e = run_variant(pair, "E", llm, BM25Retriever(), verifier, cfg, requirements=a.requirements)
+    assert e.evidence and all(e.citations[1:])
+    assert e.pipeline_claims and not e.trace
+    assert not any("Tableau" in l for l in e.lines)
+
+
+def test_paired_bootstrap_and_e3_calculation():
+    ci = paired_bootstrap_mean_ci([-1.0, -0.5, 0.0, 0.5], replicates=1000, seed=469)
+    assert ci == paired_bootstrap_mean_ci([-1.0, -0.5, 0.0, 0.5], replicates=1000, seed=469)
+    assert ci["n_pairs"] == 4 and ci["mean_difference"] == -0.25
+    assert ci["ci_lower"] <= ci["mean_difference"] <= ci["ci_upper"]
+
+    bootstrap = _script("bootstrap_e3")
+    rows = [
+        {"pair_id": "p1", "variant": "D", "fit": "good", "unsupported_rate": "0.2",
+         "coverage": "0.5", "any_introduced": "0", "latency_s": "10", "cost_usd": "0.1"},
+        {"pair_id": "p1", "variant": "E", "fit": "good", "unsupported_rate": "0.4",
+         "coverage": "0.7", "any_introduced": "1", "latency_s": "8", "cost_usd": "0.08"},
+        {"pair_id": "p2", "variant": "D", "fit": "none", "unsupported_rate": "0.6",
+         "coverage": "0.1", "any_introduced": "1", "latency_s": "12", "cost_usd": "0.2"},
+        {"pair_id": "p2", "variant": "E", "fit": "none", "unsupported_rate": "0.2",
+         "coverage": "0.2", "any_introduced": "0", "latency_s": "9", "cost_usd": "0.12"},
+    ]
+    result = bootstrap.calculate(rows, "D", ["E"], replicates=500, seed=469)
+    overall = result["metrics"]["E_vs_D/all"]
+    assert overall["unsupported_rate"]["n_pairs"] == 2
+    assert abs(overall["unsupported_rate"]["mean_difference"] + 0.1) < 1e-12
+    assert abs(overall["coverage"]["mean_difference"] - 0.15) < 1e-12
+    assert result["metrics"]["E_vs_D/good"]["unsupported_rate"]["n_pairs"] == 1
+
+
+def test_evidence_sufficiency_conditions():
+    from careercopilot.schema import Pair
+
+    probe = _script("run_evidence_sufficiency")
+    pair = Pair(
+        "evidence-test",
+        "Analyst\n- Built weekly Power BI dashboards\n- Presented findings to managers",
+        "Data analyst role",
+        "potential",
+        ["Built weekly Power BI dashboards", "Presented findings to managers"],
+        ["Analyst", "Analyst"],
+    )
+    conditions = probe.build_conditions(pair, [0, 1])
+    assert [condition for condition, _, _ in conditions] == [
+        "intact", "partial", "labelled_evidence_removed"
+    ]
+    assert conditions[1][1].bullets == [pair.bullets[0]]
+    assert conditions[1][2] == [1]
+    assert conditions[2][1].bullets == []
+    assert conditions[2][2] == [0, 1]
+    assert pair.bullets == ["Built weekly Power BI dashboards", "Presented findings to managers"]
 
 
 def test_all_scripts_end_to_end():
@@ -170,6 +223,17 @@ def test_all_scripts_end_to_end():
             w.writerows(rows)
         res1 = e1.evaluate(c, ["tfidf", "bm25", "bm25+ctx", "embedding"])
         assert {"tfidf", "bm25", "bm25+ctx"} <= set(res1)
+        _script("run_evidence_sufficiency").main(cfg, ["A", "D"], limit=1, mock=True)
+        sufficiency_files = list((tmp / "runs").rglob("evidence_sufficiency.csv"))
+        assert len(sufficiency_files) == 1
+        sufficiency = list(csv.DictReader(open(sufficiency_files[0], encoding="utf-8")))
+        assert len(sufficiency) == 4
+        assert {r["condition"] for r in sufficiency} == {"intact", "labelled_evidence_removed"}
+        assert all(r["supported_requirement_coverage"] != "" for r in sufficiency)
+        _script("run_evidence_sufficiency").main(
+            cfg, ["A", "D"], limit=1, mock=True, resume=True)
+        resumed = list(csv.DictReader(open(sufficiency_files[0], encoding="utf-8")))
+        assert len(resumed) == len(sufficiency)
 
         _script("make_fabrications").main(cfg, n=10, mock=True)
         _script("make_verifier_train").main(cfg, teacher_frac=1.0, mock=True, sample=True)
@@ -179,15 +243,15 @@ def test_all_scripts_end_to_end():
         assert res2["standard"]["rule"]["recall_by_type"] and "mcnemar" in res2
         assert set(res2) - {"mcnemar"} <= {"standard", "hard"}
 
-        _script("run_e3_tailoring").main(cfg, ["A", "B", "C", "D"], mock=True)
+        _script("run_e3_tailoring").main(cfg, ["A", "B", "C", "D", "E"], mock=True)
         summary = _script("evaluate_e3").main(cfg, mock=True, pairwise=True)
-        assert {s["variant"] for s in summary} == {"A", "B", "C", "D"}
+        assert {s["variant"] for s in summary} == {"A", "B", "C", "D", "E"}
         a_all = next(s for s in summary if s["variant"] == "A" and s["fit"] == "all")
         d_all = next(s for s in summary if s["variant"] == "D" and s["fit"] == "all")
         assert a_all["any_introduced"] > d_all["any_introduced"]   # programmatic check sees the planted Tableau
         assert (tmp / "labels/e3_preference.csv").exists()
         am = _script("agent_metrics").main(cfg, mock=True)
-        assert {"A", "B", "C", "D"} <= set(am) and am["D"]["steps_mean"] >= am["A"]["steps_mean"]
+        assert {"A", "B", "C", "D", "E"} <= set(am) and am["D"]["steps_mean"] >= am["A"]["steps_mean"]
         _script("analyse_e3_failures").main(cfg)
         _script("make_e3_figure").main(cfg)
         assert list((tmp / "runs").rglob("e3_tradeoff.svg"))
