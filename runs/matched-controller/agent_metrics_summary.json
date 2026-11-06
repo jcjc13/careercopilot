@@ -1,0 +1,73 @@
+{
+  "D": {
+    "tasks": 36,
+    "completed": 0.8888888888888888,
+    "success": 0.3611111111111111,
+    "format_validity": 0.9305555555555556,
+    "summary_removed_rate": 0.3055555555555556,
+    "steps_mean": 23.38888888888889,
+    "step_efficiency": 0.18155555555555555,
+    "regenerations_mean": 5.527777777777778,
+    "tasks_needing_regen": 36,
+    "loop_resolved_rate": 0.1111111111111111,
+    "tokens_mean": 19946.666666666668,
+    "latency_mean_s": 188.74072222222222,
+    "latency_p95_s": 450.841,
+    "cost_mean_usd": 0.0036279444444444445,
+    "cost_per_success_usd": 0.010046615384615385,
+    "controller": {
+      "lines_generated": 317,
+      "lines_needing_recovery": 238,
+      "recovery_success_rate": 0.6008403361344538,
+      "escalation_rate": 0.006309148264984227,
+      "automation_rate": 0.9936908517350158,
+      "dropped_rate": 0.3907563025210084,
+      "loop_limit_hit_rate": 0.058823529411764705,
+      "actions_per_recovered_line": 1.2937062937062938,
+      "controller_calls": 306,
+      "override_rate": 0.0,
+      "fallback_rate": 0.0,
+      "action_counts": {
+        "DROP": 79,
+        "HUMAN_REVIEW": 2,
+        "REWRITE_CONSERVATIVELY": 199,
+        "USE_ORIGINAL": 26
+      },
+      "actions_by_fit": {
+        "good": {
+          "REWRITE_CONSERVATIVELY": 70,
+          "DROP": 23,
+          "USE_ORIGINAL": 10
+        },
+        "potential": {
+          "REWRITE_CONSERVATIVELY": 74,
+          "DROP": 34,
+          "USE_ORIGINAL": 8,
+          "HUMAN_REVIEW": 2
+        },
+        "none": {
+          "REWRITE_CONSERVATIVELY": 55,
+          "DROP": 22,
+          "USE_ORIGINAL": 8
+        }
+      }
+    }
+  },
+  "E": {
+    "tasks": 36,
+    "completed": 0.8888888888888888,
+    "success": 0.16666666666666666,
+    "format_validity": 0.9444444444444444,
+    "summary_removed_rate": 0.5277777777777778,
+    "steps_mean": 14.277777777777779,
+    "step_efficiency": 0.23383333333333334,
+    "regenerations_mean": 9.222222222222221,
+    "tasks_needing_regen": 36,
+    "loop_resolved_rate": 0.2777777777777778,
+    "tokens_mean": 19289.777777777777,
+    "latency_mean_s": 239.99991666666665,
+    "latency_p95_s": 516.161,
+    "cost_mean_usd": 0.0031929166666666664,
+    "cost_per_success_usd": 0.019157499999999997
+  }
+}

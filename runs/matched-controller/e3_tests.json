@@ -1,0 +1,98 @@
+{
+  "D_vs_A/good/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/good/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/good/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/potential/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/potential/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/potential/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/none/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/none/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/none/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/all/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/all/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "D_vs_A/all/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/good/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/good/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/good/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/potential/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/potential/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/potential/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/none/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/none/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/none/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/all/unsupported_rate": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/all/coverage": {
+    "n": 0,
+    "p": 1.0
+  },
+  "E_vs_A/all/any_introduced": {
+    "n": 0,
+    "p": 1.0
+  }
+}
