@@ -73,10 +73,6 @@ python scripts/bootstrap_e3.py --config configs/default.yaml --baseline A
 # responsible-AI probes
 python scripts/run_probes.py --probe injection --variants A,B,C,D
 python scripts/run_probes.py --probe bias --variants A,D
-
-# evidence sufficiency: E1-labelled requirements under intact / partially removed /
-# removed labelled-support conditions; use the same pairs across variants
-python scripts/run_evidence_sufficiency.py --variants A,B,C,D
 ```
 
 The matched run requires the configured verifier checkpoint at `models/verifier-nli-ft`;
@@ -92,16 +88,6 @@ and verifier as D, but replaces D's controller with the fixed two-attempt regene
 
 Every script accepts `--mock` (offline fake LLM, outputs not meaningful) and `--limit N`.
 Run scripts resume where they stopped; outputs go to `runs/<run_name>/`.
-The evidence-sufficiency probe also accepts `--verifier METHOD` to override the configured
-verifier; record that choice when comparing results, since it changes the system under test.
-Completed requirement rows are checkpointed to CSV; `--resume` skips rows already saved after
-an interrupted or rate-limited run.
-The evidence-sufficiency probe requires manually labelled `gold_bullet_ids` in
-`data/labels/e1_labels.csv`. It records verifier-based unsupported-claim rate, coverage of the
-target requirement by supported output, and abstention/removal/review behavior. “Removed” means
-the E1-labelled supporting bullets were removed from the resume; it does not prove that the
-remaining resume contains no equivalent evidence. Treat these paired stress-test results as
-pilot evidence, not an independent generalization test.
 
 ### Training on Colab
 Upload the repo (or `git clone` it), then in a GPU runtime:

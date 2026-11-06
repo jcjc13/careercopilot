@@ -1,0 +1,5 @@
+The tokenizer you are loading from '/Users/javanchok/Documents/GitHub/careercopilot/models/verifier-nli-ft' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+retriever=hybrid verifier=finetuned_nli model=openai/gpt-oss-20b
+pairs:   0%|          | 0/36 [00:00<?, ?it/s]pairs:  83%|████████▎ | 30/36 [00:50<00:10,  1.67s/it]pairs:  86%|████████▌ | 31/36 [01:17<00:14,  2.82s/it]pairs:  89%|████████▉ | 32/36 [01:49<00:18,  4.64s/it]pairs:  92%|█████████▏| 33/36 [07:46<01:38, 32.88s/it][llm] APIConnectionError: retrying in 3s
+pairs:  94%|█████████▍| 34/36 [13:26<02:08, 64.34s/it]pairs:  97%|█████████▋| 35/36 [17:33<01:27, 87.78s/it]pairs: 100%|██████████| 36/36 [21:10<00:00, 107.74s/it]pairs: 100%|██████████| 36/36 [21:10<00:00, 35.29s/it] 
+wrote /Users/javanchok/Documents/GitHub/careercopilot/runs/matched-controller/e3_outputs.jsonl

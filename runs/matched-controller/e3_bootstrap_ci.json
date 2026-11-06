@@ -1,0 +1,198 @@
+{
+  "method": "paired percentile bootstrap over resume-job pairs",
+  "difference": "variant minus baseline",
+  "baseline": "D",
+  "confidence": 0.95,
+  "replicates": 10000,
+  "seed": 469,
+  "metrics": {
+    "E_vs_D/all": {
+      "unsupported_rate": {
+        "n_pairs": 36,
+        "mean_difference": 0.010078022749967013,
+        "ci_lower": -0.006857845335412412,
+        "ci_upper": 0.028277276980509254,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "coverage": {
+        "n_pairs": 36,
+        "mean_difference": 0.003472222222222222,
+        "ci_lower": -0.052083333333333336,
+        "ci_upper": 0.05555555555555555,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "any_introduced": {
+        "n_pairs": 36,
+        "mean_difference": 0.027777777777777776,
+        "ci_lower": -0.08333333333333333,
+        "ci_upper": 0.1388888888888889,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "latency_s": {
+        "n_pairs": 36,
+        "mean_difference": 51.25921575464437,
+        "ci_lower": 32.80821389609013,
+        "ci_upper": 74.16234566310384,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "cost_usd": {
+        "n_pairs": 36,
+        "mean_difference": -0.0004350222222222223,
+        "ci_lower": -0.0007540431944444446,
+        "ci_upper": -0.00010906902777777794,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      }
+    },
+    "E_vs_D/good": {
+      "unsupported_rate": {
+        "n_pairs": 12,
+        "mean_difference": 0.021347047109996093,
+        "ci_lower": -0.00761578578176474,
+        "ci_upper": 0.053448426626890144,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "coverage": {
+        "n_pairs": 12,
+        "mean_difference": 0.010416666666666666,
+        "ci_lower": -0.0625,
+        "ci_upper": 0.07291666666666667,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "any_introduced": {
+        "n_pairs": 12,
+        "mean_difference": 0.16666666666666666,
+        "ci_lower": -0.16666666666666666,
+        "ci_upper": 0.5,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "latency_s": {
+        "n_pairs": 12,
+        "mean_difference": 86.65447351066784,
+        "ci_lower": 47.065894217542535,
+        "ci_upper": 138.27679207592737,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "cost_usd": {
+        "n_pairs": 12,
+        "mean_difference": -0.0002518416666666666,
+        "ci_lower": -0.0009080472916666662,
+        "ci_upper": 0.00038962062499999964,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      }
+    },
+    "E_vs_D/potential": {
+      "unsupported_rate": {
+        "n_pairs": 12,
+        "mean_difference": 0.009452223739749093,
+        "ci_lower": -0.022176574622695316,
+        "ci_upper": 0.03533047834518423,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "coverage": {
+        "n_pairs": 12,
+        "mean_difference": 0.010416666666666666,
+        "ci_lower": -0.125,
+        "ci_upper": 0.125,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "any_introduced": {
+        "n_pairs": 12,
+        "mean_difference": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "latency_s": {
+        "n_pairs": 12,
+        "mean_difference": 48.40763381363164,
+        "ci_lower": 19.84410184788382,
+        "ci_upper": 77.83074058925946,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "cost_usd": {
+        "n_pairs": 12,
+        "mean_difference": -0.0005324250000000001,
+        "ci_lower": -0.0010757970833333336,
+        "ci_upper": 5.918791666666623e-05,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      }
+    },
+    "E_vs_D/none": {
+      "unsupported_rate": {
+        "n_pairs": 12,
+        "mean_difference": -0.0005652025998441503,
+        "ci_lower": -0.029517834807468946,
+        "ci_upper": 0.03181833258301532,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "coverage": {
+        "n_pairs": 12,
+        "mean_difference": -0.010416666666666666,
+        "ci_lower": -0.07291666666666667,
+        "ci_upper": 0.0625,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "any_introduced": {
+        "n_pairs": 12,
+        "mean_difference": -0.08333333333333333,
+        "ci_lower": -0.25,
+        "ci_upper": 0.0,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "latency_s": {
+        "n_pairs": 12,
+        "mean_difference": 18.715539939633647,
+        "ci_lower": 8.81654745457272,
+        "ci_upper": 29.613486024508408,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      },
+      "cost_usd": {
+        "n_pairs": 12,
+        "mean_difference": -0.0005208000000000001,
+        "ci_lower": -0.0009729818749999998,
+        "ci_upper": -0.00011004645833333321,
+        "confidence": 0.95,
+        "replicates": 10000,
+        "seed": 469
+      }
+    }
+  }
+}

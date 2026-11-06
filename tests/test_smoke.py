@@ -180,29 +180,6 @@ def test_paired_bootstrap_and_e3_calculation():
     assert result["metrics"]["E_vs_D/good"]["unsupported_rate"]["n_pairs"] == 1
 
 
-def test_evidence_sufficiency_conditions():
-    from careercopilot.schema import Pair
-
-    probe = _script("run_evidence_sufficiency")
-    pair = Pair(
-        "evidence-test",
-        "Analyst\n- Built weekly Power BI dashboards\n- Presented findings to managers",
-        "Data analyst role",
-        "potential",
-        ["Built weekly Power BI dashboards", "Presented findings to managers"],
-        ["Analyst", "Analyst"],
-    )
-    conditions = probe.build_conditions(pair, [0, 1])
-    assert [condition for condition, _, _ in conditions] == [
-        "intact", "partial", "labelled_evidence_removed"
-    ]
-    assert conditions[1][1].bullets == [pair.bullets[0]]
-    assert conditions[1][2] == [1]
-    assert conditions[2][1].bullets == []
-    assert conditions[2][2] == [0, 1]
-    assert pair.bullets == ["Built weekly Power BI dashboards", "Presented findings to managers"]
-
-
 def test_all_scripts_end_to_end():
     tmp = Path(tempfile.mkdtemp())
     try:
@@ -223,17 +200,6 @@ def test_all_scripts_end_to_end():
             w.writerows(rows)
         res1 = e1.evaluate(c, ["tfidf", "bm25", "bm25+ctx", "embedding"])
         assert {"tfidf", "bm25", "bm25+ctx"} <= set(res1)
-        _script("run_evidence_sufficiency").main(cfg, ["A", "D"], limit=1, mock=True)
-        sufficiency_files = list((tmp / "runs").rglob("evidence_sufficiency.csv"))
-        assert len(sufficiency_files) == 1
-        sufficiency = list(csv.DictReader(open(sufficiency_files[0], encoding="utf-8")))
-        assert len(sufficiency) == 4
-        assert {r["condition"] for r in sufficiency} == {"intact", "labelled_evidence_removed"}
-        assert all(r["supported_requirement_coverage"] != "" for r in sufficiency)
-        _script("run_evidence_sufficiency").main(
-            cfg, ["A", "D"], limit=1, mock=True, resume=True)
-        resumed = list(csv.DictReader(open(sufficiency_files[0], encoding="utf-8")))
-        assert len(resumed) == len(sufficiency)
 
         _script("make_fabrications").main(cfg, n=10, mock=True)
         _script("make_verifier_train").main(cfg, teacher_frac=1.0, mock=True, sample=True)
