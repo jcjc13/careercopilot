@@ -35,7 +35,8 @@ from careercopilot import prompts
 from careercopilot.generation import split_claims
 from careercopilot.llm import parse_json
 from careercopilot.metrics import Similarity, cohen_kappa, introduced_facts, wilcoxon_signed_rank
-from careercopilot.schema import Usage, append_jsonl, load_results, read_jsonl
+from careercopilot.scoring import covered_requirements
+from careercopilot.schema import append_jsonl, load_results, read_jsonl
 from careercopilot.text import load_vocab
 from careercopilot.verifiers import LLMVerifier
 
@@ -43,17 +44,8 @@ FITS = ["good", "potential", "none"]
 
 
 def coverage(judge_llm, requirements, claims):
-    if not claims or not requirements:
-        return 0.0, Usage()
-    reqs = "\n".join(f"[{i + 1}] {r}" for i, r in enumerate(requirements))
-    cl = "\n".join(f"- {c}" for c in claims)
-    out, u = judge_llm.chat(prompts.COVERAGE, f"<requirements>\n{reqs}\n</requirements>\n\n<lines>\n{cl}\n</lines>",
-                            max_tokens=100)
-    try:
-        hit = {int(x) for x in parse_json(out) if 1 <= int(x) <= len(requirements)}
-    except (ValueError, TypeError):
-        hit = set()
-    return len(hit) / len(requirements), u
+    hit, u = covered_requirements(judge_llm, requirements, claims)
+    return (len(hit) / len(requirements) if requirements else 0.0), u
 
 
 def judge_all(cfg, results, pairs, judge_llm, splitter_llm):
