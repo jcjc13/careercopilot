@@ -1,0 +1,59 @@
+{
+  "tfidf": {
+    "n": 54,
+    "recall@1": 0.37037037037037035,
+    "recall@3": 0.5740740740740741,
+    "mrr": 0.4888888888888889,
+    "ms_per_query": 24.50536805662085
+  },
+  "bm25": {
+    "n": 54,
+    "recall@1": 0.4074074074074074,
+    "recall@3": 0.5740740740740741,
+    "mrr": 0.5089506172839505,
+    "ms_per_query": 0.35479010936493677
+  },
+  "embedding": {
+    "n": 54,
+    "recall@1": 0.5,
+    "recall@3": 0.6851851851851852,
+    "mrr": 0.6165123456790125,
+    "ms_per_query": 77.86590431566799
+  },
+  "hybrid": {
+    "n": 54,
+    "recall@1": 0.3888888888888889,
+    "recall@3": 0.7222222222222222,
+    "mrr": 0.5692092886537331,
+    "ms_per_query": 132.6523425932801
+  },
+  "tfidf+ctx": {
+    "n": 54,
+    "recall@1": 0.4074074074074074,
+    "recall@3": 0.5925925925925926,
+    "mrr": 0.5138888888888888,
+    "ms_per_query": 1.3637530738142905
+  },
+  "bm25+ctx": {
+    "n": 54,
+    "recall@1": 0.4444444444444444,
+    "recall@3": 0.6111111111111112,
+    "mrr": 0.5376543209876543,
+    "ms_per_query": 0.3787083335703722
+  },
+  "embedding+ctx": {
+    "n": 54,
+    "recall@1": 0.5370370370370371,
+    "recall@3": 0.6851851851851852,
+    "mrr": 0.641820987654321,
+    "ms_per_query": 25.843044758032732
+  },
+  "hybrid+ctx": {
+    "n": 54,
+    "recall@1": 0.42592592592592593,
+    "recall@3": 0.7407407407407407,
+    "mrr": 0.5923574368018811,
+    "ms_per_query": 53.61893286937158
+  },
+  "_note": "Scored on the 540 labelled bullets in data/labels/e1_bullets.csv, split and given role contexts with the commit 53797123 splitter (the one the labels were made with); the current splitter produces different bullet ids. tfidf+ctx and hybrid+ctx are new; the other six reproduce run v1 / e1-hybrid-context-py312-rerun."
+}
