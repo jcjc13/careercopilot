@@ -8,6 +8,7 @@ from __future__ import annotations
 import csv
 import importlib.util
 import os
+import time
 import shutil
 import sys
 import tempfile
@@ -239,10 +240,19 @@ def test_app_runs_offline():
     assert not at.exception
     at.selectbox[0].select(next(o for o in at.selectbox[0].options if o != "(none)")).run()
     at.button[0].click().run()
+    for _ in range(100):   # the pipeline runs in a background thread; poll until the result is in
+        if "last" in at.session_state:
+            break
+        time.sleep(0.2)
+        at.run()
     assert not at.exception and not at.error
     assert any(c.label == "keep" for c in at.checkbox)   # one accept box per tailored line
     assert at.session_state["last"][2] == "D"   # the app always runs variant D
     assert len(at.tabs) == 2
+    sc = at.session_state["score"]   # score card: job match before/after, claims supported, invented facts
+    assert len(sc["requirements"]) >= 1 and set(sc["after"]) <= set(range(len(sc["requirements"])))
+    assert 0 <= sc["supported"] <= sc["claims"]
+    assert any("Score card" in h.value for h in at.subheader)
 
 
 class _ScriptedLLM:

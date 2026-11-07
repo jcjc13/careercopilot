@@ -3,7 +3,7 @@
 Two tabs:
   Tailor       paste a resume and a job (or load a sample); the system runs variant D with hybrid retrieval and the
                fine-tuned NLI verifier. Shows the requirements, the evidence found for each, the tailored resume with a
-               verdict per line, what the controller did with every flagged line, and lets you accept or reject each
+               verdict per line, a score card (job match before and after, claims supported, invented facts), what the controller did with every flagged line, and lets you accept or reject each
                line before downloading the final text
   Experiments  the E1, E2 and E3 results tables, the main figure, and the probe results (read from runs/, no API calls)
 
@@ -15,6 +15,8 @@ import json
 import os
 import re
 import sys
+import threading
+import time
 from pathlib import Path
 
 import streamlit as st
@@ -28,7 +30,8 @@ from careercopilot.llm import build_llm  # noqa: E402
 from careercopilot.pipeline import VARIANTS, run_variant  # noqa: E402
 from careercopilot.retrieval import build_retriever  # noqa: E402
 from careercopilot.schema import Pair  # noqa: E402
-from careercopilot.text import anonymise, split_with_context  # noqa: E402
+from careercopilot.scoring import score_card  # noqa: E402
+from careercopilot.text import anonymise, load_vocab, split_with_context  # noqa: E402
 from careercopilot.verifiers import build_verifier  # noqa: E402
 
 st.set_page_config(page_title="CareerCopilot", layout="wide")
@@ -81,7 +84,7 @@ def render_trace(trace, title="What the controller did with each flagged line"):
                 st.caption(f"Final line: {t['final_line']}")
             st.divider()
 
-@st.cache_resource(show_spinner="Loading models (the first run takes a while)...")
+@st.cache_resource(show_spinner=False)
 def components(retriever: str, verifier: str, mock: bool):
     llm = build_llm(cfg, mock=mock)
     return llm, build_retriever(cfg, retriever), build_verifier(cfg, llm, verifier)
@@ -127,6 +130,13 @@ def pct(x, digits=1):
         return "n/a"
 
 
+def ci_text(m):
+    """'+1.0 [-0.7, +2.8]' in percentage points from one bootstrap entry."""
+    if not m:
+        return "n/a"
+    return f"{100 * m['mean_difference']:+.1f} [{100 * m['ci_lower']:+.1f}, {100 * m['ci_upper']:+.1f}]"
+
+
 # ---------- tab 1: tailor ----------
 
 def read_upload(f):
@@ -155,6 +165,28 @@ def text_input(label, key, sample_text):
     return st.text_area(label, height=320, key=key)
 
 
+def render_score(s):
+    """Before/after score card: job match, faithfulness and invented facts for the default accepted lines."""
+    if not s:
+        return
+    n = len(s["requirements"])
+    st.subheader("Score card")
+    a, b, c = st.columns(3)
+    a.metric("Job match (requirements covered)", f"{len(s['after'])} of {n}", f"{len(s['after']) - len(s['before']):+d} vs original ({len(s['before'])} of {n})")
+    b.metric("Claims supported by your resume", f"{s['supported']} of {s['claims']}" if s["claims"] else "n/a",
+             f"{s['flagged_lines']} flagged line(s) repaired or removed" if s["flagged_lines"] else "no lines flagged", delta_color="off")
+    invented = s["new_tools"] + s["new_numbers"]
+    c.metric("Invented tools or numbers", len(invented), ", ".join(invented) if invented else "none found", delta_color="off")
+    rows = [{"Requirement": r, "Original resume": "✅" if i in s["before"] else "–", "Tailored resume": "✅" if i in s["after"] else "–"}
+            for i, r in enumerate(s["requirements"])]
+    with st.expander("Which requirements are covered"):
+        st.table(rows)
+    st.caption("Job match is judged by an LLM asking which requirements the original resume's bullets or the tailored lines clearly address. "
+               "Faithfulness is the fine-tuned verifier's verdict on the tailored claims. Invented facts are tools and numbers "
+               "that appear in the tailored text but nowhere in your resume. The score covers the lines accepted by default, "
+               "and tailoring is built to be faithful first: job match can stay level or dip when a line cannot be supported.")
+
+
 def render_result(res, pair, variant):
     id_map = {}
     if VARIANTS[variant]["grounded"]:
@@ -163,6 +195,7 @@ def render_result(res, pair, variant):
     for c in res.pipeline_claims:
         claims_by_line.setdefault(c.line_idx, []).append(c)
 
+    render_score(st.session_state.get("score"))
     left, right = st.columns(2)
     with left:
         st.subheader("Requirements and evidence")
@@ -240,27 +273,55 @@ def tab_tailor():
     with c1:
         resume = text_input("Resume", "resume", pre.resume if pre else "")
     with c2:
-        job = text_input("Job description", "job", pre.job if pre else "")
+        job_text = text_input("Job description", "job", pre.job if pre else "")
     name = st.text_input("Your name (optional)", help="Removed from the resume before any text is sent to the LLM. "
                          "Emails, phone numbers and URLs are always removed.")
     st.info("Every claim in the tailored resume is verified, and the controller works on each flagged line, "
             "so a run takes several minutes (about 5 minutes on average in our study).")
 
-    if st.button("Tailor", type="primary", disabled=not (resume.strip() and job.strip())):
+    job = st.session_state.get("tailor_job")
+    running = bool(job) and job["state"] == "running"
+    if st.button("Tailor", type="primary", disabled=running or not (resume.strip() and job_text.strip())):
         resume_a = anonymise(redact_name(resume, name) if name.strip() else resume)
         bullets, contexts = split_with_context(resume_a)
-        pair = Pair(pair_id="ui", resume=resume_a, job=anonymise(job), fit="unknown", bullets=bullets, contexts=contexts)
-        try:
-            with st.spinner("Tailoring..."):
-                llm, retriever, verifier = components(RETRIEVER, VERIFIER, OFFLINE)
-                res = run_variant(pair, VARIANT, llm, retriever, verifier, cfg)
-        except Exception as e:   # a missing model folder, a missing key or a network error
-            st.error(f"The pipeline failed: {type(e).__name__}: {e}")
-            st.caption("Missing key? Put GROQ_API_KEY in .env. Missing verifier model? Put models/verifier-nli-ft next to the repo.")
-            return
-        st.session_state["last"] = (res, pair, VARIANT)
+        pair = Pair(pair_id="ui", resume=resume_a, job=anonymise(job_text), fit="unknown", bullets=bullets, contexts=contexts)
+        job = {"state": "running", "start": time.time()}
+        st.session_state["tailor_job"] = job
+        st.session_state.pop("last", None)
+        st.session_state.pop("score", None)
+        threading.Thread(target=run_job, args=(job, pair), daemon=True).start()
+        running = True
+    if running:
+        tailoring_status(job)
+        return
+    if job and job["state"] == "error":
+        st.error(f"The pipeline failed: {job['error']}")
+        st.caption("Missing key? Put GROQ_API_KEY in .env. Missing verifier model? Put models/verifier-nli-ft next to the repo.")
+    elif job and job["state"] == "done":
+        st.session_state["last"] = (job["res"], job["pair"], VARIANT)
+        st.session_state["score"] = job["score"]
+        st.session_state.pop("tailor_job")
     if "last" in st.session_state:
         render_result(*st.session_state["last"])
+
+
+def run_job(job, pair):
+    """The pipeline, in a background thread so the page (and the Experiments tab) stays usable while it runs."""
+    try:
+        llm, retriever, verifier = components(RETRIEVER, VERIFIER, OFFLINE)
+        res = run_variant(pair, VARIANT, llm, retriever, verifier, cfg)
+        terms = [x for ts in load_vocab(resolve(cfg["paths"]["skills_vocab"])).values() for x in ts]
+        job.update(res=res, pair=pair, score=score_card(llm, pair, res, terms), state="done")
+    except Exception as e:   # a missing model folder, a missing key or a network error
+        job.update(state="error", error=f"{type(e).__name__}: {e}")
+
+
+@st.fragment(run_every=2)
+def tailoring_status(job):
+    if job["state"] != "running":
+        st.rerun()
+    st.info(f"Tailoring... {time.time() - job['start']:.0f} s so far (about 5 minutes on average). "
+            "You can open the Experiments tab while you wait; the result appears here when it is done.")
 
 
 # ---------- tab 2: experiment results ----------
@@ -278,14 +339,23 @@ def tab_experiments():
                "and re-orders the candidates with a cross-encoder. +ctx means each bullet is indexed together with its "
                "job title and company line.")
     e1 = read_json(resolve("runs/v1/e1_results.json"))
+    extra = read_json(resolve("runs/e1-ctx-extra/e1_results.json")) or {}
     if e1:
-        st.table([{"Retriever": k, "Used in demo": "✅" if k == cfg["retrieval"]["method"] else "", "Recall@1": f"{v['recall@1']:.3f}", "Recall@3": f"{v['recall@3']:.3f}",
+        for k in ("tfidf+ctx", "hybrid+ctx"):   # scored later on the same labelled bullets; speed is the plain retriever's
+            if k in extra and k not in e1:
+                e1[k] = {**extra[k], "ms_per_query": e1[k.split("+")[0]]["ms_per_query"]}
+        order = ["tfidf", "bm25", "embedding", "hybrid", "tfidf+ctx", "bm25+ctx", "embedding+ctx", "hybrid+ctx"]
+        e1 = {k: e1[k] for k in order if k in e1}
+        used = cfg["retrieval"]["method"] + ("+ctx" if cfg["retrieval"].get("contextual") else "")
+        st.table([{"Retriever": k, "Used in demo": "✅" if k == used else "", "Recall@1": f"{v['recall@1']:.3f}", "Recall@3": f"{v['recall@3']:.3f}",
                    "MRR": f"{v['mrr']:.3f}", "ms/query": f"{v['ms_per_query']:.0f}"} for k, v in e1.items()])
         st.caption(f"{next(iter(e1.values()))['n']} labelled requirements. Hybrid search has the best Recall@3; "
-                   "embeddings the best MRR; most gaps between the top methods are within noise.")
-        st.success("**Chosen: hybrid.** The tailoring step cites up to 3 pieces of evidence per requirement, so finding a "
-                   "correct bullet anywhere in the top 3 (Recall@3) matters most, and hybrid is best on that. "
-                   "It is slower, which is acceptable because the LLM calls dominate the run time.")
+                   "embeddings the best MRR; most gaps between the top methods are within noise (one requirement is 1.9 points). "
+                   "Adding the role line (+ctx) helps every retriever a little and never hurts, but only about one resume bullet in nine "
+                   "has a role line above it. The speed of the TF-IDF and hybrid +ctx rows is that of the plain retriever.")
+        st.success("**Chosen: hybrid with role context.** The tailoring step cites up to 3 pieces of evidence per requirement, so "
+                   "finding a correct bullet anywhere in the top 3 (Recall@3) matters most, and hybrid with role context is best on "
+                   "that (0.741). It is slower, which is acceptable because the LLM calls dominate the run time.")
     else:
         st.info("runs/v1/e1_results.json not found.")
 
@@ -344,6 +414,22 @@ def tab_experiments():
         st.success("**Chosen: D.** It cuts unsupported claims from about 47% (A) to about 5%, and every repair decision is "
                    "logged. The price is lower requirement coverage than the unverified variants and several minutes per run. "
                    "C reaches a similar faithfulness; D's advantage is a bounded, explainable repair process, not a lower rate.")
+    boot = read_json(RUN / "e3_bootstrap_ci.json")
+    if boot:
+        st.subheader("How sure are we? Differences from A with 95% intervals")
+        names = {"B": "B: grounded", "C": "C: verifier only", "D": "D: full system"}
+        rows = []
+        for v, label in names.items():
+            m = boot["metrics"].get(f"{v}_vs_A/all", {})
+            if m:
+                rows.append({"Variant minus A": label, **{h: ci_text(m.get(k)) for h, k in
+                             (("Unsupported claims", "unsupported_rate"), ("Requirement coverage", "coverage"),
+                              ("Resumes with invented tool/number", "any_introduced"))}})
+        st.table(rows)
+        st.caption("Points of difference with a 95% bootstrap interval, resampling the 36 resume-job pairs 10,000 times. "
+                   "An interval that excludes 0 is a difference we can trust given these pairs. All three variants clearly cut "
+                   "unsupported claims and invented tools or numbers. For coverage, D's interval includes 0, so we cannot say D "
+                   "loses coverage. The intervals reflect which pairs were sampled, not model or judge randomness.")
     ctrl = agent.get("D", {}).get("controller") if agent else None
     if ctrl:
         st.subheader("Variant D controller")
@@ -353,6 +439,25 @@ def tab_experiments():
         st.caption("Actions: " + ", ".join(f"{a.lower().replace('_', ' ')} {n}" for a, n in sorted(ctrl["action_counts"].items())) +
                    ". The controller repaired about two thirds of the lines that needed it; it did not change the "
                    "unsupported-claim rate compared with our earlier fixed regenerate-and-drop loop, but every decision is logged.")
+    msum = {(r["variant"]): r for r in read_csv(resolve("runs/matched-controller/e3_summary.csv")) if r["fit"] == "all"}
+    mci = (read_json(resolve("runs/matched-controller/e3_bootstrap_ci.json")) or {}).get("metrics", {}).get("E_vs_D/all")
+    if msum.get("D") and msum.get("E") and mci:
+        st.subheader("Controller or fixed loop? Matched comparison of D and E")
+        st.markdown("**What it tests:** is D's controller actually better than a plain fixed loop? E uses the same grounded "
+                    "generator, retrieval and verifier as D, but regenerates a rejected line up to twice and then drops it. Both ran "
+                    "together on the same 36 pairs, with at most two recovery actions each.")
+        rows = []
+        for k, label, f in (("unsupported_rate", "Unsupported claims", pct), ("coverage", "Requirement coverage", pct),
+                            ("any_introduced", "Resumes with invented tool/number", lambda x: pct(x, 0))):
+            rows.append({"Measure": label, "D: controller": f(msum["D"][k]), "E: fixed loop": f(msum["E"][k]),
+                         "E minus D (95% interval)": ci_text(mci.get(k))})
+        rows.append({"Measure": "Time per resume", "D: controller": f"{float(msum['D']['latency_s']):.0f} s",
+                     "E: fixed loop": f"{float(msum['E']['latency_s']):.0f} s", "E minus D (95% interval)": f"{mci['latency_s']['mean_difference']:+.0f} s "
+                     f"[{mci['latency_s']['ci_lower']:+.0f}, {mci['latency_s']['ci_upper']:+.0f}]"})
+        st.table(rows)
+        st.success("**Why D stays in the demo:** the two cannot be told apart on faithfulness or coverage (every interval "
+                   "includes 0), but D is about a minute faster per resume and logs every repair decision.")
+        st.caption("This D is limited to two recovery actions without extra retrieval, so it is not the 4-action D in the main table.")
     fig = RUN / "figures" / "e3_tradeoff.svg"
     if fig.exists():
         b64 = base64.b64encode(fig.read_bytes()).decode()
