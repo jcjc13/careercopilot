@@ -230,7 +230,7 @@ def test_all_scripts_end_to_end():
 
 
 def test_app_runs_offline():
-    """The Streamlit app starts, tailors a sample with the offline mock and renders both tabs."""
+    """The Streamlit app starts, tailors a sample with the offline mock and shows the score card."""
     try:
         from streamlit.testing.v1 import AppTest
     except ImportError:
@@ -248,7 +248,7 @@ def test_app_runs_offline():
     assert not at.exception and not at.error
     assert any(c.label == "keep" for c in at.checkbox)   # one accept box per tailored line
     assert at.session_state["last"][2] == "D"   # the app always runs variant D
-    assert len(at.tabs) == 2
+    assert len(at.tabs) == 0   # a single page, no tabs
     sc = at.session_state["score"]   # score card: job match before/after, claims supported, invented facts
     assert len(sc["requirements"]) >= 1 and set(sc["after"]) <= set(range(len(sc["requirements"])))
     assert 0 <= sc["supported"] <= sc["claims"]

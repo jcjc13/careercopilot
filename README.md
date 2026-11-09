@@ -35,11 +35,12 @@ python scripts/prepare_data.py
 
 # try the system on one pair
 python scripts/tailor_one.py --pair <pair_id> --variant D
-streamlit run app.py                                             # two tabs: tailor (variant D, hybrid retrieval, fine-tuned NLI verifier) and experiment results
+streamlit run app.py                                             # tailoring demo: variant D, hybrid retrieval, fine-tuned NLI verifier, with a score card
 
 # E1 retrieval (Member A)
 python scripts/run_e1_retrieval.py --make-template --pairs 12    # then label data/labels/e1_labels.csv
 python scripts/run_e1_retrieval.py                               # tfidf, bm25, embedding, hybrid, +ctx
+python scripts/compare_e1_chunking.py                          # sentence-split vs whole-bullet chunks -> runs/e1-chunking-comparison
 
 # E2 verifiers (Member B)
 python scripts/make_fabrications.py --n 150                      # standard test set; then review data/labels/e2_claims.csv
